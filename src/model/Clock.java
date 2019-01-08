@@ -5,7 +5,7 @@ package model;
  */
 public class Clock {
     //private enum weekDay {LUN, MAR, MER, JEU, VEN, SAM, DIM};
-    private static final String[] weekDay= {"LUN", "MAR", "MER", "JEU", "VEN", "SAM", "DIM"};
+    private static final String[] weekDay= {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"};
 
     int currentDay;
     int time;

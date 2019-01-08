@@ -44,7 +44,7 @@ public class fxClock extends Group {
 
 
         moveNeedle(0);
-        dayName = new Text(posX-80, posY+7,"LUN");
+        dayName = new Text(posX-90, posY+7,"鏄熸湡涓�");
         dayName.setFill(Color.web("#42322f",1));
         dayName.setFont(Font.font(null, FontWeight.SEMI_BOLD,20));
 

@@ -54,7 +54,7 @@ public class defaultShapes {
         Polygon p = new Polygon(-15,-15,15,-15,15,15,-15,15);
         p.setFill(Color.WHITESMOKE);
         p.setStrokeWidth(6);
-        p.setStroke(Color.DARKBLUE);
+        p.setStroke(Color.BLACK);
         return p;
     }
 
@@ -62,7 +62,7 @@ public class defaultShapes {
         Circle p = new Circle (15.0);
         p.setFill(Color.WHITESMOKE);
         p.setStrokeWidth(6);
-        p.setStroke(Color.RED);
+        p.setStroke(Color.BLACK);
         return p;
     }
 
@@ -71,7 +71,7 @@ public class defaultShapes {
         p.setFill(Color.WHITESMOKE);
         p.setStrokeType(StrokeType.INSIDE);
         p.setStrokeWidth(5);
-        p.setStroke(Color.GREENYELLOW);
+        p.setStroke(Color.BLACK);
         return p;
     }
 
@@ -93,7 +93,7 @@ public class defaultShapes {
         p.setFill(Color.WHITESMOKE);
         p.setStrokeType(StrokeType.INSIDE);
         p.setStrokeWidth(4);
-        p.setStroke(Color.DARKORANGE);
+        p.setStroke(Color.BLACK);
         p.setRotate(180);
 
         double dx=2,dy=-5;

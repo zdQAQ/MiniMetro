@@ -170,10 +170,10 @@ public class Game {
                             try {
                                 clock.incrementeTime();
                                 view.updateClock(clock.getTime(), clock.getDay());
-                                if (clock.getDay() == "LUN" && !gift) {
+                                if (clock.getDay() == "星期一" && !gift) {
                                     pop2RandomUpgrade();
                                     gift = true;
-                                } else if (clock.getDay() != "LUN") {
+                                } else if (clock.getDay() != "星期一") {
                                     gift = false;
                                 }
                                 sleep(833);

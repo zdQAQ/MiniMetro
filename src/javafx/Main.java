@@ -41,7 +41,7 @@ public class Main extends Application {
             stage = primaryStage;
             primaryStage.setScene(scene);
             primaryStage.getIcons().add(new Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
-            primaryStage.setTitle("MiniMetro - UTBM");
+            primaryStage.setTitle("¾Ü¾øÑÓ±Ï");
             primaryStage.setResizable(false);
             primaryStage.show();
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

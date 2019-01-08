@@ -225,13 +225,13 @@ public class GameView {
                 try {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Game Over");
-                    alert.setHeaderText("Votre metro a fermé à cause de la trop longue attente dans la station")  ;
-                    alert.setContentText(Game.getTransportedClientNb() + " passagers ont voyagé sur votre metro pendant " + clock.getNbDay() +" jours.");
+                    alert.setTitle("游戏结束");
+                    alert.setHeaderText("由于乘客漫长的等待，您的地铁已关闭")  ;
+                    alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " + clock.getNbDay() +" 天");
                     alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/lose.png").toString())));
 
                     //ButtonType buttonTypeOne = new ButtonType("Recommencer");
-                    ButtonType buttonTypeTwo = new ButtonType("Quitter");
+                    ButtonType buttonTypeTwo = new ButtonType("离开游戏");
 
                     alert.getButtonTypes().setAll(buttonTypeTwo);
 
@@ -264,16 +264,16 @@ public class GameView {
                 Stage stage = new Stage();
                 try {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Nouvelle semaine");
-                    alert.setHeaderText("Bienvenue dans une nouvelle semaine ! Vous avez reçu une nouvelle locomotive.")  ;
-                    alert.setContentText("Comment voulez-vous depenser le reste de votre budget ?");
+                    alert.setTitle("新的一周");
+                    alert.setHeaderText("欢迎来到新的一周！ 你收到了一个新的机车。")  ;
+                    alert.setContentText("另外，你希望选择哪种资源 ?");
 
                     alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/train.png").toString())));
 
-                    ButtonType buttonTypeOne = new ButtonType("Nouvelle ligne");
-                    ButtonType buttonTypeTwo = new ButtonType("Nouveau wagon");
-                    ButtonType buttonTypeThree = new ButtonType("Nouveau train");
-                    ButtonType buttonTypeFour = new ButtonType("Nouveau tunnel");
+                    ButtonType buttonTypeOne = new ButtonType("路线");
+                    ButtonType buttonTypeTwo = new ButtonType("车厢");
+                    ButtonType buttonTypeThree = new ButtonType("车头");
+                    ButtonType buttonTypeFour = new ButtonType("隧道");
 
                     ArrayList<ButtonType> list = new ArrayList<ButtonType>();
                     list.add(buttonTypeOne);
