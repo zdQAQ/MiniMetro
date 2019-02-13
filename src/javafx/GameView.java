@@ -552,7 +552,7 @@ public class GameView {
 
     public void put(Train t) {
         trains.put(t,new fxTrain(t));
-        group.getChildren().add(1,trains.get(t));
+        group.getChildren().add(10,trains.get(t));
         controller.addTrainEvent(trains.get(t).r,t);
     }
 

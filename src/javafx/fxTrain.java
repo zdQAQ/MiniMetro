@@ -44,15 +44,17 @@ public class fxTrain extends Group {
         train = t;
     }
 
-    public fxTrain () {
-        super();
-
-        getChildren().add(new Rectangle(250, 300, width, height));
-        trainX = 250+width/2;
-        trainY = 300+height/2;
-    }
+//    public fxTrain () {
+//        super();
+//
+//        getChildren().add(new Rectangle(250, 300, width, height));
+//        trainX = 250+width/2;
+//        trainY = 300+height/2;
+//    }
 
     public void move (Position p, int speed) {
+        System.err.println("x,y:"+p.toString());
+        System.err.println("trainX,trainY:("+trainX+","+trainY+")");
         if(speed==0) {
             System.err.println("SPEED == 0 : TRAIN STOP");
             return;

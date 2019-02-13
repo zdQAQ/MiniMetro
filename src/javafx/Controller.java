@@ -75,7 +75,7 @@ public class Controller implements Initializable {
         Color colorRiver = new Color((double)200/255,(double)230/255,(double)250/255,0.5);
         river.setStroke(colorRiver);
         river.setStrokeLineJoin(StrokeLineJoin.ROUND);
-        river.setStrokeWidth(23);
+        river.setStrokeWidth(18);
 
         Polyline borderRiver = new Polyline(
                 150,600,
