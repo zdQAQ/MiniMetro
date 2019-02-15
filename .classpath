@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="MiniMetro.jar"/>
 	<classpathentry kind="lib" path="out/artifacts/MiniMetro_jar/MiniMetro.jar"/>
+	<classpathentry kind="lib" path="/Users/zd/Downloads/mysql-connector-java-5.1.47/mysql-connector-java-5.1.47.jar"/>
 	<classpathentry kind="output" path="out/production/MiniMetro"/>
 </classpath>

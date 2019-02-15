@@ -48,10 +48,23 @@ public class Main extends Application {
         launch(args);
     }
 
+    public static void restart() {
+
+        stage.close();
+        Platform.runLater(() -> new Main().start(new Stage()));
+
+    }
+
+    public static void end() {
+
+        System.exit(0);
+
+    }
+
     @Override
     public void start(Stage primaryStage) {
         try {
-        	stage = primaryStage;
+            stage = primaryStage;
             primaryStage.setTitle("地铁小游戏哦");
 
             WebView webView = new WebView();
@@ -65,9 +78,8 @@ public class Main extends Application {
                 @Override
                 public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
                     if (newState == State.SUCCEEDED) {
-                        JSObject win = 
-                                (JSObject) webEngine.executeScript("window");
-                            win.setMember("app", new JavaApp());
+                        JSObject win = (JSObject) webEngine.executeScript("window");
+                        win.setMember("app", new JavaApp());
                     }
                 }
             });
@@ -79,7 +91,7 @@ public class Main extends Application {
 
             primaryStage.setScene(scene);
             primaryStage.show();
-            
+
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -87,44 +99,28 @@ public class Main extends Application {
 
     // JavaScript interface object
     public class JavaApp {
- 
-        public void chooseCity() {
+
+        public void chooseCity(String city) {
             Group page = null;
-			try {
-				page = (Group) FXMLLoader.load(Main.class.getResource("mainPage.fxml"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            Color colorScene = new Color((double)240/255,
-            (double)240/255,(double)240/255,0.5);
-            Scene scene = new Scene(page,1200,600, colorScene);
+            try {
+                page = (Group) FXMLLoader.load(Main.class.getResource("mainPage.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Color colorScene = new Color((double) 240 / 255, (double) 240 / 255, (double) 240 / 255, 0.5);
+            Scene scene = new Scene(page, 1200, 600, colorScene);
             stage.setScene(scene);
-            stage.getIcons().add(new
-            Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
+            stage.getIcons().add(new Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
             stage.setTitle("地铁小游戏");
             stage.setResizable(false);
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-            System.exit(0);
-            Platform.exit();
-            }
+                @Override
+                public void handle(WindowEvent event) {
+                    System.exit(0);
+                    Platform.exit();
+                }
             });
         }
-    }
-
-    public static void restart() {
-
-        stage.close();
-        Platform.runLater(() -> new Main().start(new Stage()));
-
-    }
-
-    public static void end() {
-
-        System.exit(0);
-
     }
 
 }

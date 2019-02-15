@@ -552,7 +552,13 @@ public class GameView {
 
     public void put(Train t) {
         trains.put(t,new fxTrain(t));
-        group.getChildren().add(10,trains.get(t));
+        group.getChildren().add(trains.get(t));
+        controller.addTrainEvent(trains.get(t).r,t);
+    }
+
+    public void put(Train t,Position p) {
+        trains.put(t,new fxTrain(t,p));
+        group.getChildren().add(trains.get(t));
         controller.addTrainEvent(trains.get(t).r,t);
     }
 
@@ -560,7 +566,7 @@ public class GameView {
     {
         group.getChildren().remove(get(t));
         trains.replace(t,new fxTrain(t));
-        group.getChildren().add(1,trains.get(t));
+        group.getChildren().add(trains.get(t));
         controller.addTrainEvent(trains.get(t).r,t);
 
     }
@@ -653,6 +659,7 @@ public class GameView {
     }
 
     public void move(Train train) {
+        System.out.println(train.getNextPointIndex());
         fxTrain fxTrain = get(train);
         fxTrain.move(train.getLine().getPath().get(train.getNextPointIndex()), Game.getTrainSpeed());
     }

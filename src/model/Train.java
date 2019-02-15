@@ -89,7 +89,7 @@ public class Train {
     public void changeLine (Position newPosition,Line newLine) {
         line.removeTrain(this);
         newLine.addTrain(this);
-        setNextPointIndex(0);
+        setNextPointIndex(nextPointIndex/2);
         verif();
     }
 

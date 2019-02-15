@@ -258,9 +258,11 @@ public class Controller implements Initializable {
                     }
                     else if( modelTrain==null)
                     {
-                        modelTrain = new Train(0,line,true);
+                        System.out.println("drop train");
+                        int index = line.getStationList().indexOf(a);
+                        modelTrain = new Train(index,line,true);
                         line.addTrain(modelTrain);
-                        gameView.put(modelTrain);
+                        gameView.put(modelTrain,line.getStationList().get(index).getPosition());
 
                         modelTrain.move();
                         if(Game.getPause())

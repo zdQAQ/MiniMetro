@@ -44,6 +44,15 @@ public class fxTrain extends Group {
         train = t;
     }
 
+    public fxTrain(Train t,Position p) {
+        super();
+        trainX = p.getX(); trainY = p.getY();
+        r = new Rectangle(p.getX()-width/2,p.getY()-(height/2),width,height);
+        r.setFill(t.getLine().getColor());
+        getChildren().add(r);
+        train = t;
+    }
+
 //    public fxTrain () {
 //        super();
 //
@@ -53,8 +62,8 @@ public class fxTrain extends Group {
 //    }
 
     public void move (Position p, int speed) {
-        System.err.println("x,y:"+p.toString());
-        System.err.println("trainX,trainY:("+trainX+","+trainY+")");
+        // System.err.println("x,y:"+p.toString());
+        // System.err.println("trainX,trainY:("+trainX+","+trainY+")");
         if(speed==0) {
             System.err.println("SPEED == 0 : TRAIN STOP");
             return;
@@ -193,7 +202,8 @@ public class fxTrain extends Group {
 
 
     public void removeClient (Shape s) {
-        System.err.println("REMOVAL sucess ? : "+getChildren().remove(s));
+        getChildren().remove(s);
+        // System.err.println("REMOVAL sucess ? : "+getChildren().remove(s));
     }
 
     public void pause() {

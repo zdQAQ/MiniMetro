@@ -95,7 +95,7 @@ public class Game {
                         Station st = new Station(ShapeType.values()[random.nextInt(ShapeType.values().length)],pos);
                         stationList.add(st);
                         Platform.runLater(() -> addToView(st));
-                        System.out.println("new station arrived");
+                        // System.out.println("new station arrived");
                     } catch (Exception e) {
                         System.out.println(e);
                     }
@@ -136,7 +136,7 @@ public class Game {
                         clientList.add(clt);
                         types.add(randomStation.getType());
                         Platform.runLater(() -> addToView(clt));
-                        System.out.println("new client arrived");
+                        // System.out.println("new client arrived");
                         if(clt.getStation().getClientList().size()>=clt.getStation().getCapacity()) clt.getStation().startFullTimer();
                     }
                     catch (Exception e)

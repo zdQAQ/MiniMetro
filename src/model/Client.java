@@ -57,7 +57,7 @@ public class Client {
                 addTransportedClient();
                 Controller.gameView.updateNbClient();
 
-                System.err.println("Transported client ");
+                // System.err.println("Transported client ");
             }
             else {
                 station.addClient(this);

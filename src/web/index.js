@@ -14,8 +14,11 @@ function keydown(event){
 }
 
 
-function chooseCity(city){
-    if(window.app){
-        app.chooseCity()
+function choose(city){
+    if(app){
+        document.getElementById('test').innerHTML = '打开方法' + app.chooseCity
+        app.chooseCity(city)
+    } else {
+        document.getElementById('test').innerHTML = 'app 加载失败'
     }
 }
