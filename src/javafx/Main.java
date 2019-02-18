@@ -31,6 +31,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.DbConnector;
 import netscape.javascript.JSObject;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ import java.util.logging.Logger;
 public class Main extends Application {
     static Stage stage;
     static Scene scene;
+    private DbConnector dbConnector;
 
     /**
      * @param args the command line arguments
@@ -64,6 +66,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+        	dbConnector = new DbConnector();
             stage = primaryStage;
             primaryStage.setTitle("地铁小游戏哦");
 

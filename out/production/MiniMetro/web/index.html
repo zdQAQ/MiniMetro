@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="index.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <title>拒绝岩壁</title>
+</head>
+
+<body style="text-align: center">
+    <h4>请输入姓名：<input type="text" id="nameInput"></h4>
+    <h4 id="welcome" style="display: none"></h4>
+    <h4 id="test"></h4>
+    <button onclick="choose('1')">test</button>
+    <div id="selectCity" style="display: none">
+        <h4>不同的城市有不同的地图，挑选一个你喜欢的城市开始修建地铁吧～</h4>
+        <div style="display:flex;justify-content:center">
+            <div style="margin:10px;cursor: pointer;" onclick="choose('bj')">
+                <img src="../img/bj.jpeg" width="240" height="200">
+                <p style="text-align:center">北京</p>
+            </div>
+            <div style="margin:10px;cursor: pointer;" onclick="choose('ld')">
+                <img src="../img/ld.jpeg" width="240" height="200">
+                <p style="text-align:center">伦敦</p>
+            </div>
+            <div style="margin:10px;cursor: pointer;" onclick="choose('bl')">
+                <img src="../img/bl.jpg" width="240" height="200">
+                <p style="text-align:center">巴黎</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
