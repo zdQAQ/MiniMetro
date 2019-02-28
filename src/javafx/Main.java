@@ -90,7 +90,7 @@ public class Main extends Application {
             webEngine.load(url);
 
             VBox vBox = new VBox(webView);
-            Scene scene = new Scene(vBox, 1200, 600);
+            Scene scene = new Scene(vBox, 960, 540);
 
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -111,7 +111,7 @@ public class Main extends Application {
                 e.printStackTrace();
             }
             Color colorScene = new Color((double) 240 / 255, (double) 240 / 255, (double) 240 / 255, 0.5);
-            Scene scene = new Scene(page, 1200, 600, colorScene);
+            Scene scene = new Scene(page, 960, 540, colorScene);
             stage.setScene(scene);
             stage.getIcons().add(new Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
             stage.setTitle("地铁小游戏");

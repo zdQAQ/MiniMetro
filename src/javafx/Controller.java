@@ -155,9 +155,9 @@ public class Controller implements Initializable {
         gameView = new GameView(group,this);
         game = new Game(gameView);
 
-        Station s1 = new Station(ShapeType.CIRCLE,new Position(200,200));
-        Station s3 = new Station(ShapeType.SQUARE,new Position(150,300));
-        Station s4 = new Station(ShapeType.TRIANGLE,new Position(400,400));
+        Station s1 = new Station(ShapeType.DIAMOND,new Position(200,200));
+        Station s3 = new Station(ShapeType.PENTAGON,new Position(150,300));
+        Station s4 = new Station(ShapeType.SECTOR,new Position(400,400));
 
         game.addToView(s1);
         game.addToView(s3);
@@ -196,7 +196,7 @@ public class Controller implements Initializable {
 
     public fxInformations getInfo()
     {
-        fxInformations info = new fxInformations(480,620);
+        fxInformations info = new fxInformations(365,540);
         info.getImageTrain().setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

@@ -17,6 +17,9 @@ public class fxClient {
             case TRIANGLE: shape = getLittleTriangle() ; break;
             case STAR: shape = getLittleStar(); break;
             case CROSS: shape = getLittleCross(); break;
+            case SECTOR: shape = getLittleSector();break;
+            case DIAMOND: shape = getLittleDiamond();break;
+            case PENTAGON: shape = getLittlePentagon();break;
             default: shape = null;
         }
 

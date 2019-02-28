@@ -58,6 +58,28 @@ public class fxStation {
                     cross.getPoints().set(i+1,y+tempY);
                 }
                 shape = cross; break;
+            case SECTOR:
+                Arc arc = getSector();
+                arc.setCenterX(s.getPosition().getX()); arc.setCenterY(s.getPosition().getY());
+                shape = arc; break;
+            case PENTAGON:
+                Polygon pentagon = getPentagon();
+                for(int i  = 0;i<pentagon.getPoints().size();i+=2) {
+                    double tempX = pentagon.getPoints().get(i) ;
+                    double tempY = pentagon.getPoints().get(i+1);
+                    pentagon.getPoints().set(i,x+tempX);
+                    pentagon.getPoints().set(i+1,y+tempY);
+                }
+                shape = pentagon; break;
+            case DIAMOND:
+                Polygon diamond = getDiamond();
+                for(int i  = 0;i<diamond.getPoints().size();i+=2) {
+                    double tempX = diamond.getPoints().get(i) ;
+                    double tempY = diamond.getPoints().get(i+1);
+                    diamond.getPoints().set(i,x+tempX);
+                    diamond.getPoints().set(i+1,y+tempY);
+                }
+                shape = diamond; break;
 
             default: shape = null;
         }

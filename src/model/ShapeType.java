@@ -9,5 +9,8 @@ public enum ShapeType {
     TRIANGLE,
     STAR,
     CROSS,
+    PENTAGON,
+    SECTOR,
+    DIAMOND
 }
 

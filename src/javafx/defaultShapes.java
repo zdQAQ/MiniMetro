@@ -37,6 +37,10 @@ public class defaultShapes {
             0,-10,
             0,0
     );
+    public static Arc SECTOR = new Arc();
+    public static Polygon PENTAGON = new Polygon();
+    public static Polygon DIAMOND = new Polygon();
+    
 
     public static void setPosition(Shape s, double x, double y) {
         s.setTranslateX(x);
@@ -47,8 +51,48 @@ public class defaultShapes {
         s.setTranslateX(p.getX());
         s.setTranslateY(p.getY());
     }
+    
+    public static Polygon getDiamond() {
+    	Polygon p = new Polygon(
+    			-15,0,
+    			0,15,
+    			15,0,
+    			0,-15
+    			);
+    	p.setFill(Color.WHITESMOKE);
+        p.setStrokeWidth(6);
+        p.setStroke(Color.BLACK);
+        return p;
+    }
 
+    public static Arc getSector() {
+    	Arc arc = new Arc();
+        arc.setCenterX(0.0f);
+        arc.setCenterY(0.0f);
+        arc.setRadiusX(25.0f);
+        arc.setRadiusY(25.0f);
+        arc.setStartAngle(45.0f);
+        arc.setLength(90.0f);
+        arc.setType(ArcType.ROUND);
+        arc.setFill(Color.WHITESMOKE);
+        arc.setStrokeWidth(6);
+        arc.setStroke(Color.BLACK);
+        return arc;
+    }
 
+    public static Polygon getPentagon() {
+    	Polygon p = new Polygon(
+    			-15,0,
+    			-7.5,15,
+    			7.5,15,
+    			15,0,
+    			0,-15
+    			);
+    	p.setFill(Color.WHITESMOKE);
+        p.setStrokeWidth(6);
+        p.setStroke(Color.BLACK);
+        return p;
+    }
 
     public static Polygon getSquare() {
         Polygon p = new Polygon(-15,-15,15,-15,15,15,-15,15);
@@ -129,6 +173,26 @@ public class defaultShapes {
 
 
     //Shape for client
+    public static Polygon getLittleDiamond() {
+        Polygon p = getDiamond();
+        p.setScaleX(littlesScale) ;
+        p.setScaleY(littlesScale);
+        return p;
+    }
+
+    public static Polygon getLittlePentagon() {
+        Polygon p = getPentagon();
+        p.setScaleX(littlesScale) ;
+        p.setScaleY(littlesScale);
+        return p;
+    }
+
+    public static Arc getLittleSector() {
+        Arc arc = getSector();
+        arc.setScaleX(littlesScale) ;
+        arc.setScaleY(littlesScale);
+        return arc;
+    }
 
     public static Polygon getLittleSquare() {
         Polygon r = getSquare();

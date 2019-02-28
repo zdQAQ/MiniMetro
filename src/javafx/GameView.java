@@ -64,9 +64,9 @@ public class GameView {
         group.getChildren().add(info);
 
         imageClient = new ImageView(new Image(this.getClass().getResource("/img/man.png").toString(),40,40,false,false));
-        imageClient.setX(980);
+        imageClient.setX(720);
         imageClient.setY(13);
-        nbClient = new Text(960, 43,"0");
+        nbClient = new Text(760, 43,"0");
         nbClient.setFill(Color.CHOCOLATE);
         nbClient.setFont(Font.font(null, FontWeight.BOLD,25));
 
@@ -74,7 +74,7 @@ public class GameView {
         group.getChildren().add(imageClient);
 
 
-        point = new Circle(600,575,4);
+        point = new Circle(480,520,4);
         point.setStroke(Color.GRAY);
         point.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -84,13 +84,13 @@ public class GameView {
         });
         group.getChildren().add(point);
 
-        clock = new fxClock(1150,35,16);
+        clock = new fxClock(920,35,16);
         group.getChildren().add(clock);
         Image imagePause = new Image(this.getClass().getResource("/img/pause.png").toString(),40,40,false,false);
         Image imagePlay = new Image(this.getClass().getResource("/img/play.png").toString(),40,40,false,false);
         ImageView image = new ImageView(imagePause);
         image.setVisible(false);
-        image.setX(1200);
+        image.setX(920);
         image.setY(65);
 
         image.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -117,7 +117,7 @@ public class GameView {
                     TranslateTransition translateTransition =
                             new TranslateTransition(Duration.millis(1000), image);
                     translateTransition.setFromX(0);
-                    translateTransition.setToX(-70);
+                    translateTransition.setToX(-20);
                     translateTransition.setCycleCount(1);
                     translateTransition.setAutoReverse(true);
                     translateTransition.play();
@@ -128,7 +128,7 @@ public class GameView {
 
                             TranslateTransition translateTransition =
                                     new TranslateTransition(Duration.millis(1000), image);
-                            translateTransition.setFromX(-70);
+                            translateTransition.setFromX(-20);
                             translateTransition.setToX(0);
                             translateTransition.setCycleCount(1);
                             translateTransition.setAutoReverse(true);
@@ -409,18 +409,18 @@ public class GameView {
 
     public void updateNbClient() {
         int newI = Game.getTransportedClientNb();
-        if(newI>=10)
-        {
-            nbClient.setX(948);
-        }
-        if(newI>=100)
-        {
-            nbClient.setX(936);
-        }
-        if(newI>=1000)
-        {
-            nbClient.setX(924);
-        }
+//        if(newI>=10)
+//        {
+//            nbClient.setX(758);
+//        }
+//        if(newI>=100)
+//        {
+//            nbClient.setX(758);
+//        }
+//        if(newI>=1000)
+//        {
+//            nbClient.setX(924);
+//        }
         nbClient.setText(Integer.toString(newI));
     }
 

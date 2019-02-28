@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
@@ -182,6 +183,29 @@ public class fxTrain extends Group {
                     cross.getPoints().set(i+1,dy+tempY);
                 }
                 shape = cross; break;
+            case SECTOR:
+                Arc arc = getSector();
+                arc.setCenterX(dx); arc.setCenterY(dy);
+                shape = arc; break;
+            case DIAMOND:
+                Polygon diamond = getDiamond();
+                for(int i  = 0;i<diamond.getPoints().size();i+=2) {
+                    double tempX = diamond.getPoints().get(i) ;
+                    double tempY = diamond.getPoints().get(i+1);
+                    diamond.getPoints().set(i,dx+tempX);
+                    diamond.getPoints().set(i+1,dy+tempY);
+                }
+                shape = diamond; break;
+            case PENTAGON:
+                Polygon pentagon = getPentagon();
+                for(int i  = 0;i<pentagon.getPoints().size();i+=2) {
+                    double tempX = pentagon.getPoints().get(i) ;
+                    double tempY = pentagon.getPoints().get(i+1);
+                    pentagon.getPoints().set(i,dx+tempX);
+                    pentagon.getPoints().set(i+1,dy+tempY);
+                }
+                shape = pentagon; break;
+
 
             default: shape = null;
         }
