@@ -32,6 +32,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.DbConnector;
+import model.Schedule;
 import netscape.javascript.JSObject;
 
 import java.io.IOException;
@@ -106,7 +107,10 @@ public class Main extends Application {
         public void chooseCity(String city) {
             Group page = null;
             try {
-                page = (Group) FXMLLoader.load(Main.class.getResource("mainPage.fxml"));
+            	FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
+                page = (Group) loader.load();
+                Controller controller = loader.getController();
+                controller.setCity(city);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -116,6 +120,7 @@ public class Main extends Application {
             stage.getIcons().add(new Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
             stage.setTitle("地铁小游戏");
             stage.setResizable(false);
+            
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {

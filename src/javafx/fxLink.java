@@ -14,13 +14,13 @@ public class fxLink extends Polyline {
 
     public fxLink(double x,double y,double middleX, double middleY, double x2,double y2) {
         super(x,y,middleX,middleY, x2, y2);
-        setStrokeWidth(10);
+        setStrokeWidth(6);
         setStrokeLineJoin(StrokeLineJoin.ROUND);
     }
 
     public fxLink(double x,double y, double x2,double y2) {
         super(x,y, x2, y2);
-        setStrokeWidth(10);
+        setStrokeWidth(6);
     }
 
 }

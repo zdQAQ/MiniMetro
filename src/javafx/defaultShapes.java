@@ -54,13 +54,13 @@ public class defaultShapes {
     
     public static Polygon getDiamond() {
     	Polygon p = new Polygon(
-    			-15,0,
-    			0,15,
-    			15,0,
-    			0,-15
+    			-9,0,
+    			0,9,
+    			9,0,
+    			0,-9
     			);
     	p.setFill(Color.WHITESMOKE);
-        p.setStrokeWidth(6);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         return p;
     }
@@ -69,52 +69,53 @@ public class defaultShapes {
     	Arc arc = new Arc();
         arc.setCenterX(0.0f);
         arc.setCenterY(0.0f);
-        arc.setRadiusX(25.0f);
-        arc.setRadiusY(25.0f);
+        arc.setRadiusX(5.0f);
+        arc.setRadiusY(5.0f);
         arc.setStartAngle(45.0f);
         arc.setLength(90.0f);
         arc.setType(ArcType.ROUND);
         arc.setFill(Color.WHITESMOKE);
-        arc.setStrokeWidth(6);
+        arc.setStrokeWidth(3);
         arc.setStroke(Color.BLACK);
+        arc.setTranslateY(10);
         return arc;
     }
 
     public static Polygon getPentagon() {
     	Polygon p = new Polygon(
-    			-15,0,
-    			-7.5,15,
-    			7.5,15,
-    			15,0,
-    			0,-15
+    			-9,0,
+    			-4.5,9,
+    			4.5,9,
+    			9,0,
+    			0,-9
     			);
     	p.setFill(Color.WHITESMOKE);
-        p.setStrokeWidth(6);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         return p;
     }
 
     public static Polygon getSquare() {
-        Polygon p = new Polygon(-15,-15,15,-15,15,15,-15,15);
+        Polygon p = new Polygon(-9,-9,9,-9,9,9,-9,9);
         p.setFill(Color.WHITESMOKE);
-        p.setStrokeWidth(6);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         return p;
     }
 
     public static Circle getCircle () {
-        Circle p = new Circle (15.0);
+        Circle p = new Circle (9.0);
         p.setFill(Color.WHITESMOKE);
-        p.setStrokeWidth(6);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         return p;
     }
 
     public static Polygon getTriangle () {
-        Polygon p = new Polygon(-20,17.335,0,-17.335,20,17.335);
+        Polygon p = new Polygon(-12.726,9,0,-9,12.726,9);
         p.setFill(Color.WHITESMOKE);
         p.setStrokeType(StrokeType.INSIDE);
-        p.setStrokeWidth(5);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         return p;
     }
@@ -136,7 +137,7 @@ public class defaultShapes {
 
         p.setFill(Color.WHITESMOKE);
         p.setStrokeType(StrokeType.INSIDE);
-        p.setStrokeWidth(4);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         p.setRotate(180);
 
@@ -165,7 +166,7 @@ public class defaultShapes {
         );
         p.setFill(Color.BLACK);
         p.setStrokeType(StrokeType.OUTSIDE);
-        p.setStrokeWidth(5);
+        p.setStrokeWidth(3);
         p.setStroke(Color.BLACK);
         p.setStrokeLineCap(StrokeLineCap.ROUND);
         return p;

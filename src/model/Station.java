@@ -46,7 +46,6 @@ public class Station {
         return distances [s.ordinal()];
     }
 
-
     public int[] getDistances () {
         return distances;
     }

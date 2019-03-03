@@ -91,6 +91,6 @@ public class Client {
 
 
     public String toString() {
-        return "Client: "+destinationType;
+        return "Client shown at: "+station+", go to:"+destinationType;
     }
 }

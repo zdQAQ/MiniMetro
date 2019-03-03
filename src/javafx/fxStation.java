@@ -14,7 +14,7 @@ public class fxStation {
 
     public fxStation(Station s) {
         double x = s.getPosition().getX(), y = s.getPosition().getY();
-        arcTimer=new Arc(x, y,33, 33, 0, 0);
+        arcTimer=new Arc(x, y,24, 24, 0, 0);
         arcTimeline = new Timeline();
         arcTimeline.setAutoReverse(true);
 

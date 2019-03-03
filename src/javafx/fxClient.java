@@ -7,6 +7,8 @@ import model.Station;
 
 import static javafx.defaultShapes.*;
 
+import java.util.List;
+
 public class fxClient {
     Shape shape;
 
@@ -25,8 +27,10 @@ public class fxClient {
 
         Station st = c.getStation();
         int index = st.getClientList().size();
-        Position p = new Position(st.getPosition().getX()+10+index*20,st.getPosition().getY()-10);
+        Position p = new Position(st.getPosition().getX()+10+index*12,st.getPosition().getY()-10);
         defaultShapes.setPosition(shape,p);
+
+        System.out.println("clientSize:"+index);
 
     }
 
@@ -36,7 +40,7 @@ public class fxClient {
 
 
     public void updatePos(Station st,int index) {
-        Position p = new Position(st.getPosition().getX()+10+index*20,st.getPosition().getY()-10);
+        Position p = new Position(st.getPosition().getX()+10+index*12,st.getPosition().getY()-10);
         defaultShapes.setPosition(shape,p);
     }
 }

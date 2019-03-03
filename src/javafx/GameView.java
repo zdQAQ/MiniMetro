@@ -576,6 +576,14 @@ public class GameView {
 
         group.getChildren().add(clients.get(c).shape);
     }
+    
+    public void put (List<Client> list) {
+    	for(Client c:list) {
+    		clients.put(c,new fxClient(c));
+
+            group.getChildren().add(clients.get(c).shape);
+    	}
+    }
 
     public fxTrain get(Train t) {
         return trains.get(t);

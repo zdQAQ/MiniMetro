@@ -2,6 +2,7 @@ package model;
 
 import javafx.scene.paint.Color;
 import javafx.application.Platform;
+import javafx.Controller;
 import javafx.GameView;
 
 import java.util.*;
@@ -11,6 +12,7 @@ import java.util.*;
  */
 public class Game {
     public GameView view;
+    public Schedule schedule;
     private static int trainSpeed = 1;
     protected static int vehicleCapacity = 8 ;
     private static int stationCapacity ;
@@ -33,7 +35,8 @@ public class Game {
     private static boolean gift = true;
     private Thread threadClient;
     private Thread threadStation;
-
+    
+    public ClientSchedule clientSchedule;
 
     private boolean clientReady,stationReady;
 
@@ -48,6 +51,14 @@ public class Game {
         linesColor.add(Color.RED); linesColor.add(Color.BLUE);linesColor.add(Color.ORANGE);
         giftColor = new ArrayList<>();  giftColor.add(Color.GREEN); giftColor.add(Color.AQUAMARINE); giftColor.add(Color.PURPLE);
         clock = new Clock();
+    }
+    
+    public List <Station> getStationList(){
+    	return stationList;
+    }
+    
+    public void setSchedule(Schedule s) {
+    	schedule =s;
     }
 
     public Color getColor() {
@@ -77,27 +88,21 @@ public class Game {
     public static int getTrainSpeed(){return trainSpeed;}
 
 
-    private void popRandomStation() {
+    private void popStation() {
         threadStation = new Thread() {
             public void run() {
                 while (!pause) {
                     try {
-                        Random random = new Random();
-                        Thread.sleep( 15000 + random.nextInt(20000));  //min 15 s, max 35 s between 2 new station
-
-                        Position pos ;
-                        boolean again = false;
-                        do {
-                            pos = new Position(maxShapeWidth/2 + random.nextInt((int) (width - maxShapeWidth)), maxShapeWidth/2 + random.nextInt((int) (height - maxShapeWidth))) ;
-                            again = (pos.getY()>530 && pos.getX()>460 && pos.getX()<740) || (pos.getY()<60 && pos.getX()>900); // check if pos is in clock or in informations
-                        } while (!isSpaced(pos) || view.intersectRiver(pos) || again);
-
-                        Station st = new Station(ShapeType.values()[random.nextInt(ShapeType.values().length)],pos);
-                        stationList.add(st);
-                        Platform.runLater(() -> addToView(st));
-                        // System.out.println("new station arrived");
+                    	Event event = schedule.findNext();
+                    	if (event != null) {
+                    		sleep(event.getTiming());
+                    		event.setFinished(true);
+                    		Station st = new Station(event.getStationType(),event.getPosition());
+//                    		stationList.add(st);
+                            Platform.runLater(() -> addToView(st));
+                    	}
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println("popStation:"+e);
                     }
                 }
             }
@@ -115,33 +120,43 @@ public class Game {
             public void run() {
                 while(!pause){
                     try {
-                        Random random = new Random();
-                        Thread.sleep(random.nextInt(5000));  //min 0 s, max 5 s of delay between 2 new clients
-                        Station randomStation = stationList.get(random.nextInt(stationList.size()));
-
-                        ShapeType randomType;
-                        types.remove(randomStation.getType());
-
-                        boolean exist = false;
-                        do {
-                            randomType = types.get(random.nextInt(types.size()));
-                            exist = false;
-                            for (int i = 0; i < stationList.size() && !exist; ++i) {
-
-                                exist=stationList.get(i).getType()==randomType;
-                            }
-                        }while(!exist);
-
-                        Client clt = new Client(randomStation,randomType);
-                        clientList.add(clt);
-                        types.add(randomStation.getType());
-                        Platform.runLater(() -> addToView(clt));
-                        // System.out.println("new client arrived");
-                        if(clt.getStation().getClientList().size()>=clt.getStation().getCapacity()) clt.getStation().startFullTimer();
+                    	sleep(833);
+//                    	System.out.println("clock:"+clock.getTime());
+//                    	// 乘客出现逻辑
+//                        List<Client> list = clientSchedule.computeProgress(clock);
+//                        System.out.println("list: "+list);
+//                        for(Client clt:list) {
+//                        	clientList.add(clt);
+//                        	System.out.println(clt);
+//                            Platform.runLater(() -> addToView(clt));
+//                        }
+//                        Random random = new Random();
+//                        Thread.sleep(random.nextInt(5000));  //min 0 s, max 5 s of delay between 2 new clients
+//                        Station randomStation = stationList.get(random.nextInt(stationList.size()));
+//
+//                        ShapeType randomType;
+//                        types.remove(randomStation.getType());
+//
+//                        boolean exist = false;
+//                        do {
+//                            randomType = types.get(random.nextInt(types.size()));
+//                            exist = false;
+//                            for (int i = 0; i < stationList.size() && !exist; ++i) {
+//
+//                                exist=stationList.get(i).getType()==randomType;
+//                            }
+//                        }while(!exist);
+//
+//                        Client clt = new Client(randomStation,randomType);
+//                        clientList.add(clt);
+//                        types.add(randomStation.getType());
+//                        Platform.runLater(() -> addToView(clt));
+//                        // System.out.println("new client arrived");
+//                        if(clt.getStation().getClientList().size()>=clt.getStation().getCapacity()) clt.getStation().startFullTimer();
                     }
                     catch (Exception e)
                     {
-                        System.out.println(e);
+                        System.out.println("popRandomClient:"+e);
                     }
                 }
             }
@@ -170,15 +185,23 @@ public class Game {
                             try {
                                 clock.incrementeTime();
                                 view.updateClock(clock.getTime(), clock.getDay());
-                                if (clock.getDay() == "星期一" && !gift) {
-                                    pop2RandomUpgrade();
-                                    gift = true;
-                                } else if (clock.getDay() != "星期一") {
-                                    gift = false;
-                                }
+                            	// 乘客出现逻辑
+                                List<Client> list = clientSchedule.computeProgress(clock);
+                                Platform.runLater(() -> addToView(list));
+//                                for(Client clt:list) {
+//                                	System.out.println(clt);
+//                                    Platform.runLater(() -> addToView(clt));
+//                                }
+//                                if (clock.getDay()=="星期一" && !gift) {
+//                                    pop2RandomUpgrade();
+//                                    gift = true;
+//                                } else if (clock.getDay()=="星期一") {
+//                                    gift = false;
+//                                }
+                                
                                 sleep(833);
                             } catch (Exception ex) {
-                                System.out.println(ex);
+                                System.out.println("timeGo:"+ex);
                             }
                         }
                     }
@@ -211,7 +234,7 @@ public class Game {
 
     public void pauseGame() {
     	pause=true;
-        threadClient.interrupt();
+//        threadClient.interrupt();
         threadStation.interrupt();
 
         view.pauseTrains();
@@ -225,8 +248,9 @@ public class Game {
 
             pauseLock.notifyAll(); // Unblocks thread
             view.resumeArc();
-            popRandomStation();
-            popRandomClient();
+            popStation();
+//            popRandomClient();
+            
         }
     }
     public static boolean getPause() {
@@ -259,6 +283,14 @@ public class Game {
         clientList.add(c);
         view.put(c);
     }
+    
+    public void addToView(List<Client> list) {
+    	for(Client c:list) {
+    		addToView(c);
+    	}
+//    	clientList.addAll(list);
+//    	view.put(list);
+    }
 
     public void computeAllDistances() {
         for( Station st : stationList) {
@@ -279,9 +311,9 @@ public class Game {
     }
 
     public void start() {
-        popRandomStation();
-        popRandomClient();
+        popStation();
         timeGo();
+//        popRandomClient();
     }
 
     public boolean isSpaced(Position p ) {
@@ -291,6 +323,14 @@ public class Game {
         }
         return true;
     }
+
+	public ClientSchedule getClientSchedule() {
+		return clientSchedule;
+	}
+
+	public void setClientSchedule(ClientSchedule c) {
+		clientSchedule = c;
+	}
 
     
     

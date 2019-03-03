@@ -44,6 +44,10 @@ public class Controller implements Initializable {
 
     public static Game game ;
     public static GameView gameView;
+    public static Schedule schedule;
+    public static ClientSchedule clientSchedule;
+    
+    public static String mapType;
 
     private fxClock clock;
 
@@ -54,52 +58,6 @@ public class Controller implements Initializable {
         group2 = group;
         group.getChildren().add(drawing);
         group.getChildren().add(drawingTrain);
-
-        // River :
-        Polyline river = new Polyline(
-                150,600,
-                150,450,
-                500,450,
-                500,330,
-                530,300,
-                700,300,
-                800,370,
-                900,300,
-                1000,300,
-                1000,420,
-                1150,420,
-                1150,300,
-                1200,300
-        );
-
-        Color colorRiver = new Color((double)200/255,(double)230/255,(double)250/255,0.5);
-        river.setStroke(colorRiver);
-        river.setStrokeLineJoin(StrokeLineJoin.ROUND);
-        river.setStrokeWidth(18);
-
-        Polyline borderRiver = new Polyline(
-                150,600,
-                150,450,
-                500,450,
-                500,330,
-                530,300,
-                700,300,
-                800,370,
-                900,300,
-                1000,300,
-                1000,420,
-                1150,420,
-                1150,300,
-                1200,300
-        );
-
-        Color colorBorder = new Color((double)100/255,(double)180/255,(double)220/255,0.5);
-        borderRiver.setStroke(colorBorder);
-        borderRiver.setStrokeLineJoin(StrokeLineJoin.ROUND);
-        borderRiver.setStrokeWidth(31);
-
-        group.getChildren().add(borderRiver);
-        group.getChildren().add(river);
 
         group.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
@@ -155,22 +113,39 @@ public class Controller implements Initializable {
         gameView = new GameView(group,this);
         game = new Game(gameView);
 
-        Station s1 = new Station(ShapeType.DIAMOND,new Position(200,200));
-        Station s3 = new Station(ShapeType.PENTAGON,new Position(150,300));
-        Station s4 = new Station(ShapeType.SECTOR,new Position(400,400));
+//        Station s1 = new Station(ShapeType.DIAMOND,new Position(200,200));
+//        Station s3 = new Station(ShapeType.PENTAGON,new Position(150,300));
+//        Station s4 = new Station(ShapeType.SECTOR,new Position(400,400));
+//
+//        game.addToView(s1);
+//        game.addToView(s3);
+//        game.addToView(s4);
 
-        game.addToView(s1);
-        game.addToView(s3);
-        game.addToView(s4);
+//        gameView.addRiver(borderRiver);
 
-        gameView.addRiver(borderRiver);
-
-        game.start();
+//        game.start();
 
 
     }
 
+    public void setCity(String city) {
+    	schedule = new Schedule(city,group,gameView,game);
+    	clientSchedule = new ClientSchedule(city,game,gameView);
+    	setMapType(city);
+    	game.setSchedule(schedule);
+    	game.setClientSchedule(clientSchedule);
+    	game.start();
+    }
 
+    
+    public void setMapType(String type) {
+    	mapType = type;
+    	
+    }
+    
+    public String getMapType() {
+    	return mapType;
+    }
 
     public void addTrainEvent (Shape shape, Train modelTr) {
 
@@ -527,7 +502,7 @@ public class Controller implements Initializable {
                     }
 
                     Polyline tempLink = new Polyline(x,y,middleX,middleY,x2,y2);
-                    tempLink.setStrokeWidth(10);
+                    tempLink.setStrokeWidth(6);
 
                     /* If the current link isn't intersecting other we can add it */
                     if(!gameView.intersects(tempLink)) {
@@ -780,9 +755,9 @@ public class Controller implements Initializable {
 
 
                     link1.setStroke(currentLine.getColor());
-                    link1.setStrokeWidth(10);
+                    link1.setStrokeWidth(6);
                     link2.setStroke(currentLine.getColor());
-                    link2.setStrokeWidth(10);
+                    link2.setStrokeWidth(6);
 
 
                     group.getChildren().remove(drawing2);
@@ -819,7 +794,7 @@ public class Controller implements Initializable {
         drawingTrain.setStroke(Color.LIGHTGREY);
         drawingTrain.setFill(Color.LIGHTGREY);
 
-        drawingTrain.setStrokeWidth(10);
+        drawingTrain.setStrokeWidth(6);
         drawingTrain.getPoints().setAll(x2-12, y2-25, x2, y2-30, x2+12, y2-25,x2+12,y2+25,x2-12,y2+25,x2-12, y2-25);
         group.getChildren().add(1, drawingTrain);
 
@@ -833,7 +808,7 @@ public class Controller implements Initializable {
         drawingWagon.setStroke(Color.LIGHTGREY);
         drawingWagon.setFill(Color.LIGHTGREY);
 
-        drawingWagon.setStrokeWidth(10);
+        drawingWagon.setStrokeWidth(6);
         drawingWagon.getPoints().setAll(x2-12, y2-25, x2+12, y2-25,x2+12,y2+25,x2-12,y2+25,x2-12, y2-25);
         group.getChildren().add(1, drawingWagon);
 
@@ -888,7 +863,7 @@ public class Controller implements Initializable {
         else
             drawing.setStroke(game.getDrawingColor());
 
-        drawing.setStrokeWidth(10);
+        drawing.setStrokeWidth(6);
         drawing.getPoints().setAll(x, y, middleX, middleY, x2, y2);
         group.getChildren().add(1, drawing);
         /* If the current link is intersecting other line or river without tunnel available, we make it transparent */
@@ -992,7 +967,7 @@ public class Controller implements Initializable {
         else
             drawing2.setStroke(game.getDrawingColor());
 
-        drawing2.setStrokeWidth(10);
+        drawing2.setStrokeWidth(6);
         drawing2.getPoints().setAll(x, y, middleX2, middleY2, x2, y2, middleX , middleY , a.getPosition().getX(),a.getPosition().getY());
         group.getChildren().add(1, drawing2);
         /* If the current link is intersecting other line or river without tunnel available, we make it transparent */
