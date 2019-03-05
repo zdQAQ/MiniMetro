@@ -112,60 +112,6 @@ public class Game {
 
 
 
-    private void popRandomClient() {
-
-        ArrayList <ShapeType> types = new ArrayList<>(Arrays.asList(ShapeType.values()));
-
-        threadClient = new Thread() {
-            public void run() {
-                while(!pause){
-                    try {
-                    	sleep(833);
-//                    	System.out.println("clock:"+clock.getTime());
-//                    	// 乘客出现逻辑
-//                        List<Client> list = clientSchedule.computeProgress(clock);
-//                        System.out.println("list: "+list);
-//                        for(Client clt:list) {
-//                        	clientList.add(clt);
-//                        	System.out.println(clt);
-//                            Platform.runLater(() -> addToView(clt));
-//                        }
-//                        Random random = new Random();
-//                        Thread.sleep(random.nextInt(5000));  //min 0 s, max 5 s of delay between 2 new clients
-//                        Station randomStation = stationList.get(random.nextInt(stationList.size()));
-//
-//                        ShapeType randomType;
-//                        types.remove(randomStation.getType());
-//
-//                        boolean exist = false;
-//                        do {
-//                            randomType = types.get(random.nextInt(types.size()));
-//                            exist = false;
-//                            for (int i = 0; i < stationList.size() && !exist; ++i) {
-//
-//                                exist=stationList.get(i).getType()==randomType;
-//                            }
-//                        }while(!exist);
-//
-//                        Client clt = new Client(randomStation,randomType);
-//                        clientList.add(clt);
-//                        types.add(randomStation.getType());
-//                        Platform.runLater(() -> addToView(clt));
-//                        // System.out.println("new client arrived");
-//                        if(clt.getStation().getClientList().size()>=clt.getStation().getCapacity()) clt.getStation().startFullTimer();
-                    }
-                    catch (Exception e)
-                    {
-                        System.out.println("popRandomClient:"+e);
-                    }
-                }
-            }
-        };
-        threadClient.start();
-    }
-
-
-
     private void timeGo() {
 
         Thread threadTime = new Thread() {
@@ -187,7 +133,8 @@ public class Game {
                                 view.updateClock(clock.getTime(), clock.getDay());
                             	// 乘客出现逻辑
                                 List<Client> list = clientSchedule.computeProgress(clock);
-                                Platform.runLater(() -> addToView(list));
+//                                Platform.runLater(() -> addToView(list));
+                                addToView(list);
 //                                for(Client clt:list) {
 //                                	System.out.println(clt);
 //                                    Platform.runLater(() -> addToView(clt));
@@ -234,7 +181,6 @@ public class Game {
 
     public void pauseGame() {
     	pause=true;
-//        threadClient.interrupt();
         threadStation.interrupt();
 
         view.pauseTrains();
@@ -249,7 +195,6 @@ public class Game {
             pauseLock.notifyAll(); // Unblocks thread
             view.resumeArc();
             popStation();
-//            popRandomClient();
             
         }
     }
@@ -285,10 +230,7 @@ public class Game {
     }
     
     public void addToView(List<Client> list) {
-    	for(Client c:list) {
-    		addToView(c);
-    	}
-//    	clientList.addAll(list);
+    	clientList.addAll(list);
 //    	view.put(list);
     }
 

@@ -69,8 +69,8 @@ public class defaultShapes {
     	Arc arc = new Arc();
         arc.setCenterX(0.0f);
         arc.setCenterY(0.0f);
-        arc.setRadiusX(5.0f);
-        arc.setRadiusY(5.0f);
+        arc.setRadiusX(15.0f);
+        arc.setRadiusY(15.0f);
         arc.setStartAngle(45.0f);
         arc.setLength(90.0f);
         arc.setType(ArcType.ROUND);

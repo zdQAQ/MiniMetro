@@ -30,9 +30,8 @@ public class fxClient {
         Position p = new Position(st.getPosition().getX()+10+index*12,st.getPosition().getY()-10);
         defaultShapes.setPosition(shape,p);
 
-        System.out.println("clientSize:"+index);
-
     }
+    
 
     public fxClient(Shape s) {
         shape = s;

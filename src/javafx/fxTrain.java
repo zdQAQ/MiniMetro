@@ -26,8 +26,8 @@ import static model.Position.angle;
 public class fxTrain extends Group {
 
     static  final double clientScale = 0.25 ;
-    static final double width = 50;
-    static final double height = 25 ;
+    static final double width = 25;
+    static final double height = 13 ;
     TranslateTransition move;
 
     double trainX,trainY;
@@ -63,7 +63,7 @@ public class fxTrain extends Group {
 //    }
 
     public void move (Position p, int speed) {
-        // System.err.println("x,y:"+p.toString());
+         System.err.println("x,y:"+p.toString());
         // System.err.println("trainX,trainY:("+trainX+","+trainY+")");
         if(speed==0) {
             System.err.println("SPEED == 0 : TRAIN STOP");
@@ -127,7 +127,7 @@ public class fxTrain extends Group {
 
         getChildren().add(s);
         //Controller.group2.getChildren().add(s);
-        System.err.println(s);
+//        System.err.println(s);
         trainX = tempX;
         trainY = tempY;
     }

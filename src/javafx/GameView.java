@@ -33,7 +33,7 @@ public class GameView {
 
     HashMap<Station,fxStation> stations;
     HashMap<Train,fxTrain> trains;
-    HashMap<Client,fxClient> clients;
+    static HashMap<Client,fxClient> clients;
     HashMap<model.Line,ArrayList<Shape>> lineLinks;
     HashMap<model.Line,Shape[]> lineEnds;
     List<Shape> links = new ArrayList<>();
@@ -52,7 +52,7 @@ public class GameView {
         trains = new HashMap<>();
         lineLinks = new HashMap<>();
         lineEnds = new HashMap<>();
-        clients = new HashMap<>();
+        setClients(new HashMap<>());
         group = g;
         controller = c;
 
@@ -572,16 +572,16 @@ public class GameView {
     }
 
     public void put(Client c) {
-        clients.put(c,new fxClient(c));
+//        clients.put(c,new fxClient(c));
 
-        group.getChildren().add(clients.get(c).shape);
+        group.getChildren().add(getClients().get(c).shape);
     }
     
     public void put (List<Client> list) {
     	for(Client c:list) {
-    		clients.put(c,new fxClient(c));
+    		getClients().put(c,new fxClient(c));
 
-            group.getChildren().add(clients.get(c).shape);
+            group.getChildren().add(getClients().get(c).shape);
     	}
     }
 
@@ -593,12 +593,11 @@ public class GameView {
         return stations.get(s);
     }
 
-    public fxClient get(Client c) { return clients.get(c);}
+    public fxClient get(Client c) { return getClients().get(c);}
 
     public  void remove(Client c) {
-        fxClient fxc = get(c);
-        group.getChildren().remove(fxc.shape);
-        clients.remove(c);
+        group.getChildren().remove(getClients().get(c).shape);
+        getClients().remove(c);
 
         Station st = c.getStation();
         for(int i =0; i< st.getClientList().size(); ++i) {
@@ -613,7 +612,7 @@ public class GameView {
         fxTrain fxTr = get(tr);
         Shape s = fxTr.addClient(client);
         fxClient fxclient = new fxClient(s);
-        clients.put(client,fxclient);
+        getClients().put(client,fxclient);
     }
 
     public void removeClientFromTrain(Train tr,Client client) {
@@ -690,4 +689,12 @@ public class GameView {
         return ends[0] == currentT;
 
     }
+
+	public HashMap<Client,fxClient> getClients() {
+		return clients;
+	}
+
+	public void setClients(HashMap<Client,fxClient> clients) {
+		GameView.clients = clients;
+	}
 }

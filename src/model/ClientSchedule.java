@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.GameView;
+import javafx.fxClient;
+import javafx.application.Platform;
 
 public class ClientSchedule {
 	static ClientProgress circle = new ClientAtStationEvent(ShapeType.CIRCLE).getToCrossProgress();
@@ -58,7 +60,7 @@ public class ClientSchedule {
 	    	
 	    	if(clock.getDay()=="星期六" || clock.getDay()=="星期日") {
 
-				System.out.println("clock.getDay()==\"星期六\":"+(clock.getDay()=="星期六" || clock.getDay()=="星期日"));
+//				System.out.println("clock.getDay()==\"星期六\":"+(clock.getDay()=="星期六" || clock.getDay()=="星期日"));
 	    		if(clock.getTime()==9) {
 	    			circle.addProgress(ShapeType.STAR, 0.25);
 	    			triangle.addProgress(ShapeType.PENTAGON, 0.25);
@@ -98,7 +100,12 @@ public class ClientSchedule {
 			if (circle.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.CIRCLE)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
+//						Platform.runLater(() -> game.addToView(c));
+//						game.addToView(c);
 					}
 				}
 				circle.minusProgress(shape);
@@ -106,7 +113,10 @@ public class ClientSchedule {
 			if (triangle.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.TRIANGLE)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				triangle.minusProgress(shape);
@@ -114,7 +124,10 @@ public class ClientSchedule {
 			if (sector.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.SECTOR)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				sector.minusProgress(shape);
@@ -122,7 +135,10 @@ public class ClientSchedule {
 			if (square.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.SQUARE)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				square.minusProgress(shape);
@@ -130,7 +146,10 @@ public class ClientSchedule {
 			if (diamond.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.DIAMOND)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				diamond.minusProgress(shape);
@@ -138,7 +157,10 @@ public class ClientSchedule {
 			if (pentagon.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.PENTAGON)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				pentagon.minusProgress(shape);
@@ -146,7 +168,10 @@ public class ClientSchedule {
 			if (cross.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.CROSS)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				cross.minusProgress(shape);
@@ -154,7 +179,10 @@ public class ClientSchedule {
 			if (star.getProgress(shape)>=1) {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.STAR)) {
-						resList.add(new Client(station,shape));
+						Client c = new Client(station,shape);
+						resList.add(c);
+						gameView.getClients().put(c,new fxClient(c));
+						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				star.minusProgress(shape);
