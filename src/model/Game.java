@@ -94,10 +94,11 @@ public class Game {
                 while (!pause) {
                     try {
                     	Event event = schedule.findNext();
+                    	sleep(event.getTiming());
                     	if (event != null) {
-                    		sleep(event.getTiming());
-                    		event.setFinished(true);
+                    		System.out.println(event);
                     		Station st = new Station(event.getStationType(),event.getPosition());
+//                    		System.out.println(st);
 //                    		stationList.add(st);
                             Platform.runLater(() -> addToView(st));
                     	}

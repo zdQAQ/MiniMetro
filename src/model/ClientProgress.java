@@ -24,7 +24,7 @@ public class ClientProgress {
 	public double getProgress(ShapeType shape) {
 		switch(shape) {
 			case CIRCLE:
-				return this.circleProgress;
+				return circleProgress;
 			case TRIANGLE:
 				return triangleProgress;
 			case SQUARE:

@@ -1,6 +1,7 @@
 package model;
 
 import javafx.Controller;
+import javafx.application.Platform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +150,6 @@ public class Train {
             Client cl = station.getClientList().get(i);
             if(cl.tryBoarding(this)) {
                 --i;
-                System.out.println(cl);
                 Controller.gameView.remove(cl);
                 Controller.gameView.addClientToTrain(this,cl);
             }

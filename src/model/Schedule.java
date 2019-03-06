@@ -150,6 +150,7 @@ public class Schedule {
 	public Event findNext() {
 		for (Event event : events) {
 			if(!event.isFinished()) {
+				event.setFinished(true);
 				return event;
 			}
 		}

@@ -92,10 +92,10 @@ public class Station {
 
     public String toString() {
         String s ="model.Station "+type+" at "+pos+" ";
-        for(ShapeType stype : ShapeType.values()) {
-            if(distances[stype.ordinal()]!=-1)
-                s+=stype+" : "+distances[stype.ordinal()]+" ";
-        }
+//        for(ShapeType stype : ShapeType.values()) {
+//            if(distances[stype.ordinal()]!=-1)
+//                s+=stype+" : "+distances[stype.ordinal()]+" ";
+//        }
         return s;
     }
 

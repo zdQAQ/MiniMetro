@@ -1,19 +1,27 @@
 package model;
 
 public class ClientAtStationEvent {
-	static ClientProgress circleProgress = new ClientProgress();
-	static ClientProgress triangleProgress = new ClientProgress();
-	static ClientProgress squareProgress = new ClientProgress();
-	static ClientProgress pentagonProgress = new ClientProgress();
-	static ClientProgress starProgress = new ClientProgress();
-	static ClientProgress sectorProgress = new ClientProgress();
-	static ClientProgress diamondProgress = new ClientProgress();
-	static ClientProgress crossProgress = new ClientProgress();
+	private ClientProgress circleProgress = new ClientProgress();
+	private ClientProgress triangleProgress = new ClientProgress();
+	private ClientProgress squareProgress = new ClientProgress();
+	private ClientProgress pentagonProgress = new ClientProgress();
+	private ClientProgress starProgress = new ClientProgress();
+	private ClientProgress sectorProgress = new ClientProgress();
+	private ClientProgress diamondProgress = new ClientProgress();
+	private ClientProgress crossProgress = new ClientProgress();
 	
 	static ShapeType station ;
 	
 	public ClientAtStationEvent(ShapeType s) {
 		station = s;
+		circleProgress = new ClientProgress();
+		triangleProgress = new ClientProgress();
+		squareProgress = new ClientProgress();
+		pentagonProgress = new ClientProgress();
+		starProgress = new ClientProgress();
+		sectorProgress = new ClientProgress();
+		diamondProgress = new ClientProgress();
+		crossProgress = new ClientProgress();
 	}
 	
 	public ClientProgress getToCircleProgress() {

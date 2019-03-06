@@ -45,4 +45,8 @@ public class Event {
 		this.position = position;
 	}
 	
+	public String toString() {
+        return "event position:"+position.getX()+","+position.getY();
+    }
+	
 }

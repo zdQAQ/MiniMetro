@@ -597,6 +597,7 @@ public class GameView {
 
     public  void remove(Client c) {
         group.getChildren().remove(getClients().get(c).shape);
+//        System.out.println(Controller.game.getStationList().size());
         getClients().remove(c);
 
         Station st = c.getStation();
@@ -666,7 +667,6 @@ public class GameView {
     }
 
     public void move(Train train) {
-        System.out.println(train.getNextPointIndex());
         fxTrain fxTrain = get(train);
         fxTrain.move(train.getLine().getPath().get(train.getNextPointIndex()), Game.getTrainSpeed());
     }

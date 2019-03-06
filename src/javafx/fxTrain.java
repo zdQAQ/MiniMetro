@@ -63,7 +63,6 @@ public class fxTrain extends Group {
 //    }
 
     public void move (Position p, int speed) {
-         System.err.println("x,y:"+p.toString());
         // System.err.println("trainX,trainY:("+trainX+","+trainY+")");
         if(speed==0) {
             System.err.println("SPEED == 0 : TRAIN STOP");
