@@ -138,8 +138,6 @@ public class Schedule {
 	        
 	        gameview.addRiver(borderRiver);
 	        
-	        game.start();
-	        
 		} else if (type.equals("london")) {
 			
 		} else if (type.equals("paris")) {

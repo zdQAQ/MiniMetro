@@ -89,7 +89,7 @@ public class Game {
 
 
     private void popStation() {
-        threadStation = new Thread() {
+        threadStation = new Thread("print") {
             public void run() {
                 while (!pause) {
                     try {
@@ -98,8 +98,6 @@ public class Game {
                     	if (event != null) {
                     		System.out.println(event);
                     		Station st = new Station(event.getStationType(),event.getPosition());
-//                    		System.out.println(st);
-//                    		stationList.add(st);
                             Platform.runLater(() -> addToView(st));
                     	}
                     } catch (Exception e) {

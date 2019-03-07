@@ -8,14 +8,14 @@ import javafx.fxClient;
 import javafx.application.Platform;
 
 public class ClientSchedule {
-	static ClientProgress circle = new ClientAtStationEvent(ShapeType.CIRCLE).getToCrossProgress();
-	static ClientProgress triangle = new ClientAtStationEvent(ShapeType.TRIANGLE).getToTriangleProgress();
-	static ClientProgress star = new ClientAtStationEvent(ShapeType.STAR).getToStarProgress();
-	static ClientProgress cross = new ClientAtStationEvent(ShapeType.CROSS).getToCrossProgress();
-	static ClientProgress square = new ClientAtStationEvent(ShapeType.SQUARE).getToSquareProgress();
-	static ClientProgress pentagon = new ClientAtStationEvent(ShapeType.PENTAGON).getToPentagonProgress();
-	static ClientProgress diamond = new ClientAtStationEvent(ShapeType.DIAMOND).getToDiamondProgress();
-	static ClientProgress sector = new ClientAtStationEvent(ShapeType.SECTOR).getToSectorProgress();
+	static ClientProgress circle = new ClientProgress();
+	static ClientProgress triangle = new ClientProgress();
+	static ClientProgress star = new ClientProgress();
+	static ClientProgress cross = new ClientProgress();
+	static ClientProgress square = new ClientProgress();
+	static ClientProgress pentagon = new ClientProgress();
+	static ClientProgress diamond = new ClientProgress();
+	static ClientProgress sector = new ClientProgress();
 	
 	static String city;
 	

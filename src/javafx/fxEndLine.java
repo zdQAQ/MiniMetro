@@ -17,7 +17,7 @@ public class fxEndLine extends Polyline {
     }
 
     public fxEndLine(Station modelSt,double middleX,double middleY) {
-        super(0,0, 0,40, -15,40, 0,40, 15,40);
+        super(0,0, 0,20, -12,20, 0,20, 12,20);
         setStrokeWidth(6);
         setStrokeLineCap(StrokeLineCap.ROUND);
         setStrokeLineJoin(StrokeLineJoin.ROUND);
