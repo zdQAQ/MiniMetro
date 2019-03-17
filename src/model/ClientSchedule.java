@@ -40,6 +40,7 @@ public class ClientSchedule {
 	public List<Client> computeProgress(Clock clock) {
 		List<Client> resList = new ArrayList<>();
 		if (round == 0) {
+			// 第一阶段
 			if(clock.getTime() == 10) {
 	    		circle.addProgress(ShapeType.CROSS,0.25);
 	    	} else if (clock.getTime() == 16) {
@@ -92,6 +93,25 @@ public class ClientSchedule {
 	    			sector.addProgress(ShapeType.CIRCLE, 0.4);
 	    		}
 	    	} 
+		} else if (round == 1) {
+			//第二阶段第一回合
+		} else if (round == 2) {
+			// 第二阶段第二回合
+			Game.getInventory().setInventory(3, 0, 3, 0, 0);
+		} else if (round == 3) {
+			// 第二阶段第三回合
+		} else if (round == 4) {
+			// 第二阶段第四回合
+		} else if (round == 5) {
+			// 第二阶段第五回合
+		} else if(round == 6) {
+			// 第三阶段第一回合
+		} else if (round == 7) {
+			// 第三阶段第二回合
+		} else if (round == 8) {
+			// 第四阶段第一回合
+		} else if (round == 9) {
+			// 第四阶段第二回合
 		}
 
 		for(ShapeType shape:ShapeType.values()){
