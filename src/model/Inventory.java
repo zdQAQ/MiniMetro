@@ -1,11 +1,13 @@
 package model;
 
+import javafx.Controller;
+
 public class Inventory {
-    private  int lineNb ;
-    private int tunnelNb ;
-    private int wagonNb ;
-    private int trainNb ;
-    private int stationNb;
+    private  int lineNb = 0 ;
+    private int tunnelNb = 0 ;
+    private int wagonNb = 0 ;
+    private int trainNb = 0 ;
+    private int stationNb = 0;
 
     public Inventory () {
 

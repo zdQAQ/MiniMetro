@@ -412,6 +412,7 @@ public class GameView {
             public void run() {
                 Stage stage = new Stage();
                 try {
+                	Controller.game.pauseGame();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("新的一周");
                     alert.setHeaderText("欢迎来到新的一周！ 你收到了一个新的机车。")  ;
@@ -423,13 +424,14 @@ public class GameView {
                     ButtonType buttonTypeTwo = new ButtonType("车厢");
                     ButtonType buttonTypeThree = new ButtonType("车头");
                     ButtonType buttonTypeFour = new ButtonType("隧道");
+                    ButtonType buttonTypeFive = new ButtonType("枢纽");
 
                     ArrayList<ButtonType> list = new ArrayList<ButtonType>();
                     list.add(buttonTypeOne);
                     list.add(buttonTypeTwo);
                     list.add(buttonTypeThree);
                     list.add(buttonTypeFour);
-
+                    list.add(buttonTypeFive);
 
                     alert.getButtonTypes().setAll(list.get(gift1),list.get(gift2));
 
@@ -448,12 +450,12 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeFour) {
-                        Game.getInventory().addTunnelNb(1);
+                        Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
                     }
 
                     //Game.resumeGame();
-                    controller.game.resumeGame();
+                    Controller.game.resumeGame();
                     seeInfo();
 
                 } catch (Exception e) {

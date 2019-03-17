@@ -132,6 +132,7 @@ public class Controller implements Initializable {
         gameView = new GameView(group,this);
         gameView.setRound(round);
         game = new Game(gameView,3,0,3,3,0);
+        getInfo().setInformations(3,0,3,3,0);
         
     	schedule = new Schedule(round,group,gameView,game);
     	clientSchedule = new ClientSchedule(round,game,gameView);
@@ -146,6 +147,7 @@ public class Controller implements Initializable {
         gameView = new GameView(g,this);
         gameView.setRound(round);
         game = new Game(gameView,3,0,3,3,0);
+        getInfo().setInformations(3,0,3,3,0);
         
     	schedule = new Schedule(round,g,gameView,game);
     	clientSchedule = new ClientSchedule(round,game,gameView);
@@ -188,7 +190,7 @@ public class Controller implements Initializable {
 
     public fxInformations getInfo()
     {
-        fxInformations info = new fxInformations(305,540,Integer.toString(Game.getInventory().getTrainNb()),Integer.toString(Game.getInventory().getWagonNb()),Integer.toString(Game.getInventory().getLineNb()),Integer.toString(Game.getInventory().getTunnelNb()),Integer.toString(Game.getInventory().getStationNb()));
+        fxInformations info = new fxInformations(305,540,"3","0","3","3","0");
         info.getImageTrain().setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

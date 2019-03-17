@@ -133,18 +133,7 @@ public class Game {
                                 view.updateClock(clock.getTime(), clock.getDay());
                             	// 乘客出现逻辑
                                 List<Client> list = clientSchedule.computeProgress(clock);
-//                                Platform.runLater(() -> addToView(list));
                                 addToView(list);
-//                                for(Client clt:list) {
-//                                	System.out.println(clt);
-//                                    Platform.runLater(() -> addToView(clt));
-//                                }
-//                                if (clock.getDay()=="星期一" && !gift) {
-//                                    pop2RandomUpgrade();
-//                                    gift = true;
-//                                } else if (clock.getDay()=="星期一") {
-//                                    gift = false;
-//                                }
                                 
                                 sleep(833);
                             } catch (Exception ex) {
@@ -158,25 +147,46 @@ public class Game {
     }
     
     
-    public void pop2RandomUpgrade() {
-        Random random = new Random();
-
-        pauseGame();
-        int n1,n2;
-        if(giftColor.size() != 0) {
-            n1 = random.nextInt(4);
-            do {
-                n2 = random.nextInt(4);
-            } while (n2 == n1);
-            view.setGift(n1, n2);
-        }
-        else {
-            n1 = random.nextInt(3) + 1;
-            do {
-                n2 = random.nextInt(3) +1;
-            } while (n2 == n1);
-            view.setGift(n1, n2);
-        }
+    public void setGift() {
+    	// setGift的参数 资源 1表示路线 2车厢 3车头 4隧道 5枢纽
+    	if(view.getRound() == 0) {
+    		//第一阶段给资源
+    		if (transportedClientNb == 50) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 120) {
+    			view.setGift(3, 4);
+    		} else if (transportedClientNb == 240) {
+    			view.setGift(3, 1);
+    		} else if (transportedClientNb == 400) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 600) {
+    			view.setGift(3, 1);
+    		} else if (transportedClientNb == 800) {
+    			view.setGift(3, 4);
+    		} else if (transportedClientNb == 1000) {
+    			view.setGift(3, 5);
+    		} else if (transportedClientNb == 1200) {
+    			view.setGift(3, 1);
+    		} else if (transportedClientNb == 1400) {
+    			view.setGift(3, 4);
+    		} else if (transportedClientNb == 1600) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 1800) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 2000) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 2100) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 2300) {
+    			view.setGift(3, 2);
+    		} else if (transportedClientNb == 2400) {
+    			view.setGift(3, 2);
+    		}
+    	} else if (view.getRound() == 6) {
+    		//第三阶段第一回合给资源
+    	} else if (view.getRound() == 7) {
+    		//第三阶段第二回合给资源
+    	}
     }
 
     public void pauseGame() {

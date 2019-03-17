@@ -81,6 +81,14 @@ public class fxInformations extends Group {
         getChildren().add(imageStation);
 
     }
+    
+    public void setInformations(int train,int wagon,int line,int tunnel,  int station){
+    	setNbLine(line);
+    	setNbTunnel(tunnel);
+    	setNbTrain(train);
+    	setNbWagon(wagon);
+    	setNbStation(station);
+    }
 
     public void setNbTunnel(int i)
     {
