@@ -40,13 +40,13 @@ public class Game {
 
     private boolean clientReady,stationReady;
 
-    public Game(GameView gameView) {
+    public Game(GameView gameView,int train,int wagon,int line,int tunnel,int station) {
         view = gameView;
         trainList = new ArrayList<>();
         clientList = new ArrayList<>();
         lineList = new ArrayList<>();
         stationList = new ArrayList<>();
-        inventory = new Inventory(3,3,0,3,0);
+        inventory = new Inventory(train,wagon,line,tunnel,station);
         linesColor  = new ArrayList<>();
         linesColor.add(Color.RED); linesColor.add(Color.BLUE);linesColor.add(Color.ORANGE);
         giftColor = new ArrayList<>();  giftColor.add(Color.GREEN); giftColor.add(Color.AQUAMARINE); giftColor.add(Color.PURPLE);
@@ -89,7 +89,7 @@ public class Game {
 
 
     private void popStation() {
-        threadStation = new Thread("print") {
+        threadStation = new Thread("popStation") {
             public void run() {
                 while (!pause) {
                     try {
@@ -101,7 +101,8 @@ public class Game {
                             Platform.runLater(() -> addToView(st));
                     	}
                     } catch (Exception e) {
-                        System.out.println("popStation:"+e);
+//                        System.out.println("popStation:"+e);
+//                        this.interrupt();
                     }
                 }
             }
@@ -113,7 +114,7 @@ public class Game {
 
     private void timeGo() {
 
-        Thread threadTime = new Thread() {
+        Thread threadTime = new Thread("timeGo") {
             public void run() {
                     while (true) {
                         synchronized (pauseLock) {

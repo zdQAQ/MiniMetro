@@ -5,18 +5,26 @@ public class Inventory {
     private int tunnelNb ;
     private int wagonNb ;
     private int trainNb ;
-    private int interchangeNb;
+    private int stationNb;
 
     public Inventory () {
 
     }
 
-    public Inventory (int line,int tunnel, int wagon, int train,int inter) {
+    public Inventory (int train,int wagon,int line,int tunnel,  int station) {
         lineNb = line;
         tunnelNb = tunnel;
         wagonNb = wagon;
         trainNb = train;
-        interchangeNb = inter;
+        stationNb = station;
+    }
+
+    public void setInventory(int train,int wagon,int line,int tunnel,  int station){
+        lineNb = line;
+        tunnelNb = tunnel;
+        wagonNb = wagon;
+        trainNb = train;
+        stationNb = station;
     }
 
     public int getTunnelNb()
@@ -66,6 +74,21 @@ public class Inventory {
     {
         ++wagonNb;
     }
+    
+    public int getStationNb()
+    {
+        return stationNb;
+    }
+
+    public void subStationNb(int t)
+    {
+        --stationNb;
+    }
+
+    public void addStationNb()
+    {
+        ++stationNb;
+    }
 
 
 
@@ -84,12 +107,4 @@ public class Inventory {
         ++trainNb;
     }
 
-
-    public int getInterchangeNb() {
-        return interchangeNb;
-    }
-
-    public void setInterchangeNb(int interchangeNb) {
-        this.interchangeNb = interchangeNb;
-    }
 }

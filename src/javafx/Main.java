@@ -32,6 +32,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.DbConnector;
+import model.Game;
 import model.Schedule;
 import netscape.javascript.JSObject;
 
@@ -62,6 +63,11 @@ public class Main extends Application {
 
         System.exit(0);
 
+    }
+    
+    public static void proceed(int round) {
+//    	stage.close();
+		Platform.runLater(()->new Main().chooseCity(stage,round));
     }
 
     @Override
@@ -100,17 +106,43 @@ public class Main extends Application {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public void chooseCity(Stage primaryStage,int round) {
+    	stage = primaryStage;
+        Group page = new Group();
+        try {
+        	FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
+            page = (Group) loader.load();
+            Controller controller = loader.getController();
+            controller.setRound(round,page);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        Color colorScene = new Color((double) 240 / 255, (double) 240 / 255, (double) 240 / 255, 0.5);
+        Scene scene = new Scene(page, 960, 540, colorScene);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                System.exit(0);
+                Platform.exit();
+            }
+        });
+    }
 
     // JavaScript interface object
     public class JavaApp {
 
-        public void chooseCity(String city) {
+        public void chooseCity(int round) {
             Group page = null;
             try {
             	FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
                 page = (Group) loader.load();
                 Controller controller = loader.getController();
-                controller.setCity(city);
+                controller.setRound(round);
             } catch (IOException e) {
                 e.printStackTrace();
             }

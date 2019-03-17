@@ -17,7 +17,7 @@ public class ClientSchedule {
 	static ClientProgress diamond = new ClientProgress();
 	static ClientProgress sector = new ClientProgress();
 	
-	static String city;
+	static int round;
 	
 	static Game game;
 	static GameView gameView;
@@ -27,19 +27,19 @@ public class ClientSchedule {
 //		clock = c;
 //	}
 	
-	public void setCity(String c) {
-		city = c;
+	public void setCity(int c) {
+		round = c;
 	}
 
-	public ClientSchedule(String c,Game g,GameView gv) {
-		city = c;
+	public ClientSchedule(int c,Game g,GameView gv) {
+		round = c;
 		game = g;
 		gameView = gv;
 	}
 	
 	public List<Client> computeProgress(Clock clock) {
 		List<Client> resList = new ArrayList<>();
-		if (city.equals("beijing")) {
+		if (round == 0) {
 			if(clock.getTime() == 10) {
 	    		circle.addProgress(ShapeType.CROSS,0.25);
 	    	} else if (clock.getTime() == 16) {
@@ -59,8 +59,6 @@ public class ClientSchedule {
 	    	}
 	    	
 	    	if(clock.getDay()=="星期六" || clock.getDay()=="星期日") {
-
-//				System.out.println("clock.getDay()==\"星期六\":"+(clock.getDay()=="星期六" || clock.getDay()=="星期日"));
 	    		if(clock.getTime()==9) {
 	    			circle.addProgress(ShapeType.STAR, 0.25);
 	    			triangle.addProgress(ShapeType.PENTAGON, 0.25);

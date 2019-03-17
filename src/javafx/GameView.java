@@ -1,25 +1,37 @@
 package javafx;
 
+import javafx.Main.JavaApp;
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 import model.*;
 import model.Line;
+import netscape.javascript.JSObject;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,7 +56,9 @@ public class GameView {
     private fxInformations info;
     private Circle point;
     private ImageView imageClient;
+    private ImageView imgBook;
     private Text nbClient;
+    public static int round;
 
 
     public GameView(Group g,Controller c) {
@@ -62,6 +76,17 @@ public class GameView {
 
 
         group.getChildren().add(info);
+        
+        imgBook = new ImageView(new Image(this.getClass().getResource("/img/book.png").toString(),40,40,false,false));
+        imgBook.setX(20);
+        imgBook.setY(20);
+        
+        imgBook.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                showBook();
+            }
+        });
 
         imageClient = new ImageView(new Image(this.getClass().getResource("/img/man.png").toString(),40,40,false,false));
         imageClient.setX(720);
@@ -72,7 +97,7 @@ public class GameView {
 
         group.getChildren().add(nbClient);
         group.getChildren().add(imageClient);
-
+        group.getChildren().add(imgBook);
 
         point = new Circle(480,520,4);
         point.setStroke(Color.GRAY);
@@ -172,7 +197,7 @@ public class GameView {
                 if(arcTimer.lengthProperty().get()==360) {
                     System.out.println("End game");
                     Controller.game.pauseGame();
-                    endOfGame();
+//                    endOfGame();
 
                 }
 
@@ -201,6 +226,14 @@ public class GameView {
         stations.get(st).arcTimeline.playFromStart();
     }
 
+    public void setRound(int r){
+        round = r;
+    }
+
+    public int getRound(){
+        return round;
+    }
+
     public void pauseArc(){
         for(fxStation fxt: stations.values()){
             fxt.arcTimeline.pause();
@@ -217,11 +250,127 @@ public class GameView {
             clock.moveNeedle(hour);
             clock.setDay(dayName);
     }
+    
+    public void showBook() {
+    	Platform.runLater(new Runnable() {
+            public void run() {
+                try {
+                	Stage dialog = new Stage();
+                	WebView webView = new WebView();
+
+                    String url = Main.class.getResource("/web/book.html").toExternalForm();
+
+                    WebEngine webEngine = webView.getEngine();
+
+                    // process page loading
+//                    webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+//                        @Override
+//                        public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
+//                            if (newState == State.SUCCEEDED) {
+//                                JSObject win = (JSObject) webEngine.executeScript("window");
+//                                win.setMember("app", new Main().new JavaApp());
+//                            }
+//                        }
+//                    });
+
+                    webEngine.load(url);
+
+                    VBox vBox = new VBox(webView);
+                    
+                    Scene scene = new Scene(vBox, 540, 270);
+                	dialog.setScene(scene);
+                	dialog.show();
+                    
+                } catch (Exception e) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+            }
+
+        });
+    }
+    
+    public static void go2ndPart() {
+    	Platform.runLater(new Runnable() {
+            public void run() {
+                try {
+                	Controller.game.pauseGame();
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("第一回合结束");
+                    alert.setHeaderText("进入第二回合")  ;
+//                    alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " + clock.getNbDay() +" 天");
+//                    alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/lose.png").toString())));
+
+                    //ButtonType buttonTypeOne = new ButtonType("Recommencer");
+                    ButtonType buttonTypeTwo = new ButtonType("确定");
+
+                    alert.getButtonTypes().setAll(buttonTypeTwo);
+
+//                    Game.getInventory().addTrain();
+//                    updateTrainNb(Game.getInventory().getTrainNb());
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    /*
+                    if (result.get() == buttonTypeOne) {
+                        Controller.game.resumeGame();
+                        Main.restart();
+                        */
+                    if (result.get() == buttonTypeTwo) {
+                        Main.proceed(1);
+                    }
+                } catch (Exception e) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+            }
+
+        });
+    }
+    
+    public static void go3rdPart() {
+    	Platform.runLater(new Runnable() {
+            public void run() {
+                try {
+                	Controller.game.pauseGame();
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("第二回合第一关结束");
+                    alert.setHeaderText("进入第二回合第二关")  ;
+//                    alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " + clock.getNbDay() +" 天");
+//                    alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/lose.png").toString())));
+
+                    //ButtonType buttonTypeOne = new ButtonType("Recommencer");
+                    ButtonType buttonTypeTwo = new ButtonType("确定");
+
+                    alert.getButtonTypes().setAll(buttonTypeTwo);
+
+//                    Game.getInventory().addTrain();
+//                    updateTrainNb(Game.getInventory().getTrainNb());
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    /*
+                    if (result.get() == buttonTypeOne) {
+                        Controller.game.resumeGame();
+                        Main.restart();
+                        */
+                    if (result.get() == buttonTypeTwo) {
+                        Main.proceed(2);
+                    }
+                } catch (Exception e) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+            }
+
+        });
+    }
 
     public void endOfGame() {
         Platform.runLater(new Runnable() {
             public void run() {
-                Stage stage = new Stage();
                 try {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

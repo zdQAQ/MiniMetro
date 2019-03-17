@@ -3,24 +3,29 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.Controller;
 import javafx.GameView;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeLineJoin;
 
 public class Schedule {
-	static List <Event> events = new ArrayList<Event>() ;
+	public static List <Event> events = new ArrayList<Event>() ;
 	static Group group;
 	static GameView gameview;
 	static Game game;
 	
-	public Schedule(String type,Group g,GameView gv,Game game1) {
+	public Schedule(int type,Group g,GameView gv,Game game1) {
+		events = new ArrayList<Event>();
 		group = g;
 		gameview = gv;
 		game = game1;
 		System.out.println(type);
-		if(type.equals("beijing")) {
+		if(type == 0) {
 			// stations
 			events.add(new Event(0,ShapeType.SQUARE,new Position(250,270)));
 			events.add(new Event(0,ShapeType.CIRCLE,new Position(340,320)));
@@ -138,10 +143,102 @@ public class Schedule {
 	        
 	        gameview.addRiver(borderRiver);
 	        
-		} else if (type.equals("london")) {
+		} else if (type == 1) {
+			// 第二阶段第一回合
+			events.add(new Event(0,ShapeType.SQUARE,new Position(250,270)));
+			events.add(new Event(0,ShapeType.CIRCLE,new Position(340,320)));
+			events.add(new Event(0,ShapeType.TRIANGLE,new Position(250,350)));
 			
-		} else if (type.equals("paris")) {
+			// map
+						// River :
+				        Polyline river = new Polyline(
+				        		0,340,
+				                20,310,
+				                20,470,
+				                170,470,
+				                170,370,
+				                290,370,
+				                290,290,
+				                420,290,
+				                460,320,
+				                500,290,
+				                550,290,
+				                550,370,
+				                610,370,
+				                640,290,
+				                700,350,
+				                960,350
+				        );
+
+				        Color colorRiver = new Color((double)200/255,(double)230/255,(double)250/255,0.5);
+				        river.setStroke(colorRiver);
+				        river.setStrokeLineJoin(StrokeLineJoin.ROUND);
+				        river.setStrokeWidth(14);
+
+				        Polyline borderRiver = new Polyline(
+				                0,340,
+				                20,310,
+				                20,470,
+				                170,470,
+				                170,370,
+				                290,370,
+				                290,290,
+				                420,290,
+				                460,320,
+				                500,290,
+				                550,290,
+				                550,370,
+				                610,370,
+				                640,290,
+				                700,350,
+				                960,350
+				        );
+
+				        Color colorBorder = new Color((double)100/255,(double)180/255,(double)220/255,0.5);
+				        borderRiver.setStroke(colorBorder);
+				        borderRiver.setStrokeLineJoin(StrokeLineJoin.ROUND);
+				        borderRiver.setStrokeWidth(16);
+
+				        group.getChildren().add(borderRiver);
+				        group.getChildren().add(river);
+				        
+				        gameview.addRiver(borderRiver);
+				        
+				        Button btn = new Button("提交");
+				        
+				        btn.setStyle("-fx-background-color: #00ff00;-fx-font-size: 2em;");
+				        
+				        btn.setLayoutX(870);
+				        btn.setLayoutY(480);
+				        
+				        btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				            @Override
+				            public void handle(MouseEvent event) {
+				            	GameView.go3rdPart();
+				            }
+				        });
+				        
+				        group.getChildren().add(btn);
+				        
+				        Game.getInventory().setInventory(3, 0, 3, 0, 0);
 			
+		} else if (type == 2) {
+			// 第二阶段第二回合
+			Game.getInventory().setInventory(3, 0, 3, 0, 0);
+		} else if (type == 3) {
+			// 第二阶段第三回合
+		} else if (type == 4) {
+			// 第二阶段第四回合
+		} else if (type == 5) {
+			// 第二阶段第五回合
+		} else if(type == 6) {
+			// 第三阶段第一回合
+		} else if (type == 7) {
+			// 第三阶段第二回合
+		} else if (type == 8) {
+			// 第四阶段第一回合
+		} else if (type == 9) {
+			// 第四阶段第二回合
 		}
 	}
 	

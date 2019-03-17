@@ -34,7 +34,7 @@ public class Controller implements Initializable {
     Polygon drawingTrain = new Polygon(0,0,0,0,0,0,0,0,0,0,0,0);
     Polygon drawingWagon = new Polygon(0,0,0,0,0,0,0,0,0,0);
 
-    boolean stationPressed = false, TPressed = false , canRemove = false, isDrawing, wagonPressed =false, canConstruct = true, trainPressed =false;
+    boolean stationPressed = false, TPressed = false , canRemove = false, isDrawing, wagonPressed =false,hingePressed =false, canConstruct = true, trainPressed =false;
     Station currentStation,currentStation2;
 
     Shape currentT = null, currentLink, currentTrain ;
@@ -47,7 +47,7 @@ public class Controller implements Initializable {
     public static Schedule schedule;
     public static ClientSchedule clientSchedule;
     
-    public static String mapType;
+    public static int mapType;
 
     private fxClock clock;
 
@@ -110,8 +110,8 @@ public class Controller implements Initializable {
             }
         });
 
-        gameView = new GameView(group,this);
-        game = new Game(gameView);
+//        gameView = new GameView(group,this);
+//        game = new Game(gameView,3,0,3,3,0);
 
 //        Station s1 = new Station(ShapeType.DIAMOND,new Position(200,200));
 //        Station s3 = new Station(ShapeType.PENTAGON,new Position(150,300));
@@ -128,27 +128,44 @@ public class Controller implements Initializable {
 
     }
 
-    public void setCity(String city) {
-    	schedule = new Schedule(city,group,gameView,game);
-    	clientSchedule = new ClientSchedule(city,game,gameView);
-    	setMapType(city);
+    public void setRound(int round) {
+        gameView = new GameView(group,this);
+        gameView.setRound(round);
+        game = new Game(gameView,3,0,3,3,0);
+        
+    	schedule = new Schedule(round,group,gameView,game);
+    	clientSchedule = new ClientSchedule(round,game,gameView);
+    	setMapType(round);
     	game.setSchedule(schedule);
     	game.setClientSchedule(clientSchedule);
     	game.start();
     }
 
-    
-    public void setMapType(String type) {
-    	mapType = type;
-    	
+    public void setRound(int round,Group g) {
+    	group = g;
+        gameView = new GameView(g,this);
+        gameView.setRound(round);
+        game = new Game(gameView,3,0,3,3,0);
+        
+    	schedule = new Schedule(round,g,gameView,game);
+    	clientSchedule = new ClientSchedule(round,game,gameView);
+    	setMapType(round);
+    	game.setSchedule(schedule);
+    	game.setClientSchedule(clientSchedule);
+    	game.resumeGame();
+    	game.start();
     }
-    
-    public String getMapType() {
+
+
+    public void setMapType(int type) {
+    	mapType = type;
+    }
+
+    public int getMapType() {
     	return mapType;
     }
 
     public void addTrainEvent (Shape shape, Train modelTr) {
-
         shape.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -171,7 +188,7 @@ public class Controller implements Initializable {
 
     public fxInformations getInfo()
     {
-        fxInformations info = new fxInformations(365,540);
+        fxInformations info = new fxInformations(305,540,Integer.toString(Game.getInventory().getTrainNb()),Integer.toString(Game.getInventory().getWagonNb()),Integer.toString(Game.getInventory().getLineNb()),Integer.toString(Game.getInventory().getTunnelNb()),Integer.toString(Game.getInventory().getStationNb()));
         info.getImageTrain().setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -199,6 +216,21 @@ public class Controller implements Initializable {
             public void handle(MouseEvent event) {
                 if(Game.getInventory().getWagonNb()!=0)
                     wagonPressed = true;
+            }
+        });
+        
+        info.getImageStation().setOnDragDetected(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                info.getImageStation().startFullDrag();
+            }
+        });
+
+        info.getImageStation().setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(Game.getInventory().getStationNb()!=0)
+                	hingePressed = true;
             }
         });
         return info;

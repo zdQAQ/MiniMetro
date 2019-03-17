@@ -1,5 +1,6 @@
 package javafx;
 
+import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,7 +13,11 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 import model.Client;
+import model.Event;
+import model.Game;
 import model.Position;
+import model.Schedule;
+import model.Station;
 import model.Train;
 
 import static java.awt.geom.Point2D.distance;
@@ -29,6 +34,7 @@ public class fxTrain extends Group {
     static final double width = 25;
     static final double height = 13 ;
     TranslateTransition move;
+    TranslateTransition wagonAnimation;
 
     double trainX,trainY;
     Rectangle r;
@@ -71,29 +77,36 @@ public class fxTrain extends Group {
         double rotation = angle(p,new Position(trainX,trainY)),x = p.getX(), y = p.getY();
         setRotate(rotation);
         /* +100 to avoid bug with a duration equal to 0  with the translate transition */
-        double millis = 10*distance(trainX,trainY,x,y)+100;
+        double millis = 33.33*distance(trainX,trainY,x,y)+100;
         move = new TranslateTransition(new Duration(millis),this);
         move.setByX(x-trainX); move.setByY(y-trainY);
-        move.play();
+        
+        int nextPointIndex = train.getNextPointIndex();
+        
+        for(Event eve:Schedule.events) {
+        	if(eve.getPosition().getX()==trainX && eve.getPosition().getY()==trainY) {
+        		move.setDelay(new Duration(500));
+        		break;
+        	}
+        }
+            
+            move.play();
+            
+            move.setOnFinished(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if(nextPointIndex%2 == 0) {
+                        train.stopAtStation();
+                    }
+                    else {
+                        train.move();
+                    }
+                }
+            });
+
+        
         trainX = x;
         trainY = y;
-
-
-        int nextPointIndex = train.getNextPointIndex();
-
-
-
-        move.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(nextPointIndex%2 == 0) {
-                    train.stopAtStation();
-                }
-                else {
-                    train.move();
-                }
-            }
-        });
 
     }
 
