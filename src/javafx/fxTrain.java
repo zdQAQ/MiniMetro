@@ -77,7 +77,7 @@ public class fxTrain extends Group {
         double rotation = angle(p,new Position(trainX,trainY)),x = p.getX(), y = p.getY();
         setRotate(rotation);
         /* +100 to avoid bug with a duration equal to 0  with the translate transition */
-        double millis = 33.33*distance(trainX,trainY,x,y)+100;
+        double millis = 7*distance(trainX,trainY,x,y);
         move = new TranslateTransition(new Duration(millis),this);
         move.setByX(x-trainX); move.setByY(y-trainY);
         
@@ -85,7 +85,7 @@ public class fxTrain extends Group {
         
         for(Event eve:Schedule.events) {
         	if(eve.getPosition().getX()==trainX && eve.getPosition().getY()==trainY) {
-        		move.setDelay(new Duration(500));
+        		move.setDelay(new Duration(1000));
         		break;
         	}
         }
