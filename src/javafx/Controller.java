@@ -50,6 +50,7 @@ public class Controller implements Initializable {
     public static int mapType;
 
     private fxClock clock;
+    static fxInformations info;
 
     static Group group2;
 
@@ -129,10 +130,10 @@ public class Controller implements Initializable {
     }
 
     public void setRound(int round) {
+    	setInfo(3,1,3,3,0);
         gameView = new GameView(group,this);
         gameView.setRound(round);
-        game = new Game(gameView,3,0,3,3,0);
-        getInfo().setInformations(3,0,3,3,0);
+        game = new Game(gameView,3,1,3,3,0);
         
     	schedule = new Schedule(round,group,gameView,game);
     	clientSchedule = new ClientSchedule(round,game,gameView);
@@ -143,11 +144,11 @@ public class Controller implements Initializable {
     }
 
     public void setRound(int round,Group g) {
+    	setInfo(3,3,3,3,0);
     	group = g;
         gameView = new GameView(g,this);
         gameView.setRound(round);
-        game = new Game(gameView,3,0,3,3,0);
-        getInfo().setInformations(3,0,3,3,0);
+        game = new Game(gameView,3,3,3,3,0);
         
     	schedule = new Schedule(round,g,gameView,game);
     	clientSchedule = new ClientSchedule(round,game,gameView);
@@ -186,11 +187,13 @@ public class Controller implements Initializable {
         });
     }
 
+    public void setInfo(int train,int wagon,int line,int tunnel,  int station){
+        info= new fxInformations(305, 540, Integer.toString(train), Integer.toString(wagon), Integer.toString(line), Integer.toString(tunnel), Integer.toString(station));
+    }
 
 
     public fxInformations getInfo()
     {
-        fxInformations info = new fxInformations(305,540,"3","0","3","3","0");
         info.getImageTrain().setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -284,22 +287,15 @@ public class Controller implements Initializable {
                 }
                 else if(wagonPressed) {
                     if (line.getTrainList().size() != 0) {
-                        if (modelWagon != null) {
-
-                            //gameView.removeWagon(modelWagon);
-                            modelWagon.changeTrain(line.getTrainList().get(0));
-                            //gameView.put(modelWagon);
-                            modelWagon = null;
-
-                        } else if (modelWagon == null) {
-                            /*modelWagon = new Wagon(;
-                            line.getTrainList().get(0).addTrain(modelWagon);
-                            gameView.put(modelWagon);
-                            //modelWagon.move();
-                            modelWagon = null;
-                            Game.getInventory().subWagonNb(1);
-                            gameView.updateWagonNb(Game.getInventory().getWagonNb());*/
-                        }
+                    	modelTrain = new Train(0,line,true);
+                    	line.addTrain(modelTrain);
+                    	gameView.putWagon(modelTrain, true,line);
+                    	modelTrain.move();
+                    	if(Game.getPause())
+                            gameView.get(modelTrain).pause();
+                        modelTrain = null;
+                        Game.getInventory().subWagonNb();
+                        gameView.updateWagonNb(Game.getInventory().getWagonNb());
                         wagonPressed = false;
                     }
                 }

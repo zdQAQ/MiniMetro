@@ -95,7 +95,7 @@ public class fxClock extends Group {
         {
             this.dayName.setText(dayName);
             ++nbDay;
-            if(nbDay == 2 && GameView.round == 0) {
+            if(nbDay == 50 && GameView.round == 0) {
             	GameView.go2ndPart();
             }
         }

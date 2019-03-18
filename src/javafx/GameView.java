@@ -53,7 +53,7 @@ public class GameView {
     private Group group;
     private Controller controller;
     private fxClock clock;
-    private fxInformations info;
+    private static fxInformations info;
     private Circle point;
     private ImageView imageClient;
     private ImageView imgBook;
@@ -694,6 +694,13 @@ public class GameView {
         System.err.println("ADDED NODE");
     }
 
+    public void putWagon(Train t,Boolean isWagon,Line line){
+    	removeTrain(line.getTrainList().get(0));
+         trains.put(t,new fxTrain(t,isWagon));
+         group.getChildren().add(trains.get(t));
+         controller.addTrainEvent(trains.get(t).r,t);
+    }
+
     public void put(Station s) {
         stations.put(s,new fxStation(s));
         group.getChildren().add(stations.get(s).arcTimer);
@@ -776,8 +783,7 @@ public class GameView {
     public void removeTrain(Train tr) {
         fxTrain fxtr = get(tr);
         group.getChildren().remove(fxtr);
-        trains.remove(fxtr);
-        fxtr = null;
+        trains.remove(tr);
     }
 
 

@@ -67,7 +67,7 @@ public class Inventory {
         return wagonNb;
     }
 
-    public void subWagonNb(int t)
+    public void subWagonNb()
     {
         --wagonNb;
     }

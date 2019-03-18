@@ -59,6 +59,17 @@ public class fxTrain extends Group {
         getChildren().add(r);
         train = t;
     }
+    
+    public fxTrain(Train t,Boolean isWagon) {
+    	if(isWagon == true) {
+    		Position p = t.getLine().getPath().get(0);
+            trainX = p.getX(); trainY = p.getY();
+            r = new Rectangle(p.getX()-width,p.getY()-(height/2),width*2,height);
+            r.setFill(t.getLine().getColor());
+            getChildren().add(r);
+            train = t;
+    	}
+    }
 
 //    public fxTrain () {
 //        super();
