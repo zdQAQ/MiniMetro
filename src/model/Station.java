@@ -29,7 +29,7 @@ public class Station {
         lines = new ArrayList<>();
         distances[t.ordinal()]=0;
         clientList = new ArrayList<Client>();
-        capacity=8;//tmp
+        capacity=6;//tmp
 
     }
 

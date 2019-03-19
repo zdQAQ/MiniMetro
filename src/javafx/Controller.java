@@ -674,6 +674,12 @@ public class Controller implements Initializable {
         shape.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
             @Override
             public void handle(MouseDragEvent event) {
+            	if(hingePressed == true) {
+            		modelSt.setCapacity(20);
+            		Game.getInventory().subStationNb();
+            		getInfo().setNbStation(Game.getInventory().getStationNb());
+            		hingePressed = false;
+            	}
                 if(currentStation2 != null) {
 
                     if(currentLine.getStationList().contains(modelSt))

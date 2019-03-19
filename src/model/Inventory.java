@@ -82,7 +82,7 @@ public class Inventory {
         return stationNb;
     }
 
-    public void subStationNb(int t)
+    public void subStationNb()
     {
         --stationNb;
     }
