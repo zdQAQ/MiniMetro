@@ -31,14 +31,16 @@ import static model.Position.angle;
 public class fxTrain extends Group {
 
     static  final double clientScale = 0.25 ;
-    static final double width = 25;
-    static final double height = 13 ;
+    private double width = 25;
+    private double height = 13 ;
     TranslateTransition move;
     TranslateTransition wagonAnimation;
 
     double trainX,trainY;
     Rectangle r;
     Train train;
+    
+    private Boolean isWagon = false;
 
 
     public fxTrain(Train t) {
@@ -60,24 +62,20 @@ public class fxTrain extends Group {
         train = t;
     }
     
-    public fxTrain(Train t,Boolean isWagon) {
-    	if(isWagon == true) {
+    public fxTrain(Train t,Boolean wagon) {
+    	if(wagon == true) {
+    		this.isWagon = true;
+    		this.width = this.width*2;
+    		t.setCapacity(12);
     		Position p = t.getLine().getPath().get(0);
             trainX = p.getX(); trainY = p.getY();
-            r = new Rectangle(p.getX()-width,p.getY()-(height/2),width*2,height);
+            r = new Rectangle(p.getX()-width/2,p.getY()-(height/2),width,height);
             r.setFill(t.getLine().getColor());
             getChildren().add(r);
             train = t;
     	}
     }
 
-//    public fxTrain () {
-//        super();
-//
-//        getChildren().add(new Rectangle(250, 300, width, height));
-//        trainX = 250+width/2;
-//        trainY = 300+height/2;
-//    }
 
     public void move (Position p, int speed) {
         // System.err.println("trainX,trainY:("+trainX+","+trainY+")");
@@ -162,9 +160,15 @@ public class fxTrain extends Group {
 
         int index = this.getChildren().size() - 1;
         Rectangle r = (Rectangle) getChildren().get(0);
-
-        double dx = r.getX()+(width/8) + (index%4)*(width/4);
-        double dy = r.getY()+(height/4) + (index/4) *(height/2);
+        double dx = 0;
+        double dy = 0;
+        if (this.isWagon) {
+        	dx = r.getX()+(width/8) + (index%3)*(width/4);
+            dy = r.getY()+(height/4) + (index/3) *(height/2);
+        } else {
+        	dx = r.getX()+(width/8) + (index%4)*(width/4);
+            dy = r.getY()+(height/4) + (index/4) *(height/2);
+        }
 
         switch(cl.getType()) {
             case CIRCLE:

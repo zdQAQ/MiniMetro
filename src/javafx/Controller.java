@@ -33,6 +33,7 @@ public class Controller implements Initializable {
     Polyline drawing = new Polyline(0,0,0,0,0,0) , drawing2 = new Polyline(0,0,0,0,0,0,0,0,0,0) ;
     Polygon drawingTrain = new Polygon(0,0,0,0,0,0,0,0,0,0,0,0);
     Polygon drawingWagon = new Polygon(0,0,0,0,0,0,0,0,0,0);
+    Circle drawingHinge = new Circle(0,0,0);
 
     boolean stationPressed = false, TPressed = false , canRemove = false, isDrawing, wagonPressed =false,hingePressed =false, canConstruct = true, trainPressed =false;
     Station currentStation,currentStation2;
@@ -59,6 +60,7 @@ public class Controller implements Initializable {
         group2 = group;
         group.getChildren().add(drawing);
         group.getChildren().add(drawingTrain);
+        group.getChildren().add(drawingHinge);
 
         group.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
@@ -81,6 +83,12 @@ public class Controller implements Initializable {
                     y2 = event.getY();
                     displayWagonDrawing();
                 }
+                else if (hingePressed)
+                {
+                	x2 = event.getX();
+                    y2 = event.getY();
+                    displayHingeDrawing();
+                }
 
             }
         });
@@ -98,9 +106,11 @@ public class Controller implements Initializable {
                 stationPressed = false;
                 TPressed = false;
                 trainPressed=false;
+                hingePressed=false;
                 group.getChildren().remove(drawing);
                 group.getChildren().remove(drawingTrain);
                 group.getChildren().remove(drawingWagon);
+                group.getChildren().remove(drawingHinge);
                 if(currentTrain != null)
                     currentTrain.opacityProperty().set(1);
                 currentT = null;
@@ -130,10 +140,10 @@ public class Controller implements Initializable {
     }
 
     public void setRound(int round) {
-    	setInfo(3,1,3,3,0);
+    	setInfo(3,1,3,3,1);
         gameView = new GameView(group,this);
         gameView.setRound(round);
-        game = new Game(gameView,3,1,3,3,0);
+        game = new Game(gameView,3,1,3,3,1);
         
     	schedule = new Schedule(round,group,gameView,game);
     	clientSchedule = new ClientSchedule(round,game,gameView);
@@ -679,6 +689,7 @@ public class Controller implements Initializable {
             		Game.getInventory().subStationNb();
             		getInfo().setNbStation(Game.getInventory().getStationNb());
             		hingePressed = false;
+            		// modelSt.startFullTimer();
             	}
                 if(currentStation2 != null) {
 
@@ -848,6 +859,17 @@ public class Controller implements Initializable {
         drawingWagon.getPoints().setAll(x2-12, y2-25, x2+12, y2-25,x2+12,y2+25,x2-12,y2+25,x2-12, y2-25);
         group.getChildren().add(1, drawingWagon);
 
+    }
+    
+    public void displayHingeDrawing() {
+    	group.getChildren().remove(drawingWagon);
+        drawingHinge.setStroke(Color.LIGHTGREY);
+        drawingHinge.setFill(Color.LIGHTGREY);
+
+        drawingHinge.setCenterX(x2);
+        drawingHinge.setCenterY(y2);
+        drawingHinge.setRadius(30);
+        group.getChildren().add(1, drawingWagon);
     }
 
 

@@ -16,6 +16,7 @@ public class Train {
     //private int numberWagon ;
     private Line line ;
     private boolean direction ;
+    private int capacity;
 
 
     public Train (int index, Line l, boolean dir) {
@@ -24,19 +25,19 @@ public class Train {
         direction = dir;
         clientList = new ArrayList<>();
         wagonList = new ArrayList<>();
-        //numberWagon = 0;
+        capacity = 6;
     }
 
     public boolean isFull() {
-        //	return clientList.size()==Game.trainCapacity*(numberWagon+1) ;
-
-        if(clientList.size()<Game.vehicleCapacity)
+        if(clientList.size()<this.capacity){
             return false;
-        //Research a not full Wagon
-        for (Wagon current : wagonList){
-            if(!current.isFull()) return false;
+        } else {
+            return true;
         }
-        return true;
+    }
+
+    public void setCapacity(int c){
+        this.capacity = c;
     }
 
     public void setDirection(boolean dir) {

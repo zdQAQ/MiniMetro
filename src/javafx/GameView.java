@@ -178,13 +178,13 @@ public class GameView {
         arcTimer.setFill(Color.web("#a39c9c",0.8));
         arcTimer.setStrokeWidth(0);
 
-        Double remainingTime=(45000*(360-arcTimer.lengthProperty().get()))/360;
+        Double remainingTime=(20000*(360-arcTimer.lengthProperty().get()))/360;
 
         stations.get(st).arcTimeline.stop();
         stations.get(st).arcTimeline.getKeyFrames().clear();
 
         KeyValue kv = new KeyValue(arcTimer.lengthProperty(),360);
-        KeyFrame kf = new KeyFrame(Duration.millis(remainingTime), kv);//40s
+        KeyFrame kf = new KeyFrame(Duration.millis(remainingTime), kv);//20s
 
         stations.get(st).arcTimeline.getKeyFrames().add(kf);
         stations.get(st).arcTimeline.play();

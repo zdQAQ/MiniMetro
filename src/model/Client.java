@@ -71,20 +71,20 @@ public class Client {
         }
 
         //If a wagon willswap, client will get off
-        for (Wagon wagon:train.getWagonList()){
-            if(wagon.getClientList().contains(this)){
-                wagon.removeClient(this);
-                station = train.currentStation();
-                station.addClient(this);
-                //If the station is actually full and was not already full
-                if( (station.getClientList().size() > station.getCapacity()) && !station.getIsFull()){
-                    station.startFullTimer();
-                }
-                wagon.setWillSwap(false);
-                //...
-                return true;
-            }
-        }
+        // for (Wagon wagon:train.getWagonList()){
+        //     if(wagon.getClientList().contains(this)){
+        //         wagon.removeClient(this);
+        //         station = train.currentStation();
+        //         station.addClient(this);
+        //         //If the station is actually full and was not already full
+        //         if( (station.getClientList().size() > station.getCapacity()) && !station.getIsFull()){
+        //             station.startFullTimer();
+        //         }
+        //         wagon.setWillSwap(false);
+        //         //...
+        //         return true;
+        //     }
+        // }
         return false;
     }
 
