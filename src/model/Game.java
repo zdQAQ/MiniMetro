@@ -135,6 +135,18 @@ public class Game {
                                 List<Client> list = clientSchedule.computeProgress(clock);
                                 addToView(list);
                                 
+                                // 预警
+                                for(Station station:getStationList()) {
+                        			if (station.getClientList().size() > 3) {
+                        				System.out.println(station);
+                        			}
+                        			if (station.getClientList().size()>station.getCapacity() && station.getIsFull() == false){
+                        				station.startFullTimer();
+                        			} else if (station.getClientList().size()<station.getCapacity() && station.getIsFull() == true) {
+                        				station.decreaseFullTimer();
+                        			}
+                        		}
+                                
                                 sleep(833);
                             } catch (Exception ex) {
                                 System.out.println("timeGo:"+ex);

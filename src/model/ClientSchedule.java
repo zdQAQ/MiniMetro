@@ -130,7 +130,6 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.TRIANGLE)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
@@ -142,7 +141,6 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.SECTOR)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
@@ -154,7 +152,6 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.SQUARE)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
@@ -166,7 +163,6 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.DIAMOND)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
@@ -178,7 +174,6 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.PENTAGON)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
@@ -190,7 +185,6 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.CROSS)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
@@ -202,19 +196,12 @@ public class ClientSchedule {
 				for(Station station:game.getStationList()) {
 					if(station.getType().equals(ShapeType.STAR)) {
 						Client c = new Client(station,shape);
-						station.addClient(c);
 						resList.add(c);
 						gameView.getClients().put(c,new fxClient(c));
 						Platform.runLater(()->gameView.put(c));
 					}
 				}
 				star.minusProgress(shape);
-			}
-		}
-		
-		for(Station station:game.getStationList()) {
-			if (station.getClientList().size()>station.getCapacity()){
-				station.startFullTimer();
 			}
 		}
 		

@@ -216,7 +216,7 @@ public class GameView {
         stations.get(st).arcTimeline.stop();
         stations.get(st).arcTimeline.getKeyFrames().clear();
 
-        Double remainingTime=(45000*arcTimer.lengthProperty().get())/360;
+        Double remainingTime=(20000*arcTimer.lengthProperty().get())/360;
 
         KeyValue kv = new KeyValue(arcTimer.lengthProperty(),0);
         KeyFrame kf = new KeyFrame(Duration.millis(remainingTime), kv);

@@ -91,7 +91,7 @@ public class Station {
     public int getCapacity() {return this.capacity;}
 
     public String toString() {
-        String s ="model.Station "+type+" at "+pos+" ";
+        String s ="Station "+type+" at "+pos+" ";
 //        for(ShapeType stype : ShapeType.values()) {
 //            if(distances[stype.ordinal()]!=-1)
 //                s+=stype+" : "+distances[stype.ordinal()]+" ";
