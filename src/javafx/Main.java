@@ -74,7 +74,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            dbConnector = new DbConnector();
+//            dbConnector = new DbConnector();
             stage = primaryStage;
             primaryStage.setTitle("地铁小游戏哦");
 

@@ -204,7 +204,7 @@ public class Game {
             // 第三阶段第一回合给资源
             // setGift的参数 资源 1表示路线 2车厢 3车头 4隧道 5枢纽
             Controller.game.pauseGame();
-            view.setGift(3, 1, 2);
+            view.setGift(3, 1, 2,true);
             view.setGift(3, 4, 2);
             view.setGift(3, 3, 4);
             view.setGift(3, 1, 5);
@@ -213,12 +213,12 @@ public class Game {
             view.setGift(3, 4, 2);
             view.setGift(3, 1, 2);
             view.setGift(3, 3, 2);
-            view.setGift(3, 4, 2,true);
+            view.setGift(3, 4, 2);
         } else if (view.getRound() == 7) {
             // 第三阶段第二回合给资源
             // setGift的参数 资源 1表示路线 2车厢 3车头 4隧道 5枢纽
             Controller.game.pauseGame();
-            view.setGift(3, 1, 2);
+            view.setGift(3, 1, 2,true);
             view.setGift(3, 4, 2);
             view.setGift(3, 3, 4);
             view.setGift(3, 1, 5);
@@ -227,7 +227,7 @@ public class Game {
             view.setGift(3, 4, 2);
             view.setGift(3, 1, 2);
             view.setGift(3, 3, 2);
-            view.setGift(3, 4, 2,true);
+            view.setGift(3, 4, 2);
         }
     }
 

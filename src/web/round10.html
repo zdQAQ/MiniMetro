@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="index.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <title>拒绝岩壁</title>
+    <style type="text/css">
+        button {
+            display: inline-block;
+            padding: 0.3em 1.2em;
+            margin: 0 0.3em 0.3em 0;
+            border-radius: 2em;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            color: #FFFFFF;
+            background-color: #4eb5f1;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: #4095c6;
+        }
+
+        @media all and (max-width:30em) {
+            button {
+                display: block;
+                margin: 0.2em auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display:flex;justify-content:center;margin:20px 0px;">
+        <img width="493" height="286" src="../img/round10.jpg">
+    </div>
+    <h4 style="display:flex;justify-content:center">请问依照该线路规划（所有车辆行进方向为顺时针，图中哪些站点有爆掉的风险：</h4>
+
+    <h4 style="display:flex;justify-content:center">一定会爆掉：       <input type="number" id="answer1"required>    </h4>         
+
+            <h4 style="display:flex;justify-content:center">可能会爆掉：  <input type="number" id="answer2"required>    </h4>
+
+                    <h4 style="display:flex;justify-content:center">如需书写多个站点，请用逗号分隔各序号，例如1,2,3</h4>
+
+    <div style="display:flex;justify-content:center;margin-top: 20px;">
+        <button onclick="submit42()">提交</button>
+    </div>
+</body>
+
+</html>
