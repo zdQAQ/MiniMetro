@@ -41,8 +41,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main extends Application {
-    static Stage stage;
+    public static Stage stage;
     static Scene scene;
+    private int round1;
     private DbConnector dbConnector;
 
     /**
@@ -64,16 +65,16 @@ public class Main extends Application {
         System.exit(0);
 
     }
-    
+
     public static void proceed(int round) {
-//    	stage.close();
-		Platform.runLater(()->new Main().chooseCity(stage,round));
+//         stage.close();
+        Platform.runLater(() -> new Main().chooseCity(stage, round));
     }
 
     @Override
     public void start(Stage primaryStage) {
         try {
-        	dbConnector = new DbConnector();
+            dbConnector = new DbConnector();
             stage = primaryStage;
             primaryStage.setTitle("地铁小游戏哦");
 
@@ -106,24 +107,26 @@ public class Main extends Application {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void chooseCity(Stage primaryStage,int round) {
-    	stage = primaryStage;
+
+    public void chooseCity(Stage primaryStage, int round) {
+        System.out.println("进入 round" + round);
+        round1 = round;
+        stage = primaryStage;
         Group page = new Group();
         try {
-        	FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
             page = (Group) loader.load();
             Controller controller = loader.getController();
-            controller.setRound(round,page);
+            controller.setRound(round, page);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
+
         Color colorScene = new Color((double) 240 / 255, (double) 240 / 255, (double) 240 / 255, 0.5);
         Scene scene = new Scene(page, 960, 540, colorScene);
         primaryStage.setScene(scene);
         primaryStage.show();
-        
+
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -139,7 +142,7 @@ public class Main extends Application {
         public void chooseCity(int round) {
             Group page = null;
             try {
-            	FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
+                FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
                 page = (Group) loader.load();
                 Controller controller = loader.getController();
                 controller.setRound(round);
@@ -152,7 +155,7 @@ public class Main extends Application {
             stage.getIcons().add(new Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
             stage.setTitle("地铁小游戏");
             stage.setResizable(false);
-            
+
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent event) {
@@ -160,6 +163,14 @@ public class Main extends Application {
                     Platform.exit();
                 }
             });
+        }
+        
+        public void submit41(String s) {
+        	proceed(9);
+        }
+        
+        public void submit42(String s) {
+        	proceed(10);
         }
     }
 

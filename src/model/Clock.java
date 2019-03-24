@@ -4,32 +4,36 @@ package model;
  * Created by Anthony on 06/01/2017.
  */
 public class Clock {
-    //private enum weekDay {LUN, MAR, MER, JEU, VEN, SAM, DIM};
-    private static final String[] weekDay= {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"};
+    // private enum weekDay {LUN, MAR, MER, JEU, VEN, SAM, DIM};
+    private static final String[] weekDay = { "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天" };
 
     int currentDay;
     int time;
 
-
-    public Clock(){
-        time=0;
-        currentDay=0;
+    public Clock() {
+        time = 0;
+        currentDay = 0;
     }
-    public void incrementeTime(){
+
+    public void incrementeTime() {
         time++;
-        if(time>=24){
-            time=0;
+        if (time >= 24) {
+            time = 0;
             incrementeDay();
         }
     }
-    public void incrementeDay(){
+
+    public void incrementeDay() {
         currentDay++;
-        if(currentDay>=7)currentDay=0;
+        if (currentDay >= 7)
+            currentDay = 0;
     }
-    public String getDay(){
+
+    public String getDay() {
         return weekDay[currentDay];
     }
-    public int getTime(){
+
+    public int getTime() {
         return time;
     }
 

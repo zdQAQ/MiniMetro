@@ -5,8 +5,8 @@ public class Event {
 	private ShapeType stationType = null;
 	private Position position = null;
 	boolean finished = false;
-	
-	public Event(int t,ShapeType shape,Position pos) {
+
+	public Event(int t, ShapeType shape, Position pos) {
 		setTiming(t);
 		setStationType(shape);
 		setPosition(pos);
@@ -44,9 +44,9 @@ public class Event {
 	public void setPosition(Position position) {
 		this.position = position;
 	}
-	
+
 	public String toString() {
-        return "event position:"+position.getX()+","+position.getY();
-    }
-	
+		return "event position:" + position.getX() + "," + position.getY();
+	}
+
 }

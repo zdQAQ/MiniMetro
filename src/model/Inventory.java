@@ -3,17 +3,17 @@ package model;
 import javafx.Controller;
 
 public class Inventory {
-    private  int lineNb = 0 ;
-    private int tunnelNb = 0 ;
-    private int wagonNb = 0 ;
-    private int trainNb = 0 ;
+    private int lineNb = 0;
+    private int tunnelNb = 0;
+    private int wagonNb = 0;
+    private int trainNb = 0;
     private int stationNb = 0;
 
-    public Inventory () {
+    public Inventory() {
 
     }
 
-    public Inventory (int train,int wagon,int line,int tunnel,  int station) {
+    public Inventory(int train, int wagon, int line, int tunnel, int station) {
         lineNb = line;
         tunnelNb = tunnel;
         wagonNb = wagon;
@@ -21,7 +21,7 @@ public class Inventory {
         stationNb = station;
     }
 
-    public void setInventory(int train,int wagon,int line,int tunnel,  int station){
+    public void setInventory(int train, int wagon, int line, int tunnel, int station) {
         lineNb = line;
         tunnelNb = tunnel;
         wagonNb = wagon;
@@ -29,83 +29,63 @@ public class Inventory {
         stationNb = station;
     }
 
-    public int getTunnelNb()
-    {
+    public int getTunnelNb() {
         return tunnelNb;
     }
 
-    public void subTunnelNb(int t)
-    {
-        tunnelNb=tunnelNb-t;
+    public void subTunnelNb(int t) {
+        tunnelNb = tunnelNb - t;
     }
 
-    public void addTunnelNb(int t)
-    {
-        tunnelNb=tunnelNb+t;
+    public void addTunnelNb(int t) {
+        tunnelNb = tunnelNb + t;
     }
 
-
-
-    public int getLineNb()
-    {
+    public int getLineNb() {
         return lineNb;
     }
 
-    public void subLineNb()
-    {
+    public void subLineNb() {
         --lineNb;
     }
 
-    public void addLineNb()
-    {
+    public void addLineNb() {
         ++lineNb;
     }
 
-
-    public int getWagonNb()
-    {
+    public int getWagonNb() {
         return wagonNb;
     }
 
-    public void subWagonNb()
-    {
+    public void subWagonNb() {
         --wagonNb;
     }
 
-    public void addWagonNb()
-    {
+    public void addWagonNb() {
         ++wagonNb;
     }
-    
-    public int getStationNb()
-    {
+
+    public int getStationNb() {
         return stationNb;
     }
 
-    public void subStationNb()
-    {
+    public void subStationNb() {
         --stationNb;
     }
 
-    public void addStationNb()
-    {
+    public void addStationNb() {
         ++stationNb;
     }
 
-
-
-    public int getTrainNb()
-    {
+    public int getTrainNb() {
         return trainNb;
     }
 
-    public void subTrainNb()
-    {
+    public void subTrainNb() {
         --trainNb;
     }
 
-    public void addTrain()
-    {
+    public void addTrain() {
         ++trainNb;
     }
 
