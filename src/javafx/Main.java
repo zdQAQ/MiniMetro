@@ -37,6 +37,8 @@ import model.Schedule;
 import netscape.javascript.JSObject;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,12 +47,18 @@ public class Main extends Application {
     static Scene scene;
     private int round1;
     private DbConnector dbConnector;
+    static String username;
+    static Long uid;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public void setUid(Long id){
+        uid = id;
     }
 
     public static void restart() {
@@ -67,14 +75,20 @@ public class Main extends Application {
     }
 
     public static void proceed(int round) {
-//         stage.close();
-        Platform.runLater(() -> new Main().chooseCity(stage, round));
+//        stage.close();
+        Platform.runLater(() -> {
+			try {
+				new Main().chooseCity(stage, round,username);
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
     }
 
     @Override
     public void start(Stage primaryStage) {
         try {
-//            dbConnector = new DbConnector();
             stage = primaryStage;
             primaryStage.setTitle("地铁小游戏哦");
 
@@ -108,10 +122,12 @@ public class Main extends Application {
         }
     }
 
-    public void chooseCity(Stage primaryStage, int round) {
+    public void chooseCity(Stage primaryStage, int round,String name) throws ClassNotFoundException, SQLException {
         System.out.println("进入 round" + round);
         round1 = round;
         stage = primaryStage;
+        username = name;
+        dbConnector = new DbConnector(name);
         Group page = new Group();
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
@@ -139,7 +155,11 @@ public class Main extends Application {
     // JavaScript interface object
     public class JavaApp {
 
-        public void chooseCity(int round) {
+        public void chooseCity(int round,String name) throws ClassNotFoundException, SQLException {
+        	System.out.println(name);
+            username = name;
+            dbConnector = new DbConnector(name);
+            DbConnector.setName(name.toString());
             Group page = null;
             try {
                 FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
@@ -167,10 +187,12 @@ public class Main extends Application {
         
         public void submit41(String s) {
         	proceed(9);
+        	GameView.round9.close();
         }
         
         public void submit42(String s) {
         	proceed(10);
+        	GameView.round10.close();
         }
     }
 

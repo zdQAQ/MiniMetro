@@ -44,7 +44,7 @@ public class fxClient {
 
         Station st = c.getStation();
         int index = st.getClientList().size();
-        Position p = new Position(st.getPosition().getX() + 10 + index * 12, st.getPosition().getY() - 10);
+        Position p = new Position(st.getPosition().getX() + 7 + index * 12, st.getPosition().getY() - 10);
         defaultShapes.setPosition(shape, p);
 
     }
@@ -54,7 +54,7 @@ public class fxClient {
     }
 
     public void updatePos(Station st, int index) {
-        Position p = new Position(st.getPosition().getX() + 10 + index * 12, st.getPosition().getY() - 10);
+        Position p = new Position(st.getPosition().getX() + 7 + index * 12, st.getPosition().getY() - 10);
         defaultShapes.setPosition(shape, p);
     }
 }

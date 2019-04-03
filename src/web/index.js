@@ -20,7 +20,7 @@ function keydown(event) {
 function choose(city) {
     if (app) {
         // document.getElementById('test').innerHTML = '打开方法' + app.chooseCity
-        app.chooseCity(city)
+        app.chooseCity(city,$('#nameInput').val())
     } else {
         document.getElementById('test').innerHTML = 'app 加载失败'
     }

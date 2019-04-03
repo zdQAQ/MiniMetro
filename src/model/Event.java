@@ -46,7 +46,7 @@ public class Event {
 	}
 
 	public String toString() {
-		return "event position:" + position.getX() + "," + position.getY();
+		return "event position:" + position.getX() + "," + position.getY() + "," + stationType;
 	}
 
 }

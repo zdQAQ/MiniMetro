@@ -4,6 +4,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -13,6 +15,7 @@ import model.*;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static java.lang.Math.abs;
@@ -49,6 +52,7 @@ public class Controller implements Initializable {
     public static ClientSchedule clientSchedule;
 
     public static int mapType;
+
 
     private fxClock clock;
     static fxInformations info;
@@ -144,7 +148,12 @@ public class Controller implements Initializable {
         setMapType(round);
         game.setSchedule(schedule);
         game.setClientSchedule(clientSchedule);
-        game.start();
+        try {
+            game.start();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void setRound(int round, Group g) {
@@ -189,21 +198,23 @@ public class Controller implements Initializable {
         } else if (round == 10) {
             game = new Game(gameView, 7, 2, 5, 4, 0);
         }
-        if (round != 0 && round != 6 && round != 7) {
-            // gameView.hideThings();
-        } else {
-            // gameView.showThings();
-        }
 
-        schedule = new Schedule(round, g, gameView, game);
         clientSchedule = new ClientSchedule(round, game, gameView);
+        schedule = new Schedule(round, g, gameView, game);
+        
         setMapType(round);
         game.setSchedule(schedule);
+
         if (round != 1 && round <= 10) {
-        	game.setClientSchedule(clientSchedule);
-        	game.resumeGame();
-            game.start();
-            gameView.seeInfo();
+            game.setClientSchedule(clientSchedule);
+            // game.resumeGame();
+            try {
+                game.start();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            // gameView.seeInfo();
         }
 
     }
@@ -397,7 +408,6 @@ public class Controller implements Initializable {
                 TPressed = true;
                 currentStation = modelSt;
                 currentT = shape;
-                TPressed = true;
                 currentLine = modelLine;
                 currentLink = link;
             }
@@ -502,7 +512,7 @@ public class Controller implements Initializable {
                             gameView.updateTunnelNb(game.getInventory().getTunnelNb());
                         }
 
-                        System.err.println("NEXT LINK INDEX " + gameView.lineLinks.get(currentLine).indexOf(nextLink));
+                        System.err.println("NEXT LINK INDEX " + gameView.getLineLinks().get(currentLine).indexOf(nextLink));
 
                         gameView.removeLineLink(currentLine, inFirst);
                         nextStation = gameView.getNextStation(currentLine, nextLink);
@@ -679,7 +689,7 @@ public class Controller implements Initializable {
                             gameView.addLineLink(currentLine, link, currentStationIndex == 0);
 
                             if (TPressed) {
-                                boolean b = gameView.lineLinks.get(currentLine).indexOf(link) == 0;
+                                boolean b = gameView.getLineLinks().get(currentLine).indexOf(link) == 0;
                                 gameView.setLineEnd(currentLine, endLine, b);
                             }
 
@@ -842,7 +852,7 @@ public class Controller implements Initializable {
                     link2.setStrokeWidth(6);
 
                     group.getChildren().remove(drawing2);
-                    maxIndex = gameView.lineLinks.get(currentLine).indexOf(currentLink);
+                    maxIndex = gameView.getLineLinks().get(currentLine).indexOf(currentLink);
 
                     gameView.addLineLink(currentLine, link2, maxIndex);
                     gameView.addLineLink(currentLine, link1, maxIndex);

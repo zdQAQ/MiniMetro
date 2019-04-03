@@ -46,7 +46,7 @@ public class GameView {
     HashMap<Station, fxStation> stations;
     HashMap<Train, fxTrain> trains;
     static HashMap<Client, fxClient> clients;
-    HashMap<model.Line, ArrayList<Shape>> lineLinks;
+    private HashMap<model.Line, ArrayList<Shape>> lineLinks;
     HashMap<model.Line, Shape[]> lineEnds;
     List<Shape> links = new ArrayList<>();
     Shape river;
@@ -59,18 +59,24 @@ public class GameView {
     private ImageView imgBook;
     private Text nbClient;
     public static int round;
+    private static int boomTimes = 0;
+    private int pauseTimes = 0;
+    static Stage round9;
+    static Stage round10;
 
     public GameView(Group g, Controller c) {
         stations = new HashMap<>();
         trains = new HashMap<>();
-        lineLinks = new HashMap<>();
+        setLineLinks(new HashMap<>());
         lineEnds = new HashMap<>();
         setClients(new HashMap<>());
         group = g;
         controller = c;
+        pauseTimes = 0;
 
         info = c.getInfo();
-        info.setVisible(false);
+        info.setTranslateY(-50);
+        info.setVisible(true);
 
         group.getChildren().add(info);
 
@@ -98,15 +104,15 @@ public class GameView {
         group.getChildren().add(imageClient);
         group.getChildren().add(imgBook);
 
-        point = new Circle(480, 520, 4);
-        point.setStroke(Color.GRAY);
-        point.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                seeInfo();
-            }
-        });
-        group.getChildren().add(point);
+        // point = new Circle(480, 520, 4);
+        // point.setStroke(Color.GRAY);
+        // point.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        // @Override
+        // public void handle(MouseEvent event) {
+        // seeInfo();
+        // }
+        // });
+        // group.getChildren().add(point);
 
         clock = new fxClock(920, 35, 16);
         group.getChildren().add(clock);
@@ -124,8 +130,22 @@ public class GameView {
                     image.setImage(imagePause);
                     Controller.game.resumeGame();
                 } else {
-                    image.setImage(imagePlay);
-                    Controller.game.pauseGame();
+                    pauseTimes++;
+                    if (round == 6 || round == 7 || round == 8) {
+                        if (pauseTimes < 2) {
+                            image.setImage(imagePlay);
+                            Controller.game.pauseGame();
+                        }
+                    } else if (round == 9 || round == 10) {
+                        if (pauseTimes < 3) {
+                            image.setImage(imagePlay);
+                            Controller.game.pauseGame();
+                        }
+                    } else {
+                        image.setImage(imagePlay);
+                        Controller.game.pauseGame();
+                    }
+                    // System.out.println(pauseTimes);
                 }
             }
         });
@@ -205,8 +225,19 @@ public class GameView {
             public void handle(ActionEvent arg0) {
 
                 if (arcTimer.lengthProperty().get() == 360) {
-                    System.out.println("End game");
-                    Controller.game.pauseGame();
+                    if (round == 0 || round == 6 || round == 7 || round == 8 || round == 9 || round == 10) {
+                        System.out.println("before :" + Game.transportedClientNb);
+                        if (boomTimes < 5) {
+                            Game.transportedClientNb = (int) (Game.transportedClientNb * 0.95);
+                        } else {
+                            Game.transportedClientNb = (int) (Game.transportedClientNb * 0.9);
+                        }
+                        System.out.println("after :" + Game.transportedClientNb);
+                        startDecreaseArc(st);
+                        removeClient(st.getClientList());
+                        st.getClientList().clear();
+                        updateNbClient();
+                    }
                     // endOfGame();
 
                 }
@@ -238,6 +269,8 @@ public class GameView {
 
     public void setRound(int r) {
         round = r;
+        Game.transportedClientNb = 0;
+        updateNbClient();
     }
 
     public int getRound() {
@@ -265,6 +298,7 @@ public class GameView {
         Platform.runLater(new Runnable() {
             public void run() {
                 try {
+                    Controller.game.pauseGame();
                     Stage dialog = new Stage();
                     WebView webView = new WebView();
 
@@ -293,6 +327,13 @@ public class GameView {
                     dialog.setScene(scene);
                     dialog.show();
 
+                    dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                        @Override
+                        public void handle(WindowEvent event) {
+                            Controller.game.resumeGame();
+                        }
+                    });
+
                 } catch (Exception e) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
                 }
@@ -307,11 +348,10 @@ public class GameView {
             public void run() {
                 try {
                     Controller.game.pauseGame();
-                    Controller.game.threadTime = null;
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("恭喜你完成第一阶段的见习~");
-                    alert.setHeaderText("为了检验你的见习成果，在第2阶段你需要完成1道填空题并设计4张简单的线路图。");
+                    alert.setHeaderText("为了检验你的见习成果，在第2阶段你需要完成5个小测试");
                     alert.setContentText(
                             "注意：在该阶段每次点击提交后你便会直接进入下一题，之后将没有再次检查和修改的机会，请慎重作答；\n" + "      记事本中会显示当前回合的任务，有疑问时不妨去看一下。");
                     // alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " +
@@ -333,9 +373,9 @@ public class GameView {
                      * if (result.get() == buttonTypeOne) { Controller.game.resumeGame();
                      * Main.restart();
                      */
-                    if (result.get() == buttonTypeTwo) {
-                        Main.proceed(1);
-                    }
+                    // if (result.get() == buttonTypeTwo) {
+                    //     Main.proceed(1);
+                    // }
                 } catch (Exception e) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
                 }
@@ -351,143 +391,100 @@ public class GameView {
                 try {
                     Controller.game.pauseGame();
 
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    if (round + 1 == 2) {
-                        alert.setTitle("进入第二阶段第二回合~");
-                        alert.setHeaderText("请使用3条线路和3辆机车覆盖所有站点，构建最高效的铁路网。");
-                        alert.setContentText("注意：每条线路最多穿过5个站点；\n" + "本阶段分数基于你的效率而非运送人数；");
-                    } else if (round + 1 == 3) {
-                        alert.setTitle("进入第二阶段第三回合~");
-                        alert.setHeaderText("请仔细观察地图，使用3条线路和3辆机车覆盖所有站点，构建最高效的铁路网。");
-                        alert.setContentText("注意：每条线路最多穿过6个站点；");
-                    } else if (round + 1 == 4) {
-                        alert.setTitle("进入第二阶段第四回合~");
-                        alert.setHeaderText("请仔细观察地图，使用3条线路和3辆机车覆盖所有站点，构建最高效的铁路网。");
-                        alert.setContentText("注意：每条线路最多穿过6个站点；\n" + "      每个站点最多可被2条线路穿过；");
-                    } else if (round + 1 == 5) {
-                        alert.setTitle("进入第二阶段第五回合~");
-                        alert.setHeaderText("请仔细观察地图，使用3条线路和3辆机车覆盖所有站点，构建最高效的铁路网。");
-                    } else if (round + 1 == 6) {
-                        alert.setTitle("进入第三阶段第一回合~");
-                        alert.setHeaderText("该来的总是要来，见习结束的你在第3阶段需要再设计两张复杂的地图。");
-                        alert.setContentText(
-                                "本阶段将不会随机生成站点，你需要在仔细观察地图后点击资源选择按钮，采用2选1的方式进行10次选择，一次性选择所有你在当前地图要用的工具并设计线路。注意！设计提交后有1次暂停修改设计的机会，该回合的得分等于最终设计的效率分。\n"
-                                        + "");
-                    } else if (round + 1 == 7) {
-                        alert.setTitle("进入第三阶段第二回合~");
-                        alert.setHeaderText("见习结束的你在第3阶段需要再设计两张复杂的地图。");
-                        alert.setContentText(
-                                "本阶段将不再随机生成站点，你需要在仔细观察地图后点击资源选择按钮，采用二选一的方式进行十次选择，一次性选择所有你在当前地图要用的工具并设计线路。注意！设计提交后有一次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
-                    } else if (round + 1 == 8) {
-                        alert.setTitle("进入第三阶段第三回合~");
-                        alert.setContentText(
-                                "仔细观察地图后点击资源选择按钮，采用二选一的方式进行十次选择，一次性选择所有你在当前地图要用的工具并设计线路。注意！设计提交后仅有1次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
-                    } else if (round + 1 == 9) {
+                    if (round + 1 == 9) {
+                        round9 = new Stage();
+                        WebView webView = new WebView();
+
+                        String url = Main.class.getResource("/web/round9.html").toExternalForm();
+
+                        WebEngine webEngine = webView.getEngine();
+
+                        // process page loading
+                        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+                            @Override
+                            public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
+                                if (newState == State.SUCCEEDED) {
+                                    JSObject win = (JSObject) webEngine.executeScript("window");
+                                    win.setMember("app", new Main().new JavaApp());
+                                }
+                            }
+                        });
+
+                        webEngine.load(url);
+
+                        VBox vBox = new VBox(webView);
+
+                        Scene scene = new Scene(vBox, 960, 540);
+                        round9.setScene(scene);
+                        round9.show();
+
+                        round9.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                event.consume();
+                            }
+                        });
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("进入第四阶段第一回合~");
                         alert.setHeaderText("作为一名有经验的铁路规划师，你迎来了最后的考验。");
                         alert.setContentText(
-                                "请观察两位见习生的铁路设计图，指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。注意！设计提交后仅有2次主动暂停修改设计的机会。");
+                                "请观察两位见习生的铁路设计图，指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。注意！激活乘客后仅有2次主动暂停修改设计的机会。");
+
+                        ButtonType buttonTypeTwo = new ButtonType("确定");
+
+                        alert.getButtonTypes().setAll(buttonTypeTwo);
+
+                        alert.show();
+
                     } else if (round + 1 == 10) {
+                        round10 = new Stage();
+                        WebView webView = new WebView();
+
+                        String url = Main.class.getResource("/web/round10.html").toExternalForm();
+
+                        WebEngine webEngine = webView.getEngine();
+
+                        // process page loading
+                        webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
+                            @Override
+                            public void changed(ObservableValue<? extends State> ov, State oldState, State newState) {
+                                if (newState == State.SUCCEEDED) {
+                                    JSObject win = (JSObject) webEngine.executeScript("window");
+                                    win.setMember("app", new Main().new JavaApp());
+                                }
+                            }
+                        });
+
+                        webEngine.load(url);
+
+                        VBox vBox = new VBox(webView);
+
+                        Scene scene = new Scene(vBox, 960, 540);
+                        round10.setScene(scene);
+                        round10.show();
+
+                        round10.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                            @Override
+                            public void handle(WindowEvent event) {
+                                event.consume();
+                            }
+                        });
+
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("进入第四阶段第二回合~");
                         alert.setHeaderText("做的不错，这是本游戏的最后一回合，加油哦~");
                         alert.setContentText(
-                                "指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。\n" + "注意！设计提交后仅有2次主动暂停修改设计的机会。");
+                                "请观察两位见习生的铁路设计图，指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。\n" + "注意！激活乘客后仅有2次主动暂停修改设计的机会。");
+
+                        ButtonType buttonTypeTwo = new ButtonType("确定");
+
+                        alert.getButtonTypes().setAll(buttonTypeTwo);
+
+                        alert.show();
                     } else {
-                        alert.setTitle("进入下一阶段~");
-                        alert.setHeaderText("游戏结束");
+                        Main.proceed(round + 1);
                     }
-                    // alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " +
-                    // clock.getNbDay() +" 天");
-                    // alert.setGraphic(new ImageView(new
-                    // Image(this.getClass().getResource("/img/lose.png").toString())));
 
-                    // ButtonType buttonTypeOne = new ButtonType("Recommencer");
-                    ButtonType buttonTypeTwo = new ButtonType("确定");
-
-                    alert.getButtonTypes().setAll(buttonTypeTwo);
-
-                    // Game.getInventory().addTrain();
-                    // updateTrainNb(Game.getInventory().getTrainNb());
-
-                    Optional<ButtonType> result = alert.showAndWait();
-
-                    /*
-                     * if (result.get() == buttonTypeOne) { Controller.game.resumeGame();
-                     * Main.restart();
-                     */
-                    if (result.get() == buttonTypeTwo) {
-                        if (round + 1 == 9) {
-                            Stage dialog = new Stage();
-                            WebView webView = new WebView();
-
-                            String url = Main.class.getResource("/web/round9.html").toExternalForm();
-
-                            WebEngine webEngine = webView.getEngine();
-
-                            // process page loading
-                            webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
-                                @Override
-                                public void changed(ObservableValue<? extends State> ov, State oldState,
-                                        State newState) {
-                                    if (newState == State.SUCCEEDED) {
-                                        JSObject win = (JSObject) webEngine.executeScript("window");
-                                        win.setMember("app", new Main().new JavaApp());
-                                    }
-                                }
-                            });
-
-                            webEngine.load(url);
-
-                            VBox vBox = new VBox(webView);
-
-                            Scene scene = new Scene(vBox, 960, 540);
-                            dialog.setScene(scene);
-                            dialog.show();
-
-                            dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                                @Override
-                                public void handle(WindowEvent event) {
-                                    event.consume();
-                                }
-                            });
-                        } else if (round + 1 == 10) {
-                            Stage dialog = new Stage();
-                            WebView webView = new WebView();
-
-                            String url = Main.class.getResource("/web/round10.html").toExternalForm();
-
-                            WebEngine webEngine = webView.getEngine();
-
-                            // process page loading
-                            webEngine.getLoadWorker().stateProperty().addListener(new ChangeListener<State>() {
-                                @Override
-                                public void changed(ObservableValue<? extends State> ov, State oldState,
-                                        State newState) {
-                                    if (newState == State.SUCCEEDED) {
-                                        JSObject win = (JSObject) webEngine.executeScript("window");
-                                        win.setMember("app", new Main().new JavaApp());
-                                    }
-                                }
-                            });
-
-                            webEngine.load(url);
-
-                            VBox vBox = new VBox(webView);
-
-                            Scene scene = new Scene(vBox, 960, 540);
-                            dialog.setScene(scene);
-                            dialog.show();
-
-                            dialog.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                                @Override
-                                public void handle(WindowEvent event) {
-                                    event.consume();
-                                }
-                            });
-                        } else {
-                            Main.proceed(round + 1);
-                        }
-                    }
                 } catch (Exception e) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
                 }
@@ -504,9 +501,7 @@ public class GameView {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("游戏结束");
-                    alert.setHeaderText("由于乘客漫长的等待，您的地铁已关闭");
-                    alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " + clock.getNbDay() + " 天");
-                    alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/lose.png").toString())));
+                    alert.setHeaderText("您的地铁已关闭");
 
                     // ButtonType buttonTypeOne = new ButtonType("Recommencer");
                     ButtonType buttonTypeTwo = new ButtonType("离开游戏");
@@ -534,15 +529,15 @@ public class GameView {
         });
     }
 
-    public void setGift(int gift1, int gift2) {
+    public void setGift(int gift2) {
         Platform.runLater(new Runnable() {
             public void run() {
                 Stage stage = new Stage();
                 try {
                     Controller.game.pauseGame();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("新的一周");
-                    alert.setHeaderText("欢迎来到新的一周！ 你收到了一个新的机车。");
+                    alert.setTitle("目标达成");
+                    alert.setHeaderText("恭喜！ 你收到了一个新的机车。");
                     alert.setContentText("另外，你将获得如下资源");
 
                     alert.setGraphic(
@@ -568,23 +563,23 @@ public class GameView {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
+                        Controller.game.resumeGame();
                         Game.getInventory().addLineNb();
                         Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
                     } else if (result.get() == buttonTypeTwo) {
+                        Controller.game.resumeGame();
                         Game.getInventory().addWagonNb();
                         updateWagonNb(Game.getInventory().getWagonNb());
                     } else if (result.get() == buttonTypeThree) {
+                        Controller.game.resumeGame();
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeFour) {
+                        Controller.game.resumeGame();
                         Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
                     }
-
-                    // Game.resumeGame();
-                    Controller.game.resumeGame();
-                    seeInfo();
 
                 } catch (Exception e) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
@@ -593,7 +588,7 @@ public class GameView {
         });
     }
 
-    public void setGift(int gift1, int gift2, int gift3) {
+    public void setGift(int gift2, int gift3) {
         Platform.runLater(new Runnable() {
             public void run() {
                 Stage stage = new Stage();
@@ -622,23 +617,28 @@ public class GameView {
 
                     alert.getButtonTypes().setAll(list.get(gift2), list.get(gift3));
 
-                    Game.getInventory().addTrain();
-                    updateTrainNb(Game.getInventory().getTrainNb());
-
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
                         Game.getInventory().addLineNb();
                         Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeTwo) {
                         Game.getInventory().addWagonNb();
                         updateWagonNb(Game.getInventory().getWagonNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeThree) {
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeFour) {
                         Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
                     }
 
                     // Game.resumeGame();
@@ -651,8 +651,8 @@ public class GameView {
             }
         });
     }
-    
-    public void setGift(int gift1, int gift2, int gift3,Boolean isLast) {
+
+    public void setGift(int gift2, int gift3, Boolean isLast) {
         Platform.runLater(new Runnable() {
             public void run() {
                 Stage stage = new Stage();
@@ -681,29 +681,42 @@ public class GameView {
 
                     alert.getButtonTypes().setAll(list.get(gift2), list.get(gift3));
 
-                    Game.getInventory().addTrain();
-                    updateTrainNb(Game.getInventory().getTrainNb());
-
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
                         Game.getInventory().addLineNb();
                         Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
+                        if (isLast) {
+                            Controller.game.resumeGame();
+                        }
                     } else if (result.get() == buttonTypeTwo) {
                         Game.getInventory().addWagonNb();
                         updateWagonNb(Game.getInventory().getWagonNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
+                        if (isLast) {
+                            Controller.game.resumeGame();
+                        }
                     } else if (result.get() == buttonTypeThree) {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
+                        if (isLast) {
+                            Controller.game.resumeGame();
+                        }
                     } else if (result.get() == buttonTypeFour) {
                         Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
+                        Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
+                        if (isLast) {
+                            Controller.game.resumeGame();
+                        }
                     }
 
-                    if (isLast) {
-                    	Controller.game.resumeGame();
-                    	seeInfo();
-                    }
                     // Game.resumeGame();
                     // Controller.game.resumeGame();
                     // seeInfo();
@@ -817,7 +830,7 @@ public class GameView {
 
     public void createLine(Line l, Shape end1, Shape end2) {
         ArrayList<Shape> list = new ArrayList<>();
-        lineLinks.put(l, list);
+        getLineLinks().put(l, list);
 
         Shape[] ends = new Shape[2];
         ends[0] = end2;
@@ -852,13 +865,13 @@ public class GameView {
 
     public Shape getLineLink(Line l, boolean inFirst) {
         if (inFirst)
-            return lineLinks.get(l).get(0);
+            return getLineLinks().get(l).get(0);
         else
-            return lineLinks.get(l).get(lineLinks.get(l).size() - 1);
+            return getLineLinks().get(l).get(getLineLinks().get(l).size() - 1);
     }
 
     public Shape getNextLineLink(Line l, boolean inFirst) {
-        ArrayList<Shape> list = lineLinks.get(l);
+        ArrayList<Shape> list = getLineLinks().get(l);
         if (inFirst)
             return list.get(1);
         else
@@ -866,7 +879,7 @@ public class GameView {
     }
 
     public Station getNextStation(Line l, Shape nextLink) {
-        ArrayList<Shape> list = lineLinks.get(l);
+        ArrayList<Shape> list = getLineLinks().get(l);
         boolean loop = l.isLoop();
         System.err.println("IS LOOP " + loop + "\nIndex of next Link : " + list.indexOf(nextLink));
         if (list.indexOf(nextLink) == 0)
@@ -876,7 +889,7 @@ public class GameView {
     }
 
     public void addLineLink(Line l, Shape link, boolean inFirst) {
-        ArrayList<Shape> list = lineLinks.get(l);
+        ArrayList<Shape> list = getLineLinks().get(l);
         if (inFirst) {
             list.add(0, link);
             System.err.println("ADD IN FIRST");
@@ -889,7 +902,7 @@ public class GameView {
     }
 
     public void addLineLink(Line l, Shape link, int index) {
-        ArrayList<Shape> list = lineLinks.get(l);
+        ArrayList<Shape> list = getLineLinks().get(l);
         list.add(index, link);
         links.add(link);
     }
@@ -905,27 +918,27 @@ public class GameView {
     public void removeLineLink(Line l, boolean inFirst) {
         Shape s;
         if (inFirst) {
-            s = lineLinks.get(l).remove(0);
+            s = getLineLinks().get(l).remove(0);
             System.err.println("REMOVING IN FIRST");
         } else {
-            s = lineLinks.get(l).remove(lineLinks.get(l).size() - 1);
+            s = getLineLinks().get(l).remove(getLineLinks().get(l).size() - 1);
             System.err.println("REMOVING IN LAST");
         }
 
         group.getChildren().remove(s);
         links.remove(s);
 
-        if (lineLinks.get(l).size() == 0)
-            lineLinks.remove(l);
+        if (getLineLinks().get(l).size() == 0)
+            getLineLinks().remove(l);
     }
 
     public void removeLineLink(Line l, Shape link) {
 
-        lineLinks.get(l).remove(link);
+        getLineLinks().get(l).remove(link);
         group.getChildren().remove(link);
         links.remove(link);
-        if (lineLinks.get(l).size() == 0)
-            lineLinks.remove(l);
+        if (getLineLinks().get(l).size() == 0)
+            getLineLinks().remove(l);
     }
 
     public void addNode(Node n) {
@@ -971,6 +984,13 @@ public class GameView {
         // clients.put(c,new fxClient(c));
 
         group.getChildren().add(getClients().get(c).shape);
+    }
+
+    public void removeClient(List<Client> list) {
+        for (Client c : list) {
+            group.getChildren().remove(getClients().get(c).shape);
+            getClients().remove(c);
+        }
     }
 
     public void put(List<Client> list) {
@@ -1027,13 +1047,13 @@ public class GameView {
     }
 
     public boolean intersects(Shape f) {
-        for (Shape l : links) {
-            Shape intersect = Shape.intersect(f, l);
-            if (intersect.getBoundsInLocal().getWidth() != -1) {
-                System.err.println("INTERSECTS !! ");
-                return true;
-            }
-        }
+        // for (Shape l : links) {
+        // Shape intersect = Shape.intersect(f, l);
+        // if (intersect.getBoundsInLocal().getWidth() != -1) {
+        // System.err.println("INTERSECTS !! ");
+        // return true;
+        // }
+        // }
         return false;
     }
 
@@ -1093,4 +1113,12 @@ public class GameView {
     public void setClients(HashMap<Client, fxClient> clients) {
         GameView.clients = clients;
     }
+
+	public HashMap<model.Line, ArrayList<Shape>> getLineLinks() {
+		return lineLinks;
+	}
+
+	public void setLineLinks(HashMap<model.Line, ArrayList<Shape>> lineLinks) {
+		this.lineLinks = lineLinks;
+	}
 }

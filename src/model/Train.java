@@ -100,30 +100,30 @@ public class Train {
 
     public void addClient(Client client) {
         // Add client to train
-        if (clientList.size() < Game.vehicleCapacity)
+        if (clientList.size() < this.capacity)
             clientList.add(client);
-        else {
-            for (Wagon current : wagonList) {
-                if (!current.isFull()) {
-                    current.addClient(client);
-                    return;
-                }
-            }
-        }
+//        else {
+//            for (Wagon current : wagonList) {
+//                if (!current.isFull()) {
+//                    current.addClient(client);
+//                    return;
+//                }
+//            }
+//        }
     }
 
     public void removeClient(Client client) {
 
         if (clientList.contains(client))
             clientList.remove(client);
-        else {
-            for (Wagon current : wagonList) {
-                if (current.getClientList().contains(client)) {
-                    current.removeClient(client);
-                    return;
-                }
-            }
-        }
+//        else {
+//            for (Wagon current : wagonList) {
+//                if (current.getClientList().contains(client)) {
+//                    current.removeClient(client);
+//                    return;
+//                }
+//            }
+//        }
     }
 
     public void stopAtStation() {

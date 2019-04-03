@@ -40,13 +40,14 @@ public class fxClock extends Group {
         clockNeedle.setStroke(Color.WHITESMOKE);
 
         moveNeedle(0);
-        dayName = new Text(posX - 90, posY + 7, "鏄熸湡涓�");
+        dayName = new Text(posX - 90, posY + 7, "");
         dayName.setFill(Color.web("#42322f", 1));
         dayName.setFont(Font.font(null, FontWeight.SEMI_BOLD, 20));
 
         getChildren().add(clockBorder);
         getChildren().add(clockNeedle);
         getChildren().add(dayName);
+        nbDay = 0;
     }
 
     public Point2D calcEndPoint(Point2D origin, double radius, double angle) {
@@ -88,11 +89,8 @@ public class fxClock extends Group {
             this.dayName.setText(dayName);
             ++nbDay;
             System.out.println("进入第" + nbDay + "天");
-            if (nbDay == 1 && GameView.round == 0) {
+            if (nbDay == 50 && GameView.round == 0) {
                 GameView.go2ndPart();
-            }
-            if (nbDay == 2 && (GameView.round == 6 || GameView.round == 7)) {
-            	Controller.game.setGift();
             }
         }
 

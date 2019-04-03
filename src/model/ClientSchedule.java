@@ -18,6 +18,8 @@ public class ClientSchedule {
 	static ClientProgress sector = new ClientProgress();
 
 	static int round;
+	
+	static boolean showClient = false;
 
 	static Game game;
 	static GameView gameView;
@@ -35,11 +37,16 @@ public class ClientSchedule {
 		round = c;
 		game = g;
 		gameView = gv;
+		showClient = false;
 	}
 
 	public List<Client> computeProgress(Clock clock) {
 		List<Client> resList = new ArrayList<>();
+		// System.out.println("computeProgress round: "+round);
 		if (round == 0) {
+			showClient = true;
+		}
+		if (round == 0 && showClient) {
 			// 第一阶段
 			if (clock.getTime() == 10) {
 				circle.addProgress(ShapeType.TRIANGLE, 1.5);
@@ -73,246 +80,7 @@ public class ClientSchedule {
 					diamond.addProgress(ShapeType.SQUARE, 0.5);
 				}
 			}
-		} else if (round == 2) {
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-			// 第二阶段第一回合
-		} else if (round == 3) {
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-			// 第二阶段第二回合
-			Game.getInventory().setInventory(3, 0, 3, 0, 0);
-		} else if (round == 4) {
-			// 第二阶段第三回合
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-		} else if (round == 5) {
-			// 第二阶段第四回合
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-		} else if (round == 6) {
-			// 第二阶段第五回合
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-		} else if (round == 7) {
-			// 第三阶段第一回合
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-		} else if (round == 8) {
-			// 第三阶段第二回合
-			if (clock.getTime() == 10) {
-				circle.addProgress(ShapeType.TRIANGLE, 1.5);
-				circle.addProgress(ShapeType.CROSS, 0.25);
-			} else if (clock.getTime() == 16) {
-				circle.addProgress(ShapeType.SQUARE, 0.8);
-				triangle.addProgress(ShapeType.CIRCLE, 1.5);
-			} else if (clock.getTime() == 18) {
-				triangle.addProgress(ShapeType.SQUARE, 0.3);
-			} else if (clock.getTime() == 4) {
-				cross.addProgress(ShapeType.CIRCLE, 0.5);
-			} else if (clock.getTime() == 8) {
-				cross.addProgress(ShapeType.SQUARE, 0.2);
-				cross.addProgress(ShapeType.DIAMOND, 2);
-				star.addProgress(ShapeType.SQUARE, 2);
-			}
-
-			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
-				if (clock.getTime() == 9) {
-					triangle.addProgress(ShapeType.CIRCLE, 0.5);
-				} else if (clock.getTime() == 12) {
-					circle.addProgress(ShapeType.DIAMOND, 0.25);
-				} else if (clock.getTime() == 14) {
-					square.addProgress(ShapeType.CIRCLE, 0.5);
-					square.addProgress(ShapeType.TRIANGLE, 0.5);
-					square.addProgress(ShapeType.STAR, 1);
-				} else if (clock.getTime() == 15) {
-					star.addProgress(ShapeType.SQUARE, 2);
-				} else if (clock.getTime() == 13) {
-					square.addProgress(ShapeType.STAR, 1);
-					diamond.addProgress(ShapeType.SQUARE, 0.5);
-				}
-			}
-		} else if (round == 9) {
+		} else if (round == 6 && showClient) {
 			// 第四阶段第一回合
 			if (clock.getTime() == 10) {
 				circle.addProgress(ShapeType.TRIANGLE, 1.5);
@@ -346,7 +114,109 @@ public class ClientSchedule {
 					diamond.addProgress(ShapeType.SQUARE, 0.5);
 				}
 			}
-		} else if (round == 10) {
+		} else if (round == 7 && showClient) {
+			// 第四阶段第二回合
+			if (clock.getTime() == 10) {
+				circle.addProgress(ShapeType.TRIANGLE, 1.5);
+				circle.addProgress(ShapeType.CROSS, 0.25);
+			} else if (clock.getTime() == 16) {
+				circle.addProgress(ShapeType.SQUARE, 0.8);
+				triangle.addProgress(ShapeType.CIRCLE, 1.5);
+			} else if (clock.getTime() == 18) {
+				triangle.addProgress(ShapeType.SQUARE, 0.3);
+			} else if (clock.getTime() == 4) {
+				cross.addProgress(ShapeType.CIRCLE, 0.5);
+			} else if (clock.getTime() == 8) {
+				cross.addProgress(ShapeType.SQUARE, 0.2);
+				cross.addProgress(ShapeType.DIAMOND, 2);
+				star.addProgress(ShapeType.SQUARE, 2);
+			}
+
+			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
+				if (clock.getTime() == 9) {
+					triangle.addProgress(ShapeType.CIRCLE, 0.5);
+				} else if (clock.getTime() == 12) {
+					circle.addProgress(ShapeType.DIAMOND, 0.25);
+				} else if (clock.getTime() == 14) {
+					square.addProgress(ShapeType.CIRCLE, 0.5);
+					square.addProgress(ShapeType.TRIANGLE, 0.5);
+					square.addProgress(ShapeType.STAR, 1);
+				} else if (clock.getTime() == 15) {
+					star.addProgress(ShapeType.SQUARE, 2);
+				} else if (clock.getTime() == 13) {
+					square.addProgress(ShapeType.STAR, 1);
+					diamond.addProgress(ShapeType.SQUARE, 0.5);
+				}
+			}
+		} else if (round == 8 && showClient) {
+			// 第四阶段第二回合
+			if (clock.getTime() == 10) {
+				circle.addProgress(ShapeType.TRIANGLE, 1.5);
+				circle.addProgress(ShapeType.CROSS, 0.25);
+			} else if (clock.getTime() == 16) {
+				circle.addProgress(ShapeType.SQUARE, 0.8);
+				triangle.addProgress(ShapeType.CIRCLE, 1.5);
+			} else if (clock.getTime() == 18) {
+				triangle.addProgress(ShapeType.SQUARE, 0.3);
+			} else if (clock.getTime() == 4) {
+				cross.addProgress(ShapeType.CIRCLE, 0.5);
+			} else if (clock.getTime() == 8) {
+				cross.addProgress(ShapeType.SQUARE, 0.2);
+				cross.addProgress(ShapeType.DIAMOND, 2);
+				star.addProgress(ShapeType.SQUARE, 2);
+			}
+
+			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
+				if (clock.getTime() == 9) {
+					triangle.addProgress(ShapeType.CIRCLE, 0.5);
+				} else if (clock.getTime() == 12) {
+					circle.addProgress(ShapeType.DIAMOND, 0.25);
+				} else if (clock.getTime() == 14) {
+					square.addProgress(ShapeType.CIRCLE, 0.5);
+					square.addProgress(ShapeType.TRIANGLE, 0.5);
+					square.addProgress(ShapeType.STAR, 1);
+				} else if (clock.getTime() == 15) {
+					star.addProgress(ShapeType.SQUARE, 2);
+				} else if (clock.getTime() == 13) {
+					square.addProgress(ShapeType.STAR, 1);
+					diamond.addProgress(ShapeType.SQUARE, 0.5);
+				}
+			}
+		} else if (round == 9 && showClient) {
+			// 第四阶段第一回合
+			if (clock.getTime() == 10) {
+				circle.addProgress(ShapeType.TRIANGLE, 1.5);
+				circle.addProgress(ShapeType.CROSS, 0.25);
+			} else if (clock.getTime() == 16) {
+				circle.addProgress(ShapeType.SQUARE, 0.8);
+				triangle.addProgress(ShapeType.CIRCLE, 1.5);
+			} else if (clock.getTime() == 18) {
+				triangle.addProgress(ShapeType.SQUARE, 0.3);
+			} else if (clock.getTime() == 4) {
+				cross.addProgress(ShapeType.CIRCLE, 0.5);
+			} else if (clock.getTime() == 8) {
+				cross.addProgress(ShapeType.SQUARE, 0.2);
+				cross.addProgress(ShapeType.DIAMOND, 2);
+				star.addProgress(ShapeType.SQUARE, 2);
+			}
+
+			if (clock.getDay() == "星期六" || clock.getDay() == "星期天") {
+				if (clock.getTime() == 9) {
+					triangle.addProgress(ShapeType.CIRCLE, 0.5);
+				} else if (clock.getTime() == 12) {
+					circle.addProgress(ShapeType.DIAMOND, 0.25);
+				} else if (clock.getTime() == 14) {
+					square.addProgress(ShapeType.CIRCLE, 0.5);
+					square.addProgress(ShapeType.TRIANGLE, 0.5);
+					square.addProgress(ShapeType.STAR, 1);
+				} else if (clock.getTime() == 15) {
+					star.addProgress(ShapeType.SQUARE, 2);
+				} else if (clock.getTime() == 13) {
+					square.addProgress(ShapeType.STAR, 1);
+					diamond.addProgress(ShapeType.SQUARE, 0.5);
+				}
+			}
+		} else if (round == 10 && showClient) {
 			// 第四阶段第二回合
 			if (clock.getTime() == 10) {
 				circle.addProgress(ShapeType.TRIANGLE, 1.5);
@@ -385,7 +255,7 @@ public class ClientSchedule {
 		for (ShapeType shape : ShapeType.values()) {
 			if (circle.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.CIRCLE)) {
+					if (station.getType().equals(ShapeType.CIRCLE) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -396,7 +266,7 @@ public class ClientSchedule {
 			}
 			if (triangle.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.TRIANGLE)) {
+					if (station.getType().equals(ShapeType.TRIANGLE) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -407,7 +277,7 @@ public class ClientSchedule {
 			}
 			if (sector.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.SECTOR)) {
+					if (station.getType().equals(ShapeType.SECTOR) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -418,7 +288,7 @@ public class ClientSchedule {
 			}
 			if (square.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.SQUARE)) {
+					if (station.getType().equals(ShapeType.SQUARE) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -429,7 +299,7 @@ public class ClientSchedule {
 			}
 			if (diamond.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.DIAMOND)) {
+					if (station.getType().equals(ShapeType.DIAMOND) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -440,7 +310,7 @@ public class ClientSchedule {
 			}
 			if (pentagon.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.PENTAGON)) {
+					if (station.getType().equals(ShapeType.PENTAGON) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -451,7 +321,7 @@ public class ClientSchedule {
 			}
 			if (cross.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.CROSS)) {
+					if (station.getType().equals(ShapeType.CROSS) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));
@@ -462,7 +332,7 @@ public class ClientSchedule {
 			}
 			if (star.getProgress(shape) >= 1) {
 				for (Station station : game.getStationList()) {
-					if (station.getType().equals(ShapeType.STAR)) {
+					if (station.getType().equals(ShapeType.STAR) && game.includesStationType(shape)) {
 						Client c = new Client(station, shape);
 						resList.add(c);
 						gameView.getClients().put(c, new fxClient(c));

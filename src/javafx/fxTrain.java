@@ -87,7 +87,7 @@ public class fxTrain extends Group {
         double rotation = angle(p, new Position(trainX, trainY)), x = p.getX(), y = p.getY();
         setRotate(rotation);
         /* +100 to avoid bug with a duration equal to 0 with the translate transition */
-        double millis = 7 * distance(trainX, trainY, x, y);
+        double millis = 10 * distance(trainX, trainY, x, y);
         move = new TranslateTransition(new Duration(millis), this);
         move.setByX(x - trainX);
         move.setByY(y - trainY);
@@ -130,8 +130,8 @@ public class fxTrain extends Group {
 
         Rectangle r = (Rectangle) getChildren().get(0);
 
-        double dx = r.getX() + (width / 8) + (index % 4) * (width / 4);
-        double dy = r.getY() + (height / 4) + (index / 4) * (height / 2);
+        double dx = r.getX() + (width / 4) + (index % 3) * (width / 4);
+        double dy = r.getY() + (height / 4) + (index / 3) * (height / 2);
 
         s.setLayoutX(dx);
         s.setLayoutY(dy);
@@ -154,11 +154,11 @@ public class fxTrain extends Group {
         double dx = 0;
         double dy = 0;
         if (this.isWagon) {
-            dx = r.getX() + (width / 8) + (index % 3) * (width / 4);
-            dy = r.getY() + (height / 4) + (index / 3) * (height / 2);
+            dx = r.getX() + (width / 8) + (index % 6) * (width / 8);
+            dy = r.getY() + (height / 4) + (index / 6) * (height / 2);
         } else {
-            dx = r.getX() + (width / 8) + (index % 4) * (width / 4);
-            dy = r.getY() + (height / 4) + (index / 4) * (height / 2);
+            dx = r.getX() + (width / 4) + (index % 3) * (width / 4);
+            dy = r.getY() + (height / 4) + (index / 3) * (height / 2);
         }
 
         switch (cl.getType()) {

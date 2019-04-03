@@ -25,7 +25,7 @@ public class Station {
     public Station(ShapeType t, Position p) {
         pos = p;
         type = t;
-        links = new ArrayList<Station>();
+        setLinks(new ArrayList<Station>());
         lines = new ArrayList<>();
         distances[t.ordinal()] = 0;
         clientList = new ArrayList<Client>();
@@ -111,13 +111,13 @@ public class Station {
     }
 
     public void addLink(Station st) {
-        links.add(st);
-        st.links.add(this);
+        getLinks().add(st);
+        st.getLinks().add(this);
     }
 
     public void removeLink(Station st) {
-        links.remove(st);
-        st.links.remove(this);
+        getLinks().remove(st);
+        st.getLinks().remove(this);
     }
 
     public void computeDistances() {
@@ -130,7 +130,7 @@ public class Station {
         while (!bsearch.isEmpty()) {
             ArrayList<Station> bbsearch = new ArrayList<>();
             for (Station s : bsearch) {
-                for (Station s2 : s.links) {
+                for (Station s2 : s.getLinks()) {
                     if (!s2.checked) {
                         if (this.distances[s2.type.ordinal()] == -1) {
                             this.distances[s2.type.ordinal()] = distance;
@@ -158,4 +158,12 @@ public class Station {
         for (Station s : stationL)
             s.checked = false;
     }
+
+	public List<Station> getLinks() {
+		return links;
+	}
+
+	public void setLinks(List<Station> links) {
+		this.links = links;
+	}
 }
