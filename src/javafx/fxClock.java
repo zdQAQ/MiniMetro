@@ -89,8 +89,8 @@ public class fxClock extends Group {
             this.dayName.setText(dayName);
             ++nbDay;
             System.out.println("进入第" + nbDay + "天");
-            if (nbDay == 50 && GameView.round == 0) {
-                GameView.go2ndPart();
+            if (nbDay == 64 && GameView.round == 0) {
+                Main.proceed(1);
             }
         }
 

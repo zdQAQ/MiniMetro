@@ -186,12 +186,12 @@ public class Main extends Application {
         }
         
         public void submit41(String s) {
-        	proceed(9);
+        	proceed(8);
         	GameView.round9.close();
         }
         
         public void submit42(String s) {
-        	proceed(10);
+        	proceed(9);
         	GameView.round10.close();
         }
     }

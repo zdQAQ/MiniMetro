@@ -127,6 +127,7 @@ public class Game {
                         sleep(event.getTiming());
                         if (event != null) {
                             System.out.println(event);
+                            event.setFinished(true);
                             Station st = new Station(event.getStationType(), event.getPosition());
                             Platform.runLater(() -> addToView(st));
                         }
@@ -344,7 +345,7 @@ public class Game {
     public void start() throws InterruptedException {
         pause = false;
         popStation();
-        if (GameView.round == 0 || GameView.round == 9 || GameView.round == 10) {
+        if (GameView.round == 0 || GameView.round == 8 || GameView.round == 9) {
             timeGo();
         }
     }
@@ -357,54 +358,51 @@ public class Game {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         if (round + 1 == 1) {
-            alert.setTitle("进入第一阶段~");
+            alert.setTitle("第1阶段~");
             alert.setHeaderText("你需要作为见习生应对城市中不断涌现的站点与乘客，探索学习最高效的线路设计方法，合理规划线路，避免拥堵，追求运营分数最大化。");
-            alert.setContentText("PS：新手指引藏在记事本中，认真阅读会带给你很大的帮助");
+            alert.setContentText("PS：如果你是第一次玩游戏请不要点击跳过该阶段的按钮，那个按钮是为游戏崩溃后重新开始的宝宝准备的，偷偷点了就没被试费啦");
         } else if (round + 1 == 2) {
-            alert.setTitle("进入第二阶段第一回合~");
-            alert.setHeaderText("请看题～");
-            alert.setContentText("注意：每输入数字");
+            alert.setTitle("第2阶段第1回合~");
+            alert.setHeaderText("为了检验你的见习成果，在第2阶段你需要完成5个小测试");
+            alert.setContentText("注意：设计提交后不可修改或撤回，请谨慎作答\r\n" + 
+            		"记事本中会显示当前回合的任务与上一回合的知识点，有疑问时不妨去看一下");
         } else if (round + 1 == 3) {
-            alert.setTitle("进入第二阶段第二回合~");
+            alert.setTitle("第2阶段第2回合~");
             alert.setHeaderText("使用3条线路3辆机车覆盖所有站点，构建你认为最高效的铁路网");
             alert.setContentText("注意：每条线路最多穿过5个站点");
         } else if (round + 1 == 4) {
-            alert.setTitle("进入第二阶段第三回合~");
+            alert.setTitle("第2阶段第3回合~");
             alert.setHeaderText("使用3条线路3辆机车覆盖所有站点，构建你认为最高效的铁路网");
             alert.setContentText("注意：每条线路最多穿过6个站点；");
         } else if (round + 1 == 5) {
-            alert.setTitle("进入第二阶段第四回合~");
+            alert.setTitle("第2阶段第4回合~");
             alert.setHeaderText("使用3条线路3辆机车覆盖所有站点，构建你认为最高效的铁路网");
             alert.setContentText("注意：每条线路最多穿过6个站点\r\n" + 
             		"每个站点最多经过2条线路");
         } else if (round + 1 == 6) {
-            alert.setTitle("进入第二阶段第五回合~");
+            alert.setTitle("第2阶段第5回合~");
             alert.setHeaderText("使用3条线路5辆机车覆盖所有站点，构建你认为最高效的铁路网");
         } else if (round + 1 == 7) {
-            alert.setTitle("进入第三阶段第一回合~");
-            alert.setHeaderText("该来的总是要来，见习结束的你在第3阶段需要再设计两张复杂的地图。");
+            alert.setTitle("第3阶段第1回合~");
+            alert.setHeaderText("正式上岗，现实中的情况比见习复杂很多，你需要自主选择物资后设计线路，物资以二选一的方式提供，共十次选择机会\r\n" + 
+            		"设计完成后点击激活乘客按钮可运行铁路网，之后你仅有一次暂停修改线路并提交的机会，该回合得分以最终设计的效率高低为准");
             alert.setContentText(
-                    "见习检验合格，你将正式上岗~现实中的情况比之前更为复杂，请认真观察地图结合任务要求储备列车等物资，设计高效的铁路网");
+                    "注意：本地图共43个站点，最多可拥有6条线路，每条线路最多拥有3辆机车、9站点，每个站点最多可穿过3条线路。");
         } else if (round + 1 == 8) {
-            alert.setTitle("进入第三阶段第二回合~");
-            alert.setHeaderText("本地图共43个站点，玩家需要自主选择物资后设计线路");
+            alert.setTitle("第3阶段第2回合~");
+            alert.setHeaderText("本地图共40个站点，你需要自主选择物资后设计线路，物资以二选一的方式提供，共十次选择机会\r\n" + 
+            		"设计完成后点击激活乘客按钮可运行铁路网，之后你仅有一次暂停修改线路并提交的机会，该回合得分以最终设计的效率高低为准");
             alert.setContentText(
-                    "物资以二选一的方式提供，共十次选择机会。");
+                    "注意：本地图最多可拥有7条线路，每条线路最多拥有4辆机车、10站点");
         } else if (round + 1 == 9) {
-            alert.setTitle("进入第三阶段第三回合~");
-            alert.setHeaderText("仔细观察地图后点击资源选择按钮，采用二选一的方式进行十次选择，一次性选择所有你在当前地图要用的工具并设计线路。");
+            alert.setTitle("第4阶段第1回合~");
+            alert.setHeaderText("观察两位见习生的铁路设计图，指出该设计中可能爆掉的车站，并使用现有资源重新设计线路给予他们指导。");
             alert.setContentText(
-                    "注意！设计提交后仅有1次暂停修改设计的机会，该回合的得分等于最终设计的效率分。"
-                    + "设计完成后点击“激活乘客”可运行铁路网，之后你仅有一次暂停修改线路并提交的机会，该回合得分以最终设计的效率高低为准"
-                    + "注意：本地图最多可拥有6条线路，每条线路最多拥有3辆机车、9站点，每个站点最多可穿过3条线路。");
+                    "注意！激活乘客后仅有两次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
         } else if (round + 1 == 10) {
-            alert.setTitle("进入第四阶段第一回合~");
-            alert.setHeaderText("作为一名有经验的铁路规划师，你迎来了最后的考验。");
-            alert.setContentText("请观察两位见习生的铁路设计图，指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。注意！设计提交后仅有2次主动暂停修改设计的机会。");
-        } else if (round + 1 == 11) {
-            alert.setTitle("进入第四阶段第二回合~");
-            alert.setHeaderText("做的不错，这是本游戏的最后一回合，加油哦~");
-            alert.setContentText("指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。\n" + "注意！设计提交后仅有2次主动暂停修改设计的机会。");
+            alert.setTitle("第4阶段第2回合~");
+            alert.setHeaderText("观察两位见习生的铁路设计图，指出该设计中可能爆掉的车站，并使用现有资源重新设计线路给予他们指导。");
+            alert.setContentText("注意！激活乘客后仅有两次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
         } else {
             alert.setTitle("进入下一阶段~");
             alert.setHeaderText("游戏结束");
@@ -431,10 +429,10 @@ public class Game {
         if (result.get() == buttonTypeTwo) {
             // 第三回合第一阶段和第二阶段 直接资源
             if (round == 6 || round == 7) {
-                Platform.runLater(() -> setGift());
-            } else if (round != 9 && round != 10) {
+                // Platform.runLater(() -> setGift());
+            } else if (round != 8 && round != 9) {
                 resumeGame();
-            } else if (round == 11) {
+            } else if (round == 10) {
                 view.endOfGame();
             }
         }

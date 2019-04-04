@@ -53,7 +53,6 @@ public class Controller implements Initializable {
 
     public static int mapType;
 
-
     private fxClock clock;
     static fxInformations info;
 
@@ -173,8 +172,6 @@ public class Controller implements Initializable {
             setInfo(3, 1, 3, 4, 0);
         } else if (round == 9) {
             setInfo(4, 2, 3, 6, 0);
-        } else if (round == 10) {
-            setInfo(7, 2, 5, 4, 0);
         }
         group = g;
         gameView = new GameView(g, this);
@@ -195,17 +192,15 @@ public class Controller implements Initializable {
             game = new Game(gameView, 3, 1, 3, 4, 0);
         } else if (round == 9) {
             game = new Game(gameView, 4, 2, 3, 6, 0);
-        } else if (round == 10) {
-            game = new Game(gameView, 7, 2, 5, 4, 0);
         }
 
         clientSchedule = new ClientSchedule(round, game, gameView);
         schedule = new Schedule(round, g, gameView, game);
-        
+
         setMapType(round);
         game.setSchedule(schedule);
 
-        if (round != 1 && round <= 10) {
+        if (round != 1 && round <= 9) {
             game.setClientSchedule(clientSchedule);
             // game.resumeGame();
             try {
@@ -306,49 +301,55 @@ public class Controller implements Initializable {
             public void handle(MouseEvent event) {
                 System.err.println("Line draged " + line);
                 System.err.println("Path " + line.getPath());
-                shape.startFullDrag();
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    shape.startFullDrag();
+                }
             }
         });
 
         shape.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
             @Override
             public void handle(MouseDragEvent event) {
-                if (trainPressed) {
-                    if (modelTrain != null) {
-                        modelTrain.changeLine(new Position(event.getX(), event.getY()), line);
-                        gameView.trainChangeLine(modelTrain);
-                        if (Game.getPause()) {
-                            modelTrain.move();
-                            gameView.get(modelTrain).pause();
-                        }
-                        modelTrain = null;
-                    } else if (modelTrain == null) {
-                        System.out.println("drop train");
-                        int index = line.getStationList().indexOf(a);
-                        modelTrain = new Train(index, line, true);
-                        line.addTrain(modelTrain);
-                        gameView.put(modelTrain, line.getStationList().get(index).getPosition());
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    if (trainPressed) {
+                        if (modelTrain != null) {
+                            modelTrain.changeLine(new Position(event.getX(), event.getY()), line);
+                            gameView.trainChangeLine(modelTrain);
+                            if (Game.getPause()) {
+                                modelTrain.move();
+                                gameView.get(modelTrain).pause();
+                            }
+                            modelTrain = null;
+                        } else if (modelTrain == null) {
+                            System.out.println("drop train");
+                            int index = line.getStationList().indexOf(a);
+                            modelTrain = new Train(index, line, true);
+                            line.addTrain(modelTrain);
+                            gameView.put(modelTrain, line.getStationList().get(index).getPosition());
 
-                        modelTrain.move();
-                        if (Game.getPause())
-                            gameView.get(modelTrain).pause();
-                        modelTrain = null;
-                        Game.getInventory().subTrainNb();
-                        gameView.updateTrainNb(Game.getInventory().getTrainNb());
-                    }
-                    trainPressed = false;
-                } else if (wagonPressed) {
-                    if (line.getTrainList().size() != 0) {
-                        modelTrain = new Train(0, line, true);
-                        line.addTrain(modelTrain);
-                        gameView.putWagon(modelTrain, true, line);
-                        modelTrain.move();
-                        if (Game.getPause())
-                            gameView.get(modelTrain).pause();
-                        modelTrain = null;
-                        Game.getInventory().subWagonNb();
-                        gameView.updateWagonNb(Game.getInventory().getWagonNb());
-                        wagonPressed = false;
+                            modelTrain.move();
+                            if (Game.getPause())
+                                gameView.get(modelTrain).pause();
+                            modelTrain = null;
+                            Game.getInventory().subTrainNb();
+                            gameView.updateTrainNb(Game.getInventory().getTrainNb());
+                        }
+                        trainPressed = false;
+                    } else if (wagonPressed) {
+                        if (line.getTrainList().size() != 0) {
+                            modelTrain = new Train(0, line, true);
+                            line.addTrain(modelTrain);
+                            gameView.putWagon(modelTrain, true, line);
+                            modelTrain.move();
+                            if (Game.getPause())
+                                gameView.get(modelTrain).pause();
+                            modelTrain = null;
+                            Game.getInventory().subWagonNb();
+                            gameView.updateWagonNb(Game.getInventory().getWagonNb());
+                            wagonPressed = false;
+                        }
                     }
                 }
 
@@ -358,32 +359,41 @@ public class Controller implements Initializable {
         shape.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                currentLine = line;
-                currentStation = a;
-                currentStation2 = b;
-                currentLink = shape;
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    currentLine = line;
+                    currentStation = a;
+                    currentStation2 = b;
+                    currentLink = shape;
+                }
             }
         });
 
         shape.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (currentStation2 != null)
-                    gameView.addLink(currentLink);
-                currentLine = null;
-                currentStation = null;
-                currentStation2 = null;
-                currentLink = null;
-                group.getChildren().remove(drawing2);
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    if (currentStation2 != null)
+                        gameView.addLink(currentLink);
+                    currentLine = null;
+                    currentStation = null;
+                    currentStation2 = null;
+                    currentLink = null;
+                    group.getChildren().remove(drawing2);
+                }
             }
         });
 
         shape.setOnMouseDragged(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                x2 = event.getX();
-                y2 = event.getY();
-                displayDrawingFromLine(a, b, x2, y2);
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    x2 = event.getX();
+                    y2 = event.getY();
+                    displayDrawingFromLine(a, b, x2, y2);
+                }
 
             }
         });
@@ -393,30 +403,39 @@ public class Controller implements Initializable {
         shape.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                shape.startFullDrag();
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    shape.startFullDrag();
+                }
             }
         });
 
         shape.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Position pos = modelSt.getPosition();
-                x = pos.getX();
-                y = pos.getY();
-                shape.setStroke(Color.TRANSPARENT);
-                stationPressed = true;
-                TPressed = true;
-                currentStation = modelSt;
-                currentT = shape;
-                currentLine = modelLine;
-                currentLink = link;
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    Position pos = modelSt.getPosition();
+                    x = pos.getX();
+                    y = pos.getY();
+                    shape.setStroke(Color.TRANSPARENT);
+                    stationPressed = true;
+                    TPressed = true;
+                    currentStation = modelSt;
+                    currentT = shape;
+                    currentLine = modelLine;
+                    currentLink = link;
+                }
             }
         });
 
         shape.setOnMouseReleased(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                shape.setStroke(currentLine.getColor());
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    shape.setStroke(currentLine.getColor());
+                }
             }
         });
     }
@@ -425,7 +444,10 @@ public class Controller implements Initializable {
         shape.setOnDragDetected(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                shape.startFullDrag();
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    shape.startFullDrag();
+                }
             }
 
         });
@@ -433,281 +455,291 @@ public class Controller implements Initializable {
         shape.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Position pos = modelSt.getPosition();
-                x = pos.getX();
-                y = pos.getY();
-                stationPressed = true;
-                currentStation = modelSt;
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    Position pos = modelSt.getPosition();
+                    x = pos.getX();
+                    y = pos.getY();
+                    stationPressed = true;
+                    currentStation = modelSt;
+                }
             }
         });
 
         shape.setOnMouseDragOver(new EventHandler<MouseDragEvent>() {
             @Override
             public void handle(MouseDragEvent event) {
-                if (stationPressed) {
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    if (stationPressed) {
 
-                    /* Removes the station from the selected line */
-                    if (modelSt == currentStation && TPressed && canRemove) {
+                        /* Removes the station from the selected line */
+                        if (modelSt == currentStation && TPressed && canRemove) {
 
-                        if (!currentLine.getStationList().contains(modelSt))
-                            return;
+                            if (!currentLine.getStationList().contains(modelSt))
+                                return;
 
-                        canConstruct = false;
+                            canConstruct = false;
 
-                        boolean firstEnd = gameView.isFirstEnd(currentT, currentLine);
+                            boolean firstEnd = gameView.isFirstEnd(currentT, currentLine);
 
-                        group.getChildren().remove(currentT);
+                            group.getChildren().remove(currentT);
 
-                        Position middle;
-                        /* The station which will become a end of it's line */
-                        Station nextStation;
+                            Position middle;
+                            /* The station which will become a end of it's line */
+                            Station nextStation;
 
-                        /* Delete line */
-                        if (currentLine.getStationList().size() == 2) {
+                            /* Delete line */
+                            if (currentLine.getStationList().size() == 2) {
+
+                                if (gameView.intersectRiver(currentLink)) {
+                                    game.getInventory().addTunnelNb(1);
+                                    gameView.updateTunnelNb(game.getInventory().getTunnelNb());
+                                }
+
+                                gameView.removeEnds(currentLine);
+                                gameView.removeLineLink(currentLine, true);
+
+                                ArrayList<Client> toDeposit = new ArrayList<Client>();
+
+                                Station a = currentLine.getStationList().get(0);
+                                Station b = currentLine.getStationList().get(1);
+
+                                for (Train tr : currentLine.getTrainList()) {
+                                    gameView.removeTrain(tr);
+                                    toDeposit.addAll(tr.getClientList());
+                                    tr.setLine(null);
+                                    game.getInventory().addTrain();
+                                }
+                                game.getInventory().addLineNb();
+                                gameView.updateTrainNb(game.getInventory().getTrainNb());
+                                gameView.updateLineNb(game.getInventory().getLineNb());
+
+                                a.removeLink(b);
+                                currentLine.removeStation(a);
+                                currentLine.removeStation(b);
+                                game.addColor(currentLine.getColor());
+
+                                for (Client cl : toDeposit) {
+                                    if (cl.getType() != a.getType()) {
+                                        cl.setStation(a);
+                                        a.addClient(cl);
+                                        game.addToView(cl);
+                                    }
+                                }
+                                return;
+                            }
+                            boolean inFirst = currentLine.getStationList().indexOf(modelSt) == 0;
+
+                            /* Removing the link */
+                            Shape nextLink = gameView.getNextLineLink(currentLine, inFirst);
 
                             if (gameView.intersectRiver(currentLink)) {
                                 game.getInventory().addTunnelNb(1);
                                 gameView.updateTunnelNb(game.getInventory().getTunnelNb());
                             }
 
-                            gameView.removeEnds(currentLine);
-                            gameView.removeLineLink(currentLine, true);
+                            System.err.println(
+                                    "NEXT LINK INDEX " + gameView.getLineLinks().get(currentLine).indexOf(nextLink));
 
-                            ArrayList<Client> toDeposit = new ArrayList<Client>();
+                            gameView.removeLineLink(currentLine, inFirst);
+                            nextStation = gameView.getNextStation(currentLine, nextLink);
 
-                            Station a = currentLine.getStationList().get(0);
-                            Station b = currentLine.getStationList().get(1);
+                            if (inFirst)
+                                middle = currentLine.getPath().get(3);
+                            else
+                                middle = currentLine.getPath().get(currentLine.getPath().size() - 4);
 
-                            for (Train tr : currentLine.getTrainList()) {
-                                gameView.removeTrain(tr);
-                                toDeposit.addAll(tr.getClientList());
-                                tr.setLine(null);
-                                game.getInventory().addTrain();
+                            middleX = middle.getX();
+                            middleY = middle.getY();
+
+                            fxEndLine movedEndLine = new fxEndLine(nextStation, middleX, middleY);
+                            movedEndLine.setStroke(currentLine.getColor());
+                            group.getChildren().add(1, movedEndLine);
+
+                            gameView.setLineEnd(currentLine, movedEndLine, firstEnd);
+
+                            addTEvent(movedEndLine, nextStation, currentLine, nextLink);
+
+                            if (!currentLine.isLoop()) {
+                                currentLine.removeStation(modelSt);
+                            } else {
+                                currentLine.removeLoop(modelSt, currentLine.getStationList().indexOf(nextStation) == 1);
                             }
-                            game.getInventory().addLineNb();
-                            gameView.updateTrainNb(game.getInventory().getTrainNb());
-                            gameView.updateLineNb(game.getInventory().getLineNb());
-
-                            a.removeLink(b);
-                            currentLine.removeStation(a);
-                            currentLine.removeStation(b);
-                            game.addColor(currentLine.getColor());
-
-                            for (Client cl : toDeposit) {
-                                if (cl.getType() != a.getType()) {
-                                    cl.setStation(a);
-                                    a.addClient(cl);
-                                    game.addToView(cl);
-                                }
-                            }
-                            return;
-                        }
-                        boolean inFirst = currentLine.getStationList().indexOf(modelSt) == 0;
-
-                        /* Removing the link */
-                        Shape nextLink = gameView.getNextLineLink(currentLine, inFirst);
-
-                        if (gameView.intersectRiver(currentLink)) {
-                            game.getInventory().addTunnelNb(1);
-                            gameView.updateTunnelNb(game.getInventory().getTunnelNb());
-                        }
-
-                        System.err.println("NEXT LINK INDEX " + gameView.getLineLinks().get(currentLine).indexOf(nextLink));
-
-                        gameView.removeLineLink(currentLine, inFirst);
-                        nextStation = gameView.getNextStation(currentLine, nextLink);
-
-                        if (inFirst)
-                            middle = currentLine.getPath().get(3);
-                        else
-                            middle = currentLine.getPath().get(currentLine.getPath().size() - 4);
-
-                        middleX = middle.getX();
-                        middleY = middle.getY();
-
-                        fxEndLine movedEndLine = new fxEndLine(nextStation, middleX, middleY);
-                        movedEndLine.setStroke(currentLine.getColor());
-                        group.getChildren().add(1, movedEndLine);
-
-                        gameView.setLineEnd(currentLine, movedEndLine, firstEnd);
-
-                        addTEvent(movedEndLine, nextStation, currentLine, nextLink);
-
-                        if (!currentLine.isLoop()) {
-                            currentLine.removeStation(modelSt);
-                        } else {
-                            currentLine.removeLoop(modelSt, currentLine.getStationList().indexOf(nextStation) == 1);
-                        }
-                        modelSt.removeLink(nextStation);
-
-                        /* FULL DRAG */
-                        currentStation = nextStation;
-                        currentT = movedEndLine;
-                        currentLink = nextLink;
-                        return;
-                    }
-                    /* Avoids self Linking */
-                    else if (modelSt == currentStation) {
-                        return;
-                    }
-
-                    if (canConstruct == false)
-                        return;
-
-                    isDrawing = true;
-                    x2 = modelSt.getPosition().getX();
-                    y2 = modelSt.getPosition().getY();
-                    displayDrawing(x, y, x2, y2);
-
-                    /* cant link when loops */
-                    if (currentLine != null && currentLine.getStationList().size() != 0 && currentLine.isLoop()) {
-                        return;
-                    }
-                    /* Avoids that the middle point of a links be inside the shape */
-                    if (shape.contains(middleX, middleY)) {
-                        if (angle(x, y, middleX, middleY) != 0 && angle(x, y, middleX, middleY) != 90) {
-                            middleX = (x2 + x) / 2;
-                            middleY = (y2 + y) / 2;
-                        }
-                    }
-
-                    Polyline tempLink = new Polyline(x, y, middleX, middleY, x2, y2);
-                    tempLink.setStrokeWidth(6);
-
-                    /* If the current link isn't intersecting other we can add it */
-                    if (!gameView.intersects(tempLink)) {
-                        // check river intersection
-                        boolean riverCrossing = gameView.intersectRiver(tempLink);
-                        if (game.getInventory().getTunnelNb() > 0 || !riverCrossing) {
-                            Shape tunnel;
-                            if (riverCrossing) {
-                                game.getInventory().subTunnelNb(1);
-                                gameView.updateTunnelNb(game.getInventory().getTunnelNb());
-                            }
-                            /* Avoids linking 2 station already linked by the same line */
-                            if (TPressed && !currentLine.addAllowed(modelSt)
-                                    || (currentLine != null && currentLine.getStationList().size() == 2
-                                            && currentLine.getStationList().contains(modelSt)
-                                            && currentLine.getStationList().contains(currentStation))) {
-                                return;
-                            }
-
-                            fxStation toSubstract = new fxStation(new Station(ShapeType.SQUARE, modelSt.getPosition()));
-                            // Shape link = Shape.subtract(tempLink,shape);
-                            Shape link = Shape.subtract(tempLink, toSubstract.shape);
-                            toSubstract = new fxStation(new Station(ShapeType.SQUARE, currentStation.getPosition()));
-                            // link = Shape.subtract(link,gameView.get(currentStation).shape);
-                            link = Shape.subtract(link, toSubstract.shape);
-
-                            if (riverCrossing) { /* Making the tunnel */
-                                link = Shape.subtract(link, gameView.river);
-                                tempLink.getStrokeDashArray().addAll(12d, 15d);
-                                tunnel = gameView.getTunnelShape(tempLink);
-                                link = Shape.union(link, tunnel);
-                            }
-
-                            modelSt.addLink(currentStation);
-                            game.computeAllDistances();
-
-                            fxEndLine endLine = new fxEndLine(modelSt, middleX, middleY);
-
-                            Train train = null;
-
-                            /* this case we create a new Line */
-                            if (TPressed == false) {
-                                if (game.getInventory().getLineNb() == 0)
-                                    return;
-
-                                fxEndLine endLine2 = new fxEndLine(currentStation, middleX, middleY);
-                                group.getChildren().add(1, endLine2);
-                                Color color = game.getColor();
-                                model.Line created = new model.Line(currentStation, modelSt, color, middleX, middleY);// TO
-                                                                                                                      // DO
-                                                                                                                      // LINE
-                                addTEvent(endLine2, currentStation, created, link);
-                                endLine.setStroke(color);
-                                endLine2.setStroke(color);
-                                link.setStroke(color);
-                                link.setFill(color);
-                                currentLine = created;
-                                gameView.createLine(currentLine, endLine, endLine2);
-
-                                game.getInventory().subLineNb();
-
-                                gameView.updateLineNb(game.getInventory().getLineNb());
-                                if (game.getInventory().getTrainNb() != 0) {
-                                    game.getInventory().subTrainNb();
-                                    gameView.updateTrainNb(game.getInventory().getTrainNb());
-
-                                    train = new Train(0, created, true);
-                                    currentLine.addTrain(train);
-
-                                    gameView.put(train);
-                                }
-                            }
-                            addTEvent(endLine, modelSt, currentLine, link);
-                            addLineEvent(link, modelSt, currentStation, currentLine);
-                            group.getChildren().add(1, endLine);
-                            group.getChildren().add(1, link);
-
-                            int currentStationIndex = 0;
-                            /* this case we add a station to the current line */
-                            if (TPressed) {
-                                link.setFill(currentLine.getColor());
-                                link.setStroke(currentLine.getColor());
-                                endLine.setStroke(currentLine.getColor());
-
-                                currentStationIndex = currentLine.getStationList().indexOf(currentStation);
-
-                                boolean wasLoop = currentLine.isLoop();
-
-                                if (currentStationIndex == 0) {
-                                    currentLine.addStation(0, modelSt, middleX, middleY);
-                                } else {
-                                    currentLine.addStation(modelSt, middleX, middleY);
-                                }
-
-                                /* line becomes a loop */
-                                if (!wasLoop && currentLine.isLoop()) {
-                                    Station toRemoveLink;
-                                    if (currentLine.getTrainList().get(0).getDirection()) {
-                                        toRemoveLink = currentLine.getStationList()
-                                                .get(currentLine.getStationList().size() - 2);
-                                    } else {
-                                        toRemoveLink = currentLine.getStationList().get(1);
-                                    }
-                                    modelSt.removeLink(toRemoveLink);
-                                    game.computeAllDistances();
-                                }
-                            }
-
-                            /* To remove the T shape of a line */
-                            if (currentT != null) {
-                                group.getChildren().remove(currentT);
-                            }
-                            System.err.println(currentLine);
-                            gameView.addLineLink(currentLine, link, currentStationIndex == 0);
-
-                            if (TPressed) {
-                                boolean b = gameView.getLineLinks().get(currentLine).indexOf(link) == 0;
-                                gameView.setLineEnd(currentLine, endLine, b);
-                            }
-
-                            if (train != null) {
-                                train.move();
-                                if (Game.getPause())
-                                    gameView.get(train).pause();
-                            }
+                            modelSt.removeLink(nextStation);
 
                             /* FULL DRAG */
-                            currentT = endLine;
-                            currentStation = modelSt;
-                            x = modelSt.getPosition().getX();
-                            y = modelSt.getPosition().getY();
-                            currentLink = link;
-                            TPressed = true;
-                            canRemove = false;
+                            currentStation = nextStation;
+                            currentT = movedEndLine;
+                            currentLink = nextLink;
+                            return;
+                        }
+                        /* Avoids self Linking */
+                        else if (modelSt == currentStation) {
+                            return;
+                        }
 
+                        if (canConstruct == false)
+                            return;
+
+                        isDrawing = true;
+                        x2 = modelSt.getPosition().getX();
+                        y2 = modelSt.getPosition().getY();
+                        displayDrawing(x, y, x2, y2);
+
+                        /* cant link when loops */
+                        if (currentLine != null && currentLine.getStationList().size() != 0 && currentLine.isLoop()) {
+                            return;
+                        }
+                        /* Avoids that the middle point of a links be inside the shape */
+                        if (shape.contains(middleX, middleY)) {
+                            if (angle(x, y, middleX, middleY) != 0 && angle(x, y, middleX, middleY) != 90) {
+                                middleX = (x2 + x) / 2;
+                                middleY = (y2 + y) / 2;
+                            }
+                        }
+
+                        Polyline tempLink = new Polyline(x, y, middleX, middleY, x2, y2);
+                        tempLink.setStrokeWidth(6);
+
+                        /* If the current link isn't intersecting other we can add it */
+                        if (!gameView.intersects(tempLink)) {
+                            // check river intersection
+                            boolean riverCrossing = gameView.intersectRiver(tempLink);
+                            if (game.getInventory().getTunnelNb() > 0 || !riverCrossing) {
+                                Shape tunnel;
+                                if (riverCrossing) {
+                                    game.getInventory().subTunnelNb(1);
+                                    gameView.updateTunnelNb(game.getInventory().getTunnelNb());
+                                }
+                                /* Avoids linking 2 station already linked by the same line */
+                                if (TPressed && !currentLine.addAllowed(modelSt)
+                                        || (currentLine != null && currentLine.getStationList().size() == 2
+                                                && currentLine.getStationList().contains(modelSt)
+                                                && currentLine.getStationList().contains(currentStation))) {
+                                    return;
+                                }
+
+                                fxStation toSubstract = new fxStation(
+                                        new Station(ShapeType.SQUARE, modelSt.getPosition()));
+                                // Shape link = Shape.subtract(tempLink,shape);
+                                Shape link = Shape.subtract(tempLink, toSubstract.shape);
+                                toSubstract = new fxStation(
+                                        new Station(ShapeType.SQUARE, currentStation.getPosition()));
+                                // link = Shape.subtract(link,gameView.get(currentStation).shape);
+                                link = Shape.subtract(link, toSubstract.shape);
+
+                                if (riverCrossing) { /* Making the tunnel */
+                                    link = Shape.subtract(link, gameView.river);
+                                    tempLink.getStrokeDashArray().addAll(12d, 15d);
+                                    tunnel = gameView.getTunnelShape(tempLink);
+                                    link = Shape.union(link, tunnel);
+                                }
+
+                                modelSt.addLink(currentStation);
+                                game.computeAllDistances();
+
+                                fxEndLine endLine = new fxEndLine(modelSt, middleX, middleY);
+
+                                Train train = null;
+
+                                /* this case we create a new Line */
+                                if (TPressed == false) {
+                                    if (game.getInventory().getLineNb() == 0)
+                                        return;
+
+                                    fxEndLine endLine2 = new fxEndLine(currentStation, middleX, middleY);
+                                    group.getChildren().add(1, endLine2);
+                                    Color color = game.getColor();
+                                    model.Line created = new model.Line(currentStation, modelSt, color, middleX,
+                                            middleY);// TO
+                                                     // DO
+                                                     // LINE
+                                    addTEvent(endLine2, currentStation, created, link);
+                                    endLine.setStroke(color);
+                                    endLine2.setStroke(color);
+                                    link.setStroke(color);
+                                    link.setFill(color);
+                                    currentLine = created;
+                                    gameView.createLine(currentLine, endLine, endLine2);
+
+                                    game.getInventory().subLineNb();
+
+                                    gameView.updateLineNb(game.getInventory().getLineNb());
+                                    if (game.getInventory().getTrainNb() != 0) {
+                                        game.getInventory().subTrainNb();
+                                        gameView.updateTrainNb(game.getInventory().getTrainNb());
+
+                                        train = new Train(0, created, true);
+                                        currentLine.addTrain(train);
+
+                                        gameView.put(train);
+                                    }
+                                }
+                                addTEvent(endLine, modelSt, currentLine, link);
+                                addLineEvent(link, modelSt, currentStation, currentLine);
+                                group.getChildren().add(1, endLine);
+                                group.getChildren().add(1, link);
+
+                                int currentStationIndex = 0;
+                                /* this case we add a station to the current line */
+                                if (TPressed) {
+                                    link.setFill(currentLine.getColor());
+                                    link.setStroke(currentLine.getColor());
+                                    endLine.setStroke(currentLine.getColor());
+
+                                    currentStationIndex = currentLine.getStationList().indexOf(currentStation);
+
+                                    boolean wasLoop = currentLine.isLoop();
+
+                                    if (currentStationIndex == 0) {
+                                        currentLine.addStation(0, modelSt, middleX, middleY);
+                                    } else {
+                                        currentLine.addStation(modelSt, middleX, middleY);
+                                    }
+
+                                    /* line becomes a loop */
+                                    if (!wasLoop && currentLine.isLoop()) {
+                                        Station toRemoveLink;
+                                        if (currentLine.getTrainList().get(0).getDirection()) {
+                                            toRemoveLink = currentLine.getStationList()
+                                                    .get(currentLine.getStationList().size() - 2);
+                                        } else {
+                                            toRemoveLink = currentLine.getStationList().get(1);
+                                        }
+                                        modelSt.removeLink(toRemoveLink);
+                                        game.computeAllDistances();
+                                    }
+                                }
+
+                                /* To remove the T shape of a line */
+                                if (currentT != null) {
+                                    group.getChildren().remove(currentT);
+                                }
+                                System.err.println(currentLine);
+                                gameView.addLineLink(currentLine, link, currentStationIndex == 0);
+
+                                if (TPressed) {
+                                    boolean b = gameView.getLineLinks().get(currentLine).indexOf(link) == 0;
+                                    gameView.setLineEnd(currentLine, endLine, b);
+                                }
+
+                                if (train != null) {
+                                    train.move();
+                                    if (Game.getPause())
+                                        gameView.get(train).pause();
+                                }
+
+                                /* FULL DRAG */
+                                currentT = endLine;
+                                currentStation = modelSt;
+                                x = modelSt.getPosition().getX();
+                                y = modelSt.getPosition().getY();
+                                currentLink = link;
+                                TPressed = true;
+                                canRemove = false;
+
+                            }
                         }
                     }
                 }
@@ -717,162 +749,169 @@ public class Controller implements Initializable {
         shape.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
             @Override
             public void handle(MouseDragEvent event) {
-                if (hingePressed == true) {
-                    modelSt.setCapacity(20);
-                    Game.getInventory().subStationNb();
-                    getInfo().setNbStation(Game.getInventory().getStationNb());
-                    hingePressed = false;
-                    // modelSt.startFullTimer();
-                }
-                if (currentStation2 != null) {
-
-                    if (currentLine.getStationList().contains(modelSt))
-                        return;
-
-                    displayDrawingFromLine(currentStation, currentStation2, modelSt.getPosition().getX(),
-                            modelSt.getPosition().getY());
-                    Shape link1 = new Polyline(drawing2.getPoints().get(0), drawing2.getPoints().get(1),
-                            drawing2.getPoints().get(2), drawing2.getPoints().get(3), drawing2.getPoints().get(4),
-                            drawing2.getPoints().get(5));
-                    Shape link2 = new Polyline(drawing2.getPoints().get(4), drawing2.getPoints().get(5),
-                            drawing2.getPoints().get(6), drawing2.getPoints().get(7), drawing2.getPoints().get(8),
-                            drawing2.getPoints().get(9));
-                    boolean riverLink1 = gameView.intersectRiver(link1), riverLink2 = gameView.intersectRiver(link2);
-
-                    int riverIntersectCount = 0;
-                    if (riverLink1)
-                        ++riverIntersectCount;
-                    if (riverLink2)
-                        ++riverIntersectCount;
-
-                    if (Shape
-                            .subtract(Shape.intersect(link1, link2),
-                                    new fxStation(new Station(ShapeType.SQUARE, modelSt.getPosition())).shape)
-                            .getBoundsInLocal().getWidth() != -1 || gameView.intersects(drawing2)
-                            || (game.getInventory().getTunnelNb() < riverIntersectCount
-                                    && gameView.intersectRiver(drawing2))) {
-                        drawing2.setStroke(Color.TRANSPARENT);
-                        return;
+                if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                        || Game.getPause() == true) {
+                    if (hingePressed == true) {
+                        modelSt.setCapacity(20);
+                        Game.getInventory().subStationNb();
+                        getInfo().setNbStation(Game.getInventory().getStationNb());
+                        hingePressed = false;
+                        // modelSt.startFullTimer();
                     }
+                    if (currentStation2 != null) {
 
-                    if (gameView.intersectRiver(currentLink)) {
-                        game.getInventory().addTunnelNb(1);
-                        gameView.updateTunnelNb(game.getInventory().getTunnelNb());
-                    }
+                        if (currentLine.getStationList().contains(modelSt))
+                            return;
 
-                    boolean changeOrder = false;
-                    double middleX, middleY, middleX2, middleY2;
-                    middleX = drawing2.getPoints().get(2);
-                    middleY = drawing2.getPoints().get(3);
-                    middleX2 = drawing2.getPoints().get(6);
-                    middleY2 = drawing2.getPoints().get(7);
-
-                    displayDrawingFromLine(currentStation, currentStation2, modelSt.getPosition().getX(),
-                            modelSt.getPosition().getY());
-                    int maxIndex;
-                    if (currentLine.getStationList().indexOf(currentStation) > currentLine.getStationList()
-                            .indexOf(currentStation2)) {
-                        maxIndex = currentLine.getStationList().indexOf(currentStation);
-                    } else {
-                        maxIndex = currentLine.getStationList().indexOf(currentStation2);
-                        if (new Position(drawing2.getPoints().get(0), drawing2.getPoints().get(1))
-                                .equals(currentStation2.getPosition())) {
-                            System.err.println("ROTATION BUG TO FIX");
-                            changeOrder = true;
-                            if ((currentLine.isLoop() && (currentLine.getStationList().indexOf(currentStation) == 0
-                                    || currentLine.getStationList().indexOf(currentStation2) == 0))) {
-                                System.err.println("DEBUGGING LOOP + max index" + maxIndex);
-                                ++maxIndex;
-                            } else {
-
-                                Shape temp = link1;
-                                link1 = link2;
-                                link2 = temp;
-
-                                Station stemp = currentStation;
-                                currentStation = currentStation2;
-                                currentStation2 = stemp;
-
-                                double dtemp = middleX;
-                                middleX = middleX2;
-                                middleX2 = dtemp;
-                                dtemp = middleY;
-                                middleY = middleY2;
-                                middleY2 = dtemp;
-                            }
-                        }
-                    }
-
-                    currentStation.removeLink(currentStation2);
-                    currentStation.addLink(modelSt);
-                    currentStation2.addLink(modelSt);
-                    game.computeAllDistances();
-
-                    currentLine.addStationFromLink(maxIndex, modelSt, middleX, middleY, middleX2, middleY2);
-
-                    /* make tunnels */
-                    if (riverLink1) {
-                        Shape tempLink1 = new Polyline(drawing2.getPoints().get(0), drawing2.getPoints().get(1),
+                        displayDrawingFromLine(currentStation, currentStation2, modelSt.getPosition().getX(),
+                                modelSt.getPosition().getY());
+                        Shape link1 = new Polyline(drawing2.getPoints().get(0), drawing2.getPoints().get(1),
                                 drawing2.getPoints().get(2), drawing2.getPoints().get(3), drawing2.getPoints().get(4),
                                 drawing2.getPoints().get(5));
-                        link1.getStrokeDashArray().addAll(12d, 15d);
-                        Shape toAdd = Shape.intersect(gameView.river, link1);
-                        tempLink1 = Shape.subtract(tempLink1, gameView.river);
-                        tempLink1 = Shape.union(tempLink1, toAdd);
-                        link1 = tempLink1;
-                        game.getInventory().subTunnelNb(1);
-                        gameView.updateTunnelNb(game.getInventory().getTunnelNb());
-
-                    }
-                    if (riverLink2) {
-                        Shape tempLink2 = new Polyline(drawing2.getPoints().get(4), drawing2.getPoints().get(5),
+                        Shape link2 = new Polyline(drawing2.getPoints().get(4), drawing2.getPoints().get(5),
                                 drawing2.getPoints().get(6), drawing2.getPoints().get(7), drawing2.getPoints().get(8),
                                 drawing2.getPoints().get(9));
-                        link2.getStrokeDashArray().addAll(12d, 15d);
-                        Shape toAdd = Shape.intersect(gameView.river, link2);
-                        tempLink2 = Shape.subtract(tempLink2, gameView.river);
-                        tempLink2 = Shape.union(tempLink2, toAdd);
-                        link2 = tempLink2;
+                        boolean riverLink1 = gameView.intersectRiver(link1),
+                                riverLink2 = gameView.intersectRiver(link2);
 
-                        game.getInventory().subTunnelNb(1);
-                        gameView.updateTunnelNb(game.getInventory().getTunnelNb());
+                        int riverIntersectCount = 0;
+                        if (riverLink1)
+                            ++riverIntersectCount;
+                        if (riverLink2)
+                            ++riverIntersectCount;
+
+                        if (Shape
+                                .subtract(Shape.intersect(link1, link2),
+                                        new fxStation(new Station(ShapeType.SQUARE, modelSt.getPosition())).shape)
+                                .getBoundsInLocal().getWidth() != -1 || gameView.intersects(drawing2)
+                                || (game.getInventory().getTunnelNb() < riverIntersectCount
+                                        && gameView.intersectRiver(drawing2))) {
+                            drawing2.setStroke(Color.TRANSPARENT);
+                            return;
+                        }
+
+                        if (gameView.intersectRiver(currentLink)) {
+                            game.getInventory().addTunnelNb(1);
+                            gameView.updateTunnelNb(game.getInventory().getTunnelNb());
+                        }
+
+                        boolean changeOrder = false;
+                        double middleX, middleY, middleX2, middleY2;
+                        middleX = drawing2.getPoints().get(2);
+                        middleY = drawing2.getPoints().get(3);
+                        middleX2 = drawing2.getPoints().get(6);
+                        middleY2 = drawing2.getPoints().get(7);
+
+                        displayDrawingFromLine(currentStation, currentStation2, modelSt.getPosition().getX(),
+                                modelSt.getPosition().getY());
+                        int maxIndex;
+                        if (currentLine.getStationList().indexOf(currentStation) > currentLine.getStationList()
+                                .indexOf(currentStation2)) {
+                            maxIndex = currentLine.getStationList().indexOf(currentStation);
+                        } else {
+                            maxIndex = currentLine.getStationList().indexOf(currentStation2);
+                            if (new Position(drawing2.getPoints().get(0), drawing2.getPoints().get(1))
+                                    .equals(currentStation2.getPosition())) {
+                                System.err.println("ROTATION BUG TO FIX");
+                                changeOrder = true;
+                                if ((currentLine.isLoop() && (currentLine.getStationList().indexOf(currentStation) == 0
+                                        || currentLine.getStationList().indexOf(currentStation2) == 0))) {
+                                    System.err.println("DEBUGGING LOOP + max index" + maxIndex);
+                                    ++maxIndex;
+                                } else {
+
+                                    Shape temp = link1;
+                                    link1 = link2;
+                                    link2 = temp;
+
+                                    Station stemp = currentStation;
+                                    currentStation = currentStation2;
+                                    currentStation2 = stemp;
+
+                                    double dtemp = middleX;
+                                    middleX = middleX2;
+                                    middleX2 = dtemp;
+                                    dtemp = middleY;
+                                    middleY = middleY2;
+                                    middleY2 = dtemp;
+                                }
+                            }
+                        }
+
+                        currentStation.removeLink(currentStation2);
+                        currentStation.addLink(modelSt);
+                        currentStation2.addLink(modelSt);
+                        game.computeAllDistances();
+
+                        currentLine.addStationFromLink(maxIndex, modelSt, middleX, middleY, middleX2, middleY2);
+
+                        /* make tunnels */
+                        if (riverLink1) {
+                            Shape tempLink1 = new Polyline(drawing2.getPoints().get(0), drawing2.getPoints().get(1),
+                                    drawing2.getPoints().get(2), drawing2.getPoints().get(3),
+                                    drawing2.getPoints().get(4), drawing2.getPoints().get(5));
+                            link1.getStrokeDashArray().addAll(12d, 15d);
+                            Shape toAdd = Shape.intersect(gameView.river, link1);
+                            tempLink1 = Shape.subtract(tempLink1, gameView.river);
+                            tempLink1 = Shape.union(tempLink1, toAdd);
+                            link1 = tempLink1;
+                            game.getInventory().subTunnelNb(1);
+                            gameView.updateTunnelNb(game.getInventory().getTunnelNb());
+
+                        }
+                        if (riverLink2) {
+                            Shape tempLink2 = new Polyline(drawing2.getPoints().get(4), drawing2.getPoints().get(5),
+                                    drawing2.getPoints().get(6), drawing2.getPoints().get(7),
+                                    drawing2.getPoints().get(8), drawing2.getPoints().get(9));
+                            link2.getStrokeDashArray().addAll(12d, 15d);
+                            Shape toAdd = Shape.intersect(gameView.river, link2);
+                            tempLink2 = Shape.subtract(tempLink2, gameView.river);
+                            tempLink2 = Shape.union(tempLink2, toAdd);
+                            link2 = tempLink2;
+
+                            game.getInventory().subTunnelNb(1);
+                            gameView.updateTunnelNb(game.getInventory().getTunnelNb());
+                        }
+
+                        fxStation toSubstract = new fxStation(new Station(ShapeType.SQUARE, modelSt.getPosition()));
+                        link2 = Shape.subtract(link2, toSubstract.shape);
+                        link1 = Shape.subtract(link1, toSubstract.shape);
+                        toSubstract = new fxStation(new Station(ShapeType.SQUARE, currentStation.getPosition()));
+                        link2 = Shape.subtract(link2, toSubstract.shape);
+                        toSubstract = new fxStation(new Station(ShapeType.SQUARE, currentStation2.getPosition()));
+                        link1 = Shape.subtract(link1, toSubstract.shape);
+
+                        link1.setStroke(currentLine.getColor());
+                        link1.setStrokeWidth(6);
+                        link2.setStroke(currentLine.getColor());
+                        link2.setStrokeWidth(6);
+
+                        group.getChildren().remove(drawing2);
+                        maxIndex = gameView.getLineLinks().get(currentLine).indexOf(currentLink);
+
+                        gameView.addLineLink(currentLine, link2, maxIndex);
+                        gameView.addLineLink(currentLine, link1, maxIndex);
+
+                        group.getChildren().add(1, link1);
+                        group.getChildren().add(1, link2);
+
+                        addLineEvent(link2, currentStation, modelSt, currentLine);
+                        addLineEvent(link1, modelSt, currentStation2, currentLine);
+
+                        gameView.correctRotation(currentLine);
+                        gameView.removeLineLink(currentLine, currentLink);
+
+                        currentStation2 = null;
                     }
-
-                    fxStation toSubstract = new fxStation(new Station(ShapeType.SQUARE, modelSt.getPosition()));
-                    link2 = Shape.subtract(link2, toSubstract.shape);
-                    link1 = Shape.subtract(link1, toSubstract.shape);
-                    toSubstract = new fxStation(new Station(ShapeType.SQUARE, currentStation.getPosition()));
-                    link2 = Shape.subtract(link2, toSubstract.shape);
-                    toSubstract = new fxStation(new Station(ShapeType.SQUARE, currentStation2.getPosition()));
-                    link1 = Shape.subtract(link1, toSubstract.shape);
-
-                    link1.setStroke(currentLine.getColor());
-                    link1.setStrokeWidth(6);
-                    link2.setStroke(currentLine.getColor());
-                    link2.setStrokeWidth(6);
-
-                    group.getChildren().remove(drawing2);
-                    maxIndex = gameView.getLineLinks().get(currentLine).indexOf(currentLink);
-
-                    gameView.addLineLink(currentLine, link2, maxIndex);
-                    gameView.addLineLink(currentLine, link1, maxIndex);
-
-                    group.getChildren().add(1, link1);
-                    group.getChildren().add(1, link2);
-
-                    addLineEvent(link2, currentStation, modelSt, currentLine);
-                    addLineEvent(link1, modelSt, currentStation2, currentLine);
-
-                    gameView.correctRotation(currentLine);
-                    gameView.removeLineLink(currentLine, currentLink);
-
-                    currentStation2 = null;
                 }
             }
         });
 
         shape.setOnMouseDragExited(event -> {
-            isDrawing = false;
+            if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
+                    || Game.getPause() == true) {
+                isDrawing = false;
+            }
         });
     }
 

@@ -78,15 +78,60 @@ public class Targets {
 		return nums;
 	}
 	
-//	public static int inlcudesThree(HashMap<model.Line, ArrayList<Shape>> lines) {
-//		int res = 0;
-//		Iterator iter = lines.entrySet().iterator();
-//		while(iter.hasNext()) { 
-//		    Map.Entry entry = (Map.Entry) iter.next(); 
-//		    Object key = entry.getKey(); 
-//		    model.Line line =(model.Line) key;
-//		    if(line.getStationList().)
-//		}
-//		return nums;
-//	}
+	public static int inlcudesThree(HashMap<model.Line, ArrayList<Shape>> lines) {
+		int res = 0;
+		Iterator iter = lines.entrySet().iterator();
+		while(iter.hasNext()) { 
+		    Map.Entry entry = (Map.Entry) iter.next(); 
+		    Object key = entry.getKey(); 
+			model.Line line =(model.Line) key;
+			boolean numCircle = false;
+			boolean numTriangle = false;
+			boolean numSquare = false;
+		    for(Station station:line.getStationList()) {
+		    	if(station.getType().equals(ShapeType.CIRCLE)) {
+		    		numCircle = true;
+		    		continue;
+				}
+				if(station.getType().equals(ShapeType.TRIANGLE)) {
+		    		numTriangle = true;
+		    		continue;
+				}
+				if(station.getType().equals(ShapeType.SQUARE)) {
+		    		numSquare = true;
+		    		continue;
+		    	}
+			}
+			if(numCircle && numTriangle && numSquare){
+				res++;
+			}
+		}
+		return res;
+	}
+
+	// public static int diamondToCross(HashMap<model.Line, ArrayList<Shape>> lines){
+	// 	int gapNums = 0;
+	// 	int transNums = 0;
+	// 	Iterator iter = lines.entrySet().iterator();
+	// 	while(iter.hasNext()) { 
+	// 	    Map.Entry entry = (Map.Entry) iter.next(); 
+	// 	    Object key = entry.getKey(); 
+	// 		model.Line line =(model.Line) key;
+	// 	    for(Station station:line.getStationList()) {
+	// 	    	if(station.getType().equals(ShapeType.CIRCLE)) {
+	// 	    		numCircle = true;
+	// 	    		continue;
+	// 			}
+	// 			if(station.getType().equals(ShapeType.TRIANGLE)) {
+	// 	    		numTriangle = true;
+	// 	    		continue;
+	// 			}
+	// 			if(station.getType().equals(ShapeType.SQUARE)) {
+	// 	    		numSquare = true;
+	// 	    		continue;
+	// 	    	}
+	// 		}
+	// 	}
+	// 	return gapNums-transNums;
+	// }
 }

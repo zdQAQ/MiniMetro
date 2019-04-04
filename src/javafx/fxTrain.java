@@ -87,7 +87,7 @@ public class fxTrain extends Group {
         double rotation = angle(p, new Position(trainX, trainY)), x = p.getX(), y = p.getY();
         setRotate(rotation);
         /* +100 to avoid bug with a duration equal to 0 with the translate transition */
-        double millis = 10 * distance(trainX, trainY, x, y);
+        double millis = 13 * distance(trainX, trainY, x, y);
         move = new TranslateTransition(new Duration(millis), this);
         move.setByX(x - trainX);
         move.setByY(y - trainY);
@@ -137,7 +137,7 @@ public class fxTrain extends Group {
         s.setLayoutY(dy);
 
         s.setFill(Color.WHITE);
-        s.setStroke(Color.WHITE);
+        s.setStroke(Color.BLACK);
 
         getChildren().add(s);
         // Controller.group2.getChildren().add(s);
@@ -243,7 +243,7 @@ public class fxTrain extends Group {
         shape.setScaleY(clientScale);
 
         shape.setFill(Color.WHITE);
-        shape.setStroke(Color.WHITE);
+        shape.setStroke(Color.BLACK);
         getChildren().add(shape);
         return shape;
         // Controller.group2.getChildren().add(s);

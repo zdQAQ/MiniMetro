@@ -57,10 +57,13 @@ public class GameView {
     private Circle point;
     private ImageView imageClient;
     private ImageView imgBook;
+    private ImageView imgBoom;
     private Text nbClient;
+    private Text nbBoom;
     public static int round;
     private static int boomTimes = 0;
     private int pauseTimes = 0;
+    private int numBoom = 0;
     static Stage round9;
     static Stage round10;
 
@@ -73,6 +76,7 @@ public class GameView {
         group = g;
         controller = c;
         pauseTimes = 0;
+        numBoom = 0;
 
         info = c.getInfo();
         info.setTranslateY(-50);
@@ -93,13 +97,23 @@ public class GameView {
         });
 
         imageClient = new ImageView(
-                new Image(this.getClass().getResource("/img/man.png").toString(), 40, 40, false, false));
+                new Image(this.getClass().getResource("/img/man.png").toString(), 30, 30, false, false));
         imageClient.setX(720);
-        imageClient.setY(13);
+        imageClient.setY(18);
         nbClient = new Text(760, 43, "0");
         nbClient.setFill(Color.CHOCOLATE);
         nbClient.setFont(Font.font(null, FontWeight.BOLD, 25));
 
+        imgBoom = new ImageView(
+                new Image(this.getClass().getResource("/img/boom.jpg").toString(), 40, 40, false, false));
+        imgBoom.setX(640);
+        imgBoom.setY(13);
+        nbBoom = new Text(680, 43, "0");
+        nbBoom.setFill(Color.CHOCOLATE);
+        nbBoom.setFont(Font.font(null, FontWeight.BOLD, 25));
+
+        group.getChildren().add(imgBoom);
+        group.getChildren().add(nbBoom);
         group.getChildren().add(nbClient);
         group.getChildren().add(imageClient);
         group.getChildren().add(imgBook);
@@ -131,12 +145,12 @@ public class GameView {
                     Controller.game.resumeGame();
                 } else {
                     pauseTimes++;
-                    if (round == 6 || round == 7 || round == 8) {
+                    if (round == 6 || round == 7) {
                         if (pauseTimes < 2) {
                             image.setImage(imagePlay);
                             Controller.game.pauseGame();
                         }
-                    } else if (round == 9 || round == 10) {
+                    } else if (round == 8 || round == 9) {
                         if (pauseTimes < 3) {
                             image.setImage(imagePlay);
                             Controller.game.pauseGame();
@@ -225,7 +239,7 @@ public class GameView {
             public void handle(ActionEvent arg0) {
 
                 if (arcTimer.lengthProperty().get() == 360) {
-                    if (round == 0 || round == 6 || round == 7 || round == 8 || round == 9 || round == 10) {
+                    if (round == 0 || round == 6 || round == 7 || round == 8 || round == 9) {
                         System.out.println("before :" + Game.transportedClientNb);
                         if (boomTimes < 5) {
                             Game.transportedClientNb = (int) (Game.transportedClientNb * 0.95);
@@ -237,6 +251,7 @@ public class GameView {
                         removeClient(st.getClientList());
                         st.getClientList().clear();
                         updateNbClient();
+                        updateNbBoom();
                     }
                     // endOfGame();
 
@@ -374,7 +389,7 @@ public class GameView {
                      * Main.restart();
                      */
                     // if (result.get() == buttonTypeTwo) {
-                    //     Main.proceed(1);
+                    // Main.proceed(1);
                     // }
                 } catch (Exception e) {
                     Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
@@ -391,7 +406,7 @@ public class GameView {
                 try {
                     Controller.game.pauseGame();
 
-                    if (round + 1 == 9) {
+                    if (round + 1 == 8) {
                         round9 = new Stage();
                         WebView webView = new WebView();
 
@@ -436,7 +451,7 @@ public class GameView {
 
                         alert.show();
 
-                    } else if (round + 1 == 10) {
+                    } else if (round + 1 == 9) {
                         round10 = new Stage();
                         WebView webView = new WebView();
 
@@ -473,8 +488,8 @@ public class GameView {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                         alert.setTitle("进入第四阶段第二回合~");
                         alert.setHeaderText("做的不错，这是本游戏的最后一回合，加油哦~");
-                        alert.setContentText(
-                                "请观察两位见习生的铁路设计图，指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。\n" + "注意！激活乘客后仅有2次主动暂停修改设计的机会。");
+                        alert.setContentText("请观察两位见习生的铁路设计图，指出该设计中可能会爆掉的车站（最多3个），并使用现有资源重新设计该地图给予他们指导。\n"
+                                + "注意！激活乘客后仅有2次主动暂停修改设计的机会。");
 
                         ButtonType buttonTypeTwo = new ButtonType("确定");
 
@@ -689,7 +704,7 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                         if (isLast) {
-                            Controller.game.resumeGame();
+                            // Controller.game.resumeGame();
                         }
                     } else if (result.get() == buttonTypeTwo) {
                         Game.getInventory().addWagonNb();
@@ -697,7 +712,7 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                         if (isLast) {
-                            Controller.game.resumeGame();
+                            // Controller.game.resumeGame();
                         }
                     } else if (result.get() == buttonTypeThree) {
                         Game.getInventory().addTrain();
@@ -705,7 +720,7 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                         if (isLast) {
-                            Controller.game.resumeGame();
+                            // Controller.game.resumeGame();
                         }
                     } else if (result.get() == buttonTypeFour) {
                         Game.getInventory().addTunnelNb(2);
@@ -713,7 +728,7 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                         if (isLast) {
-                            Controller.game.resumeGame();
+                            // Controller.game.resumeGame();
                         }
                     }
 
@@ -805,6 +820,11 @@ public class GameView {
                 info.setVisible(false);
             }
         });
+    }
+
+    public void updateNbBoom() {
+        numBoom++;
+        nbBoom.setText(Integer.toString(numBoom));
     }
 
     public void updateNbClient() {
@@ -1114,11 +1134,11 @@ public class GameView {
         GameView.clients = clients;
     }
 
-	public HashMap<model.Line, ArrayList<Shape>> getLineLinks() {
-		return lineLinks;
-	}
+    public HashMap<model.Line, ArrayList<Shape>> getLineLinks() {
+        return lineLinks;
+    }
 
-	public void setLineLinks(HashMap<model.Line, ArrayList<Shape>> lineLinks) {
-		this.lineLinks = lineLinks;
-	}
+    public void setLineLinks(HashMap<model.Line, ArrayList<Shape>> lineLinks) {
+        this.lineLinks = lineLinks;
+    }
 }
