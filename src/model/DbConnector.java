@@ -16,7 +16,8 @@ public class DbConnector {
     private static String user = "zhangdai";
     private static String password = "zhangdai1!";
     private static Connection connection;
-    private static String username;
+	public static String username;
+	public static Long id;
 
     public DbConnector(String name) throws SQLException, ClassNotFoundException {
         Class.forName(driver);
@@ -57,7 +58,7 @@ public class DbConnector {
 			
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {  
-                Long id = rs.getLong(1);   
+            	id = rs.getLong(1);   
                 System.out.println("数据主键：" + id);
             }  
 			
@@ -75,7 +76,7 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        String sql = "update z set "+key+" = '"+value+"' where name = '"+username+"'";
+        String sql = "update z set "+key+" = '"+value+"' where id = "+id+"";
         System.out.println(sql);
         try {
 			stmt.executeUpdate(sql);
@@ -93,7 +94,7 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String sql = "update j set "+key+" = '"+value+"' where name = '"+username+"'";
+		String sql = "update j set "+key+" = '"+value+"' where id = "+id+"";
         System.out.println(sql);
         try {
 			stmt.executeUpdate(sql);
@@ -111,7 +112,7 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String sql = "update g set "+key+" = '"+value+"' where name = '"+username+"'";
+		String sql = "update g set "+key+" = '"+value+"' where id = "+id+"";
         System.out.println(sql);
         try {
 			stmt.executeUpdate(sql);

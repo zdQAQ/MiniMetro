@@ -73,6 +73,10 @@ public class Station {
         lines.remove(line);
     }
 
+    public List<Line> getLines(){
+        return lines;
+    }
+
     public boolean getIsFull() {
         return isFull;
     }

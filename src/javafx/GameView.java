@@ -30,6 +30,7 @@ import javafx.util.Duration;
 import model.*;
 import model.Line;
 import netscape.javascript.JSObject;
+import utils.ScreenShots;
 
 import java.io.IOException;
 import java.util.*;
@@ -44,7 +45,7 @@ import static javafx.defaultShapes.getSquare;
 public class GameView {
 
     HashMap<Station, fxStation> stations;
-    HashMap<Train, fxTrain> trains;
+    private HashMap<Train, fxTrain> trains;
     static HashMap<Client, fxClient> clients;
     private HashMap<model.Line, ArrayList<Shape>> lineLinks;
     HashMap<model.Line, Shape[]> lineEnds;
@@ -53,6 +54,7 @@ public class GameView {
     private Group group;
     private Controller controller;
     private fxClock clock;
+    private fxTimer timer;
     private static fxInformations info;
     private Circle point;
     private ImageView imageClient;
@@ -64,19 +66,22 @@ public class GameView {
     private static int boomTimes = 0;
     private int pauseTimes = 0;
     private int numBoom = 0;
+    private int clickBook = 0;
     static Stage round9;
     static Stage round10;
 
-    public GameView(Group g, Controller c) {
+    public GameView(Group g, Controller c,int round1) {
         stations = new HashMap<>();
-        trains = new HashMap<>();
+        setTrains(new HashMap<>());
         setLineLinks(new HashMap<>());
         lineEnds = new HashMap<>();
         setClients(new HashMap<>());
         group = g;
         controller = c;
-        pauseTimes = 0;
+        setPauseTimes(0);
         numBoom = 0;
+        setClickBook(0);
+        round = round1;
 
         info = c.getInfo();
         info.setTranslateY(-50);
@@ -84,14 +89,15 @@ public class GameView {
 
         group.getChildren().add(info);
 
-        imgBook = new ImageView(
-                new Image(this.getClass().getResource("/img/book.png").toString(), 40, 40, false, false));
-        imgBook.setX(20);
-        imgBook.setY(20);
+        setImgBook(new ImageView(
+                new Image(this.getClass().getResource("/img/book.png").toString(), 40, 40, false, false)));
+        getImgBook().setX(20);
+        getImgBook().setY(20);
 
-        imgBook.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        getImgBook().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                setClickBook(getClickBook() + 1);
                 showBook();
             }
         });
@@ -112,11 +118,14 @@ public class GameView {
         nbBoom.setFill(Color.CHOCOLATE);
         nbBoom.setFont(Font.font(null, FontWeight.BOLD, 25));
 
-        group.getChildren().add(imgBoom);
-        group.getChildren().add(nbBoom);
-        group.getChildren().add(nbClient);
-        group.getChildren().add(imageClient);
         group.getChildren().add(imgBook);
+
+        if (round == 0) {
+        	timer = new fxTimer();
+            timer.setLayoutX(70);
+            timer.setLayoutY(30);
+            group.getChildren().add(timer);
+        }
 
         // point = new Circle(480, 520, 4);
         // point.setStroke(Color.GRAY);
@@ -129,10 +138,19 @@ public class GameView {
         // group.getChildren().add(point);
 
         clock = new fxClock(920, 35, 16);
-        group.getChildren().add(clock);
+        if(round == 0 || round >5) {
+        	group.getChildren().add(clock);
+        	group.getChildren().add(imgBoom);
+            group.getChildren().add(nbBoom);
+            group.getChildren().add(nbClient);
+            group.getChildren().add(imageClient);
+        }
         Image imagePause = new Image(this.getClass().getResource("/img/pause.png").toString(), 40, 40, false, false);
         Image imagePlay = new Image(this.getClass().getResource("/img/play.png").toString(), 40, 40, false, false);
         ImageView image = new ImageView(imagePause);
+//        if (round == 6||round ==7 ||round == 8|| round ==9) {
+//        	image.setImage(imagePlay);
+//        }
         image.setVisible(false);
         image.setX(920);
         image.setY(65);
@@ -140,29 +158,57 @@ public class GameView {
         image.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                if (image.getImage() == imagePlay) {
-                    image.setImage(imagePause);
-                    Controller.game.resumeGame();
+            	if (round == 6 || round == 7) {
+            		if (Schedule.getClickTimes() >= 1) {
+            			if (image.getImage() == imagePlay) {
+                            image.setImage(imagePause);
+                            Controller.game.resumeGame();
+                            if(getPauseTimes()==1){
+                                Schedule.btn.setStyle("-fx-background-color: #4eb5f1;-fx-font-size: 2em;-fx-text-fill:#fff");
+                                Schedule.btn.setDisable(false);
+                            }
+                        } else if (getPauseTimes() < 1) {
+                            image.setImage(imagePlay);
+                            Controller.game.pauseGame();
+                            setPauseTimes(getPauseTimes()+1);
+                        } else {
+                            alertError("当前回合仅可暂停一次哦");
+                        }
+            		}
+                } else if (round == 8 || round == 9) {
+                	if (Schedule.getClickTimes() >= 1) {
+            			if (image.getImage() == imagePlay) {
+                            image.setImage(imagePause);
+                            Controller.game.resumeGame();
+                            if(getPauseTimes()==2){
+                                Schedule.btn.setStyle("-fx-background-color: #4eb5f1;-fx-font-size: 2em;-fx-text-fill:#fff");
+                                Schedule.btn.setDisable(false);
+                            }
+                        } else if (getPauseTimes() < 2) {
+                            if (round == 8 && getPauseTimes() == 1){
+                                ScreenShots.make(DbConnector.username + "第四阶段第一回合第二次暂停时");
+                            } else if (round == 9 && getPauseTimes() == 1){
+                                ScreenShots.make(DbConnector.username + "第四阶段第二回合第二次暂停时");
+                            }
+                            image.setImage(imagePlay);
+                            Controller.game.pauseGame();
+                            setPauseTimes(getPauseTimes()+1);
+                        } else {
+                            alertError("当前回合仅可暂停两次哦");
+                        }
+            		}
                 } else {
-                    pauseTimes++;
-                    if (round == 6 || round == 7) {
-                        if (pauseTimes < 2) {
-                            image.setImage(imagePlay);
-                            Controller.game.pauseGame();
-                        }
-                    } else if (round == 8 || round == 9) {
-                        if (pauseTimes < 3) {
-                            image.setImage(imagePlay);
-                            Controller.game.pauseGame();
-                        }
+                	if (image.getImage() == imagePlay) {
+                        image.setImage(imagePause);
+                        Controller.game.resumeGame();
                     } else {
-                        image.setImage(imagePlay);
-                        Controller.game.pauseGame();
+	                    image.setImage(imagePlay);
+	                    Controller.game.pauseGame();
                     }
-                    // System.out.println(pauseTimes);
                 }
             }
         });
+        
         group.getChildren().add(image);
 
         clock.getClockBorder().setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -207,6 +253,10 @@ public class GameView {
         group.getChildren().remove(nbClient);
         group.getChildren().remove(imageClient);
         group.getChildren().remove(point);
+        group.getChildren().remove(imgBoom);
+        group.getChildren().remove(nbBoom);
+        group.getChildren().remove(imgBook);
+        group.getChildren().remove(info);
     }
 
     public void showThings() {
@@ -240,13 +290,13 @@ public class GameView {
 
                 if (arcTimer.lengthProperty().get() == 360) {
                     if (round == 0 || round == 6 || round == 7 || round == 8 || round == 9) {
-                        System.out.println("before :" + Game.transportedClientNb);
-                        if (boomTimes < 5) {
+                        // System.out.println("before :" + Game.transportedClientNb);
+                        // if (boomTimes < 5) {
                             Game.transportedClientNb = (int) (Game.transportedClientNb * 0.95);
-                        } else {
-                            Game.transportedClientNb = (int) (Game.transportedClientNb * 0.9);
-                        }
-                        System.out.println("after :" + Game.transportedClientNb);
+                        // } else {
+                        //     Game.transportedClientNb = (int) (Game.transportedClientNb * 0.9);
+                        // }
+                        // System.out.println("after :" + Game.transportedClientNb);
                         startDecreaseArc(st);
                         removeClient(st.getClientList());
                         st.getClientList().clear();
@@ -263,7 +313,7 @@ public class GameView {
 
     public void startDecreaseArc(Station st) {
         Arc arcTimer = stations.get(st).arcTimer;
-        arcTimer.setStrokeWidth(10);
+        arcTimer.setStrokeWidth(5);
         arcTimer.setFill(null);
         arcTimer.setStroke(Color.web("#a39c9c", 0.8));
         arcTimer.setType(ArcType.OPEN);
@@ -362,7 +412,7 @@ public class GameView {
         Platform.runLater(new Runnable() {
             public void run() {
                 try {
-                    Controller.game.pauseGame();
+                    // Controller.game.pauseGame();
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("恭喜你完成第一阶段的见习~");
@@ -404,13 +454,13 @@ public class GameView {
         Platform.runLater(new Runnable() {
             public void run() {
                 try {
-                    Controller.game.pauseGame();
+                    // Controller.game.pauseGame();
 
                     if (round + 1 == 8) {
                         round9 = new Stage();
                         WebView webView = new WebView();
 
-                        String url = Main.class.getResource("/web/round9.html").toExternalForm();
+                        String url = Main.class.getResource("/web/round8.html").toExternalForm();
 
                         WebEngine webEngine = webView.getEngine();
 
@@ -451,11 +501,13 @@ public class GameView {
 
                         alert.show();
 
+//                        Controller.game.pauseGame();
+
                     } else if (round + 1 == 9) {
                         round10 = new Stage();
                         WebView webView = new WebView();
 
-                        String url = Main.class.getResource("/web/round10.html").toExternalForm();
+                        String url = Main.class.getResource("/web/round9.html").toExternalForm();
 
                         WebEngine webEngine = webView.getEngine();
 
@@ -496,6 +548,8 @@ public class GameView {
                         alert.getButtonTypes().setAll(buttonTypeTwo);
 
                         alert.show();
+
+//                        Controller.game.pauseGame();
                     } else {
                         Main.proceed(round + 1);
                     }
@@ -544,6 +598,43 @@ public class GameView {
         });
     }
 
+    public void alertError(String text) {
+        Platform.runLater(new Runnable() {
+            public void run() {
+                try {
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("提醒");
+                    alert.setHeaderText(text);
+
+                    // ButtonType buttonTypeOne = new ButtonType("Recommencer");
+                    ButtonType buttonTypeTwo = new ButtonType("确定");
+
+                    alert.getButtonTypes().setAll(buttonTypeTwo);
+
+                    alert.show();
+
+                    // Game.getInventory().addTrain();
+                    // updateTrainNb(Game.getInventory().getTrainNb());
+
+                    // Optional<ButtonType> result = alert.showAndWait();
+
+                    // /*
+                    //  * if (result.get() == buttonTypeOne) { Controller.game.resumeGame();
+                    //  * Main.restart();
+                    //  */
+                    // if (result.get() == buttonTypeTwo) {
+                    //     Main.end();
+                    // }
+                } catch (Exception e) {
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
+                }
+
+            }
+
+        });
+    }
+
     public void setGift(int gift2) {
         Platform.runLater(new Runnable() {
             public void run() {
@@ -580,7 +671,7 @@ public class GameView {
                     if (result.get() == buttonTypeOne) {
                         Controller.game.resumeGame();
                         Game.getInventory().addLineNb();
-                        Controller.game.addGiftColor();
+                        // Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
                     } else if (result.get() == buttonTypeTwo) {
                         Controller.game.resumeGame();
@@ -594,6 +685,10 @@ public class GameView {
                         Controller.game.resumeGame();
                         Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
+                    } else if (result.get() == buttonTypeFive) {
+                        Controller.game.resumeGame();
+                        Game.getInventory().addStationNb();
+                        updateStationNb(Game.getInventory().getStationNb());
                     }
 
                 } catch (Exception e) {
@@ -603,7 +698,7 @@ public class GameView {
         });
     }
 
-    public void setGift(int gift2, int gift3) {
+    public void setGift(int gift2, int gift3,int leftTimes) {
         Platform.runLater(new Runnable() {
             public void run() {
                 Stage stage = new Stage();
@@ -611,7 +706,7 @@ public class GameView {
                     // Controller.game.pauseGame();
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                     alert.setTitle("获得资源");
-                    alert.setHeaderText("你收到了一个新的机车。");
+                    alert.setHeaderText("你收到了一个新的机车。此外你还有"+leftTimes+"次机会");
                     alert.setContentText("另外，你希望选择哪种资源 ?");
 
                     alert.setGraphic(
@@ -634,8 +729,21 @@ public class GameView {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
+                    	if (leftTimes == 9) {
+                    		if(round == 6) {
+                        		DbConnector.updateZ("z9", Integer.toString(1));
+                        	} else if (round == 7) {
+                        		DbConnector.updateZ("z10", Integer.toString(1));
+                        	}
+                    	} else if (leftTimes == 6 && round == 6) {
+                    		if(round == 6) {
+                    			DbConnector.updateZ("z12", Integer.toString(1));
+                        	} else if (round == 7) {
+                        		DbConnector.updateZ("z15", Integer.toString(1));
+                        	}
+                    	}
                         Game.getInventory().addLineNb();
-                        Controller.game.addGiftColor();
+                        // Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
@@ -650,10 +758,29 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeFour) {
+                    	if (leftTimes == 8 && round == 6) {
+                    		DbConnector.updateZ("z11", Integer.toString(1));
+                    	} else if (leftTimes == 3) {
+                    		if (round == 6) {
+                    			DbConnector.updateZ("z13", Integer.toString(1));
+                    		} else if (round == 7) {
+                    			DbConnector.updateZ("z14", Integer.toString(1));
+                    		}
+                    	}
+//                    	else if (leftTimes == 3) {
+//                    		if (round == 7) {
+//                    			DbConnector.updateZ("z16", Integer.toString(1));
+//                    		}
+//                    	}
                         Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
+                    } else if (result.get() == buttonTypeFive) {
+                    	Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
+                        Game.getInventory().addStationNb();
+                        updateStationNb(Game.getInventory().getStationNb());
                     }
 
                     // Game.resumeGame();
@@ -699,7 +826,7 @@ public class GameView {
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
                         Game.getInventory().addLineNb();
-                        Controller.game.addGiftColor();
+                        // Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
@@ -729,7 +856,13 @@ public class GameView {
                         updateTrainNb(Game.getInventory().getTrainNb());
                         if (isLast) {
                             // Controller.game.resumeGame();
+                        	DbConnector.updateZ("z17", Integer.toString(1));
                         }
+                    } else if (result.get() == buttonTypeFive) {
+                    	Game.getInventory().addTrain();
+                        updateTrainNb(Game.getInventory().getTrainNb());
+                        Game.getInventory().addStationNb();
+                        updateStationNb(Game.getInventory().getStationNb());
                     }
 
                     // Game.resumeGame();
@@ -757,6 +890,10 @@ public class GameView {
 
     public void updateLineNb(int rail) {
         info.setNbLine(rail);
+    }
+
+    public void updateStationNb(int station) {
+        info.setNbStation(station);
     }
 
     public void addRiver(Shape r) {
@@ -968,9 +1105,9 @@ public class GameView {
 
     public void putWagon(Train t, Boolean isWagon, Line line) {
         removeTrain(line.getTrainList().get(0));
-        trains.put(t, new fxTrain(t, isWagon));
-        group.getChildren().add(trains.get(t));
-        controller.addTrainEvent(trains.get(t).r, t);
+        getTrains().put(t, new fxTrain(t, isWagon));
+        group.getChildren().add(getTrains().get(t));
+        controller.addTrainEvent(getTrains().get(t).r, t);
     }
 
     public void put(Station s) {
@@ -981,27 +1118,36 @@ public class GameView {
     }
 
     public void put(Train t) {
-        trains.put(t, new fxTrain(t));
-        group.getChildren().add(trains.get(t));
-        controller.addTrainEvent(trains.get(t).r, t);
+        getTrains().put(t, new fxTrain(t));
+        group.getChildren().add(getTrains().get(t));
+        controller.addTrainEvent(getTrains().get(t).r, t);
     }
 
     public void put(Train t, Position p) {
-        trains.put(t, new fxTrain(t, p));
-        group.getChildren().add(trains.get(t));
-        controller.addTrainEvent(trains.get(t).r, t);
+        getTrains().put(t, new fxTrain(t, p));
+        group.getChildren().add(getTrains().get(t));
+        controller.addTrainEvent(getTrains().get(t).r, t);
     }
 
     public void trainChangeLine(Train t) {
         group.getChildren().remove(get(t));
-        trains.replace(t, new fxTrain(t));
-        group.getChildren().add(trains.get(t));
-        controller.addTrainEvent(trains.get(t).r, t);
+        getTrains().replace(t, new fxTrain(t));
+        group.getChildren().add(getTrains().get(t));
+        controller.addTrainEvent(getTrains().get(t).r, t);
 
     }
 
+    public void put(Client c,Boolean orginal) {
+        // clientschedule中手动加了，为了避免位置重叠
+        if (orginal){
+            clients.put(c,new fxClient(c));
+        }
+
+        group.getChildren().add(getClients().get(c).shape);
+    }
+
     public void put(Client c) {
-        // clients.put(c,new fxClient(c));
+       clients.put(c,new fxClient(c));
 
         group.getChildren().add(getClients().get(c).shape);
     }
@@ -1022,7 +1168,7 @@ public class GameView {
     }
 
     public fxTrain get(Train t) {
-        return trains.get(t);
+        return getTrains().get(t);
     }
 
     public fxStation get(Station s) {
@@ -1063,7 +1209,7 @@ public class GameView {
     public void removeTrain(Train tr) {
         fxTrain fxtr = get(tr);
         group.getChildren().remove(fxtr);
-        trains.remove(tr);
+        getTrains().remove(tr);
     }
 
     public boolean intersects(Shape f) {
@@ -1108,13 +1254,13 @@ public class GameView {
     }
 
     public void pauseTrains() {
-        for (fxTrain train : trains.values()) {
+        for (fxTrain train : getTrains().values()) {
             train.pause();
         }
     }
 
     public void resumeTrains() {
-        for (fxTrain train : trains.values()) {
+        for (fxTrain train : getTrains().values()) {
             train.resume();
         }
 
@@ -1141,4 +1287,36 @@ public class GameView {
     public void setLineLinks(HashMap<model.Line, ArrayList<Shape>> lineLinks) {
         this.lineLinks = lineLinks;
     }
+
+	public ImageView getImgBook() {
+		return imgBook;
+	}
+
+	public void setImgBook(ImageView imgBook) {
+		this.imgBook = imgBook;
+	}
+
+	public int getClickBook() {
+		return clickBook;
+	}
+
+	public void setClickBook(int clickBook) {
+		this.clickBook = clickBook;
+	}
+
+	public HashMap<Train, fxTrain> getTrains() {
+		return trains;
+	}
+
+	public void setTrains(HashMap<Train, fxTrain> trains) {
+		this.trains = trains;
+	}
+
+	public int getPauseTimes() {
+		return pauseTimes;
+	}
+
+	public void setPauseTimes(int pauseTimes) {
+		this.pauseTimes = pauseTimes;
+	}
 }

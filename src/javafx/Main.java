@@ -49,6 +49,7 @@ public class Main extends Application {
     private DbConnector dbConnector;
     static String username;
     static Long uid;
+    private static FXMLLoader loader;
 
     /**
      * @param args the command line arguments
@@ -57,7 +58,7 @@ public class Main extends Application {
         launch(args);
     }
 
-    public void setUid(Long id){
+    public void setUid(Long id) {
         uid = id;
     }
 
@@ -75,15 +76,15 @@ public class Main extends Application {
     }
 
     public static void proceed(int round) {
-//        stage.close();
+        // stage.close();
         Platform.runLater(() -> {
-			try {
-				new Main().chooseCity(stage, round,username);
-			} catch (ClassNotFoundException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+            try {
+                new Main().chooseCity(stage, round, username);
+            } catch (ClassNotFoundException | SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -122,7 +123,7 @@ public class Main extends Application {
         }
     }
 
-    public void chooseCity(Stage primaryStage, int round,String name) throws ClassNotFoundException, SQLException {
+    public void chooseCity(Stage primaryStage, int round, String name) throws ClassNotFoundException, SQLException {
         System.out.println("进入 round" + round);
         round1 = round;
         stage = primaryStage;
@@ -130,7 +131,7 @@ public class Main extends Application {
         dbConnector = new DbConnector(name);
         Group page = new Group();
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
+            loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
             page = (Group) loader.load();
             Controller controller = loader.getController();
             controller.setRound(round, page);
@@ -155,14 +156,14 @@ public class Main extends Application {
     // JavaScript interface object
     public class JavaApp {
 
-        public void chooseCity(int round,String name) throws ClassNotFoundException, SQLException {
-        	System.out.println(name);
+        public void chooseCity(int round, String name) throws ClassNotFoundException, SQLException {
+            System.out.println(name);
             username = name;
             dbConnector = new DbConnector(name);
             DbConnector.setName(name.toString());
             Group page = null;
             try {
-                FXMLLoader loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
+                loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
                 page = (Group) loader.load();
                 Controller controller = loader.getController();
                 controller.setRound(round);
@@ -184,15 +185,17 @@ public class Main extends Application {
                 }
             });
         }
-        
+
         public void submit41(String s) {
-        	proceed(8);
-        	GameView.round9.close();
+            proceed(8);
+            DbConnector.updateZ("z28", s);
+            GameView.round9.close();
         }
-        
+
         public void submit42(String s) {
-        	proceed(9);
-        	GameView.round10.close();
+            proceed(9);
+            DbConnector.updateZ("z29", s);
+            GameView.round10.close();
         }
     }
 

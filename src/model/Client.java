@@ -60,6 +60,7 @@ public class Client {
             station = train.currentStation();
             Controller.gameView.removeClientFromTrain(train, this);
             if (station.getType() == this.getType()) {
+                // 真实到站
                 addTransportedClient();
                 Controller.gameView.updateNbClient();
                 if (Controller.mapType == 0){
@@ -67,6 +68,7 @@ public class Client {
                 }
                 // System.err.println("Transported client ");
             } else {
+                // 换乘
                 station.addClient(this);
                 Controller.gameView.put(this);
                 // If the station is actually full and was not already full

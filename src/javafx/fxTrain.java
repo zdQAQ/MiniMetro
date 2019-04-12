@@ -64,6 +64,7 @@ public class fxTrain extends Group {
     }
 
     public fxTrain(Train t, Boolean wagon) {
+        super();
         if (wagon == true) {
             this.isWagon = true;
             this.width = this.width * 2;

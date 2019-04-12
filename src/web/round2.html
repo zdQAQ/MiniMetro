@@ -39,16 +39,20 @@
 
 <body>
     <div style="display:flex;justify-content:center;margin:20px 0px;">
-        <img width="493" height="286" src="../img/round10.jpg">
+        <img src="../img/round2.png" height="230" width="520">
     </div>
-    <h4 style="display:flex;justify-content:center">只需要1个输入框，不区分一定会爆掉或者可能会爆掉</h4>
-
-    <h4 style="display:flex;justify-content:center"><input type="number" id="answer"required>    </h4>         
-
-                    <h4 style="display:flex;justify-content:center">如需书写多个站点，请用逗号分隔各序号，例如1,2,3</h4>
-
+    <em style="display:flex;justify-content:center;align-content: space-between">
+        <p>三角：<input type="number" id="triangle" required></p>
+        <p>十字：<input type="number" id="cross" required></p>
+        <p>菱形：<input type="number" id="diamond" required></p>
+    </em>
+    <em style="display:flex;justify-content:center;align-content: space-between">
+        <p>圆：<input type="number" id="circle" required></p>
+        <p>方形：<input type="number" id="square" required></p>
+        <p>星星：<input type="number" id="star" required></p>
+    </em>
     <div style="display:flex;justify-content:center;margin-top: 20px;">
-        <button onclick="submit42()">提交</button>
+        <button onclick="submitrRound2Answer()">提交</button>
     </div>
 </body>
 

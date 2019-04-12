@@ -38,6 +38,18 @@ function submitAnswer() {
     }
 }
 
+function submitrRound2Answer(){
+    if (!parseInt($('#answer').val())) {
+        alert('请输入数字答案！')
+    }
+    if (app) {
+        // document.getElementById('test').innerHTML = '打开方法' + app.chooseCity
+        app.submitrRound2Answer('')
+    } else {
+        alert('app 加载失败')
+    }
+}
+
 function submit41() {
     if (app) {
         // document.getElementById('test').innerHTML = '打开方法' + app.chooseCity

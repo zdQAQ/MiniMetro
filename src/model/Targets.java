@@ -109,29 +109,34 @@ public class Targets {
 		return res;
 	}
 
-	// public static int diamondToCross(HashMap<model.Line, ArrayList<Shape>> lines){
-	// 	int gapNums = 0;
-	// 	int transNums = 0;
-	// 	Iterator iter = lines.entrySet().iterator();
-	// 	while(iter.hasNext()) { 
-	// 	    Map.Entry entry = (Map.Entry) iter.next(); 
-	// 	    Object key = entry.getKey(); 
-	// 		model.Line line =(model.Line) key;
-	// 	    for(Station station:line.getStationList()) {
-	// 	    	if(station.getType().equals(ShapeType.CIRCLE)) {
-	// 	    		numCircle = true;
-	// 	    		continue;
-	// 			}
-	// 			if(station.getType().equals(ShapeType.TRIANGLE)) {
-	// 	    		numTriangle = true;
-	// 	    		continue;
-	// 			}
-	// 			if(station.getType().equals(ShapeType.SQUARE)) {
-	// 	    		numSquare = true;
-	// 	    		continue;
-	// 	    	}
-	// 		}
-	// 	}
-	// 	return gapNums-transNums;
-	// }
+	public static int diamondToCross(HashMap<model.Line, ArrayList<Shape>> lines){
+		int nums = 0;
+		Iterator iter = lines.entrySet().iterator();
+		while(iter.hasNext()) { 
+			boolean numCircle = false;
+			boolean numTriangle = false;
+			boolean numSquare = false;
+		    Map.Entry entry = (Map.Entry) iter.next(); 
+		    Object key = entry.getKey(); 
+			model.Line line =(model.Line) key;
+		    for(Station station:line.getStationList()) {
+		    	if(station.getType().equals(ShapeType.CIRCLE)) {
+		    		numCircle = true;
+		    		continue;
+				}
+				if(station.getType().equals(ShapeType.TRIANGLE)) {
+		    		numTriangle = true;
+		    		continue;
+				}
+				if(station.getType().equals(ShapeType.SQUARE)) {
+		    		numSquare = true;
+		    		continue;
+		    	}
+			}
+			if (numCircle && numTriangle && numSquare){
+				nums++;
+			}
+		}
+		return nums;
+	}
 }
