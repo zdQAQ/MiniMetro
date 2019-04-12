@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="index.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <title>拒绝岩壁</title>
+    <style type="text/css">
+        button {
+            display: inline-block;
+            padding: 0.3em 1.2em;
+            margin: 0 0.3em 0.3em 0;
+            border-radius: 2em;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            color: #FFFFFF;
+            background-color: #4eb5f1;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: #4095c6;
+        }
+
+        @media all and (max-width:30em) {
+            button {
+                display: block;
+                margin: 0.2em auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display:flex;justify-content:center;margin:20px 0px;">
+        <img src="../img/round2.png" height="230" width="520">
+    </div>
+    <em style="display:flex;justify-content:center;align-content: space-between">
+        <p>三角：<input type="number" id="triangle" required></p>
+        <p>十字：<input type="number" id="cross" required></p>
+        <p>菱形：<input type="number" id="diamond" required></p>
+    </em>
+    <em style="display:flex;justify-content:center;align-content: space-between">
+        <p>圆：<input type="number" id="circle" required></p>
+        <p>方形：<input type="number" id="square" required></p>
+        <p>星星：<input type="number" id="star" required></p>
+    </em>
+    <div style="display:flex;justify-content:center;margin-top: 20px;">
+        <button onclick="submitrRound2Answer()">提交</button>
+    </div>
+</body>
+
+</html>
