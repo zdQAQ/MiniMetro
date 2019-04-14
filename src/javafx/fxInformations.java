@@ -27,6 +27,10 @@ public class fxInformations extends Group {
     private ImageView imageLine;
     private ImageView imageStation;
 
+    public fxInformations(){
+        
+    }
+
     public fxInformations(double posX, double posY, String train, String wagon, String line, String tunnel,
             String station) {
         super();

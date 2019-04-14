@@ -1,8 +1,5 @@
 package model;
 
-/**
- * Created by Anthony on 06/01/2017.
- */
 public class Clock {
     // private enum weekDay {LUN, MAR, MER, JEU, VEN, SAM, DIM};
     private static final String[] weekDay = { "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天" };

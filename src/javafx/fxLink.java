@@ -3,9 +3,6 @@ package javafx;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.StrokeLineJoin;
 
-/**
- * Created by KadirF on 18/12/2016.
- */
 public class fxLink extends Polyline {
 
     fxLink() {

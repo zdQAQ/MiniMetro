@@ -45,7 +45,6 @@ public class Controller implements Initializable {
 	Shape currentT = null, currentLink, currentTrain;
 	model.Line currentLine;
 	Train modelTrain;
-	Wagon modelWagon;
 
 	public static Game game;
 	public static GameView gameView;
@@ -55,7 +54,9 @@ public class Controller implements Initializable {
 	public static int mapType;
 
 	private fxClock clock;
-	static fxInformations info;
+	static fxInformations info = new fxInformations();
+
+	public static boolean canDrawLine = true;
 
 	static Group group2;
 
@@ -159,14 +160,16 @@ public class Controller implements Initializable {
 		} else if (round == 4) {
 			setInfo(3, 0, 3, 0, 0);
 		} else if (round == 5) {
-			setInfo(5, 0, 3, 0, 0);
+			setInfo(3, 0, 3, 0, 0);
 		} else if (round == 6) {
 			setInfo(1, 0, 2, 0, 0);
 		} else if (round == 7) {
-			setInfo(2, 0, 2, 0, 0);
+			setInfo(5, 0, 3, 0, 0);
 		} else if (round == 8) {
-			setInfo(4, 0, 3, 5, 0);
+			setInfo(1, 0, 2, 0, 0);
 		} else if (round == 9) {
+			setInfo(6, 0, 5, 4, 0);
+		} else if (round == 10) {
 			setInfo(6, 0, 5, 4, 0);
 		}
 		group = g;
@@ -185,8 +188,10 @@ public class Controller implements Initializable {
 		} else if (round == 7) {
 			game = new Game(gameView, 2, 0, 2, 0, 0);
 		} else if (round == 8) {
-			game = new Game(gameView, 4, 0, 3, 5, 0);
+			game = new Game(gameView, 1, 0, 2, 0, 0);
 		} else if (round == 9) {
+			game = new Game(gameView, 6, 0, 5, 4, 0);
+		} else if (round == 10) {
 			game = new Game(gameView, 6, 0, 5, 4, 0);
 		}
 
@@ -196,7 +201,7 @@ public class Controller implements Initializable {
 		setMapType(round);
 		game.setSchedule(schedule);
 
-		if (round != 1 && round <= 9) {
+		if (round != 1 && round <= 11) {
 			game.setClientSchedule(clientSchedule);
 			// game.resumeGame();
 			game.start();
@@ -235,9 +240,6 @@ public class Controller implements Initializable {
 	public void setInfo(int train, int wagon, int line, int tunnel, int station) {
 		info = new fxInformations(305, 540, Integer.toString(train), Integer.toString(wagon), Integer.toString(line),
 				Integer.toString(tunnel), Integer.toString(station));
-	}
-
-	public fxInformations getInfo() {
 		info.getImageTrain().setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -282,6 +284,9 @@ public class Controller implements Initializable {
 					hingePressed = true;
 			}
 		});
+	}
+
+	public fxInformations getInfo() {
 		return info;
 	}
 
@@ -292,11 +297,10 @@ public class Controller implements Initializable {
 			public void handle(MouseEvent event) {
 				System.err.println("Line draged " + line);
 				System.err.println("Path " + line.getPath());
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("当前回合仅可在暂停时期修改线路哦");
+					gameView.alertError("当前状态不可修改线路哦");
 				}
 			}
 		});
@@ -304,8 +308,7 @@ public class Controller implements Initializable {
 		shape.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
 			@Override
 			public void handle(MouseDragEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					if (trainPressed) {
 						if (modelTrain != null) {
 							modelTrain.changeLine(new Position(event.getX(), event.getY()), line);
@@ -352,8 +355,7 @@ public class Controller implements Initializable {
 		shape.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					currentLine = line;
 					currentStation = a;
 					currentStation2 = b;
@@ -365,8 +367,7 @@ public class Controller implements Initializable {
 		shape.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					if (currentStation2 != null)
 						gameView.addLink(currentLink);
 					currentLine = null;
@@ -381,8 +382,7 @@ public class Controller implements Initializable {
 		shape.setOnMouseDragged(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					x2 = event.getX();
 					y2 = event.getY();
 					displayDrawingFromLine(a, b, x2, y2);
@@ -396,11 +396,10 @@ public class Controller implements Initializable {
 		shape.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("当前回合仅可在暂停时期修改线路哦");
+					gameView.alertError("当前状态不可修改线路哦");
 				}
 			}
 		});
@@ -408,8 +407,7 @@ public class Controller implements Initializable {
 		shape.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 
 					Position pos = modelSt.getPosition();
 					x = pos.getX();
@@ -429,8 +427,7 @@ public class Controller implements Initializable {
 		shape.setOnMouseReleased(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					shape.setStroke(currentLine.getColor());
 				}
 			}
@@ -441,12 +438,11 @@ public class Controller implements Initializable {
 		shape.setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					System.out.println("station setOnDragDetected");
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("当前回合仅可在暂停时期修改线路哦");
+					gameView.alertError("当前状态不可修改线路哦");
 				}
 			}
 
@@ -455,8 +451,7 @@ public class Controller implements Initializable {
 		shape.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					System.out.println("station setOnMousePressed");
 					Position pos = modelSt.getPosition();
 					x = pos.getX();
@@ -470,8 +465,7 @@ public class Controller implements Initializable {
 		shape.setOnMouseDragOver(new EventHandler<MouseDragEvent>() {
 			@Override
 			public void handle(MouseDragEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					if (stationPressed) {
 
 						/* Removes the station from the selected line */
@@ -586,14 +580,14 @@ public class Controller implements Initializable {
 
 						// 业务逻辑
 						if (TPressed) {
-							if (mapType == 4 && (currentLine.getStationList().size() >= 6)) {
+							if ((mapType == 2 || mapType == 5) && (currentLine.getStationList().size() >= 6)) {
 								gameView.alertError("该回合下每条线路只能有六个站点哦");
 								group.getChildren().remove(drawing);
 								if (currentT != null) {
 									currentT.setStroke(currentLine.getColor());
 								}
 								return;
-							} else if (mapType == 6 && (currentLine.getStationList().size() >= 9)) {
+							} else if ((mapType == 7 || mapType == 8) && (currentLine.getStationList().size() >= 9)) {
 								gameView.alertError("该回合下每条线路只能有九个站点哦");
 								group.getChildren().remove(drawing);
 								if (currentT != null) {
@@ -601,23 +595,6 @@ public class Controller implements Initializable {
 								}
 								return;
 							}
-						}
-
-						if (mapType == 4 && (modelSt.getLines().size() >= 2 || currentStation.getLines().size() >= 2)) {
-							gameView.alertError("该回合每个站点最多经过两条线路哦");
-							group.getChildren().remove(drawing);
-							if (currentT != null) {
-								currentT.setStroke(currentLine.getColor());
-							}
-							return;
-						} else if (mapType == 6
-								&& (modelSt.getLines().size() >= 3 || currentStation.getLines().size() >= 3)) {
-							gameView.alertError("该回合每个站点最多经过三条线路哦");
-							group.getChildren().remove(drawing);
-							if (currentT != null) {
-								currentT.setStroke(currentLine.getColor());
-							}
-							return;
 						}
 
 						isDrawing = true;
@@ -688,7 +665,7 @@ public class Controller implements Initializable {
 										gameView.alertError("没有可用线路了哦");
 										group.getChildren().remove(drawing);
 										return;
-									} else if (mapType == 6 && gameView.getLineLinks().size() >= 6) {
+									} else if (mapType == 8 && gameView.getLineLinks().size() >= 6) {
 										gameView.alertError("最多拥有6条线路哦");
 										group.getChildren().remove(drawing);
 										return;
@@ -798,8 +775,7 @@ public class Controller implements Initializable {
 		shape.setOnMouseDragReleased(new EventHandler<MouseDragEvent>() {
 			@Override
 			public void handle(MouseDragEvent event) {
-				if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-						|| Game.getPause() == true) {
+				if (canDrawLine) {
 					if (hingePressed == true) {
 						gameView.stations.get(modelSt).shape.setScaleX(2);
 						gameView.stations.get(modelSt).shape.setScaleY(2);
@@ -812,21 +788,15 @@ public class Controller implements Initializable {
 					// 拖拽路线加站
 					if (currentStation2 != null) {
 						// 业务逻辑
-						if (mapType == 4) {
+						if (mapType == 2 || mapType == 5) {
 							if (currentLine.getStationList().size() >= 6) {
 								gameView.alertError("该回合下每条线路只能有六个站点哦");
 								return;
-							} else if (modelSt.getLines().size() >= 2) {
-								gameView.alertError("该回合下每个站点最多经过两条线路哦");
-								return;
 							}
 
-						} else if (mapType == 6) {
+						} else if (mapType == 7 || mapType == 8) {
 							if (currentLine.getStationList().size() >= 9) {
 								gameView.alertError("该回合下每条线路只能有九个站点哦");
-								return;
-							} else if (modelSt.getLines().size() >= 3) {
-								gameView.alertError("该回合下每个站点最多经过三条线路哦");
 								return;
 							}
 						}
@@ -978,8 +948,7 @@ public class Controller implements Initializable {
 		});
 
 		shape.setOnMouseDragExited(event -> {
-			if ((getMapType() != 6 && getMapType() != 7 && getMapType() != 8 && getMapType() != 9)
-					|| Game.getPause() == true) {
+			if (canDrawLine) {
 				isDrawing = false;
 			}
 		});

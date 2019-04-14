@@ -25,9 +25,6 @@ import static javafx.defaultShapes.*;
 import static javafx.defaultShapes.getCross;
 import static model.Position.angle;
 
-/**
- * Created by KadirF on 18/12/2016.
- */
 public class fxTrain extends Group {
 
     static final double clientScale = 0.25;

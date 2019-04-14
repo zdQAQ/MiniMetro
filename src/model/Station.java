@@ -4,9 +4,6 @@ import javafx.Controller;
 
 import java.util.*;
 
-/**
- * Created by romainhry on 07/11/2016.
- */
 public class Station {
     private ShapeType type;
     private Position pos;

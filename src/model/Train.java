@@ -11,7 +11,7 @@ import static model.Position.angle;
 public class Train {
     private int nextPointIndex; // +2 if at a station to know the next station
     private java.util.List<Client> clientList;
-    private java.util.List<Wagon> wagonList;
+    // private java.util.List<Wagon> wagonList;
     // private int numberWagon ;
     private Line line;
     private boolean direction;
@@ -22,7 +22,6 @@ public class Train {
         line = l;
         direction = dir;
         clientList = new ArrayList<>();
-        wagonList = new ArrayList<>();
         capacity = 6;
     }
 
@@ -78,14 +77,14 @@ public class Train {
         line = l;
     }
 
-    public java.util.List<Wagon> getWagonList() {
-        return wagonList;
-    }
+    // public java.util.List<Wagon> getWagonList() {
+    //     return wagonList;
+    // }
 
-    public void addWagon(Wagon added) {
-        wagonList.add(added);
+    // public void addWagon(Wagon added) {
+    //     wagonList.add(added);
 
-    }
+    // }
 
     public void changeLine(Position newPosition, Line newLine) {
         line.removeTrain(this);

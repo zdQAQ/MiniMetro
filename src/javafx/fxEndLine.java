@@ -6,9 +6,6 @@ import model.Station;
 
 //import static javafx.defaultShapes.getEndLine;
 
-/**
- * Created by KadirF on 18/12/2016.
- */
 public class fxEndLine extends Polyline {
 
     public fxEndLine() {

@@ -12,9 +12,6 @@ import model.DbConnector;
 import model.Game;
 import utils.ScreenShots;
 
-/**
- * Created by Anthony on 06/01/2017.
- */
 public class fxClock extends Group {
 
     private Line clockNeedle;
@@ -93,7 +90,7 @@ public class fxClock extends Group {
             System.out.println("进入第" + nbDay + "天");
             if (nbDay == 64 && GameView.round == 0) {
                 ScreenShots.make(DbConnector.username + "第一阶段正常情况结束");
-                Game.realTimerPause = true;
+                Game.setPause();
                 Game.threadTime.interrupt();
                 Main.proceed(1);
             }

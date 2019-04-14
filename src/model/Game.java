@@ -11,9 +11,6 @@ import javafx.Main;
 
 import java.util.*;
 
-/**
- * Created by romainhry on 08/11/2016.
- */
 public class Game {
 	public GameView view;
 	public Schedule schedule;
@@ -36,7 +33,6 @@ public class Game {
 	private Clock clock;
 	private static volatile boolean pause = false;
 	private static volatile boolean clockPause = false;
-	public static volatile boolean realTimerPause = false;
 	static final Object pauseLock = new Object();
 	static final Object pauseLock1 = new Object();
 	private static boolean gift = true;
@@ -151,28 +147,6 @@ public class Game {
 		return trainSpeed;
 	}
 
-	private void realTimer() {
-		threadRealTimer = new Thread("threadRealTimer") {
-			public void run() {
-				while (!realTimerPause) {
-					try {
-						sleep(900000);
-						if (GameView.round == 0) {
-							ScreenShots.make(DbConnector.username + "第一阶段15分钟结束");
-							Thread.currentThread().interrupt();
-							Main.proceed(1);
-						}
-						realTimerPause = true;
-					} catch (Exception e) {
-						// System.out.println("popStation:"+e);
-						// this.interrupt();
-					}
-				}
-			}
-		};
-		threadRealTimer.start();
-	}
-
 	private void popStation() {
 		threadStation = new Thread("popStation") {
 			public void run() {
@@ -230,11 +204,11 @@ public class Game {
 								if (station.getClientList().size() > station.getCapacity()
 										&& station.getIsFull() == false) {
 									if (startFullTimerTimes == 0) {
-										if (view.round == 6) {
-											DbConnector.updateZ("z22", new Date().toString());
-										} else if (view.round == 7) {
-											DbConnector.updateZ("z23", new Date().toString());
-										}
+										// if (view.round == 6) {
+										// DbConnector.updateZ("z22", new Date().toString());
+										// } else if (view.round == 7) {
+										// DbConnector.updateZ("z23", new Date().toString());
+										// }
 									}
 									startFullTimerTimes++;
 									station.startFullTimer();
@@ -245,10 +219,10 @@ public class Game {
 							}
 
 							sleep(833);
-							if ((GameView.round == 6 || GameView.round == 7 || GameView.round == 8
-									|| GameView.round == 9) && Schedule.getClickTimes() == 0) {
-								pauseGame();
-							}
+							// if ((GameView.round == 8 || GameView.round == 10)
+							// 		&& Schedule.getClickTimes() == 0) {
+							// 	pauseGame();
+							// }
 						} catch (Exception ex) {
 							// System.out.println("timeGo:"+ex);
 						}
@@ -272,44 +246,44 @@ public class Game {
 			} else if (transportedClientNb == 240 && !m240) {
 				view.setGift(0);
 				m240 = true;
-			} else if (transportedClientNb == 400 && !m400) {
+			} else if (transportedClientNb == 350 && !m400) {
 				view.setGift(1);
 				m400 = true;
-			} else if (transportedClientNb == 600 && !m600) {
+			} else if (transportedClientNb == 500 && !m600) {
 				view.setGift(0);
 				m600 = true;
-			} else if (transportedClientNb == 800 && !m800) {
+			} else if (transportedClientNb == 650 && !m800) {
 				view.setGift(3);
 				m800 = true;
-			} else if (transportedClientNb == 1000 && !m1000) {
+			} else if (transportedClientNb == 800 && !m1000) {
 				view.setGift(4);
 				m1000 = true;
-			} else if (transportedClientNb == 1200 && !m1200) {
+			} else if (transportedClientNb == 950 && !m1200) {
 				view.setGift(1);
 				m1200 = true;
-			} else if (transportedClientNb == 1400 && !m1400) {
+			} else if (transportedClientNb == 1000 && !m1400) {
 				view.setGift(3);
 				m1400 = true;
-			} else if (transportedClientNb == 1600 && !m1600) {
+			} else if (transportedClientNb == 1100 && !m1600) {
 				view.setGift(1);
 				m1600 = true;
-			} else if (transportedClientNb == 1800 && !m1800) {
+			} else if (transportedClientNb == 1200 && !m1800) {
 				view.setGift(3);
 				m1800 = true;
-			} else if (transportedClientNb == 2000 && !m2000) {
+			} else if (transportedClientNb == 1300 && !m2000) {
 				view.setGift(1);
 				m2000 = true;
-			} else if (transportedClientNb == 2100 && !m2100) {
+			} else if (transportedClientNb == 1400 && !m2100) {
 				view.setGift(0);
 				m2100 = true;
-			} else if (transportedClientNb == 2300 && !m2300) {
+			} else if (transportedClientNb == 1500 && !m2300) {
 				view.setGift(1);
 				m2300 = true;
-			} else if (transportedClientNb == 2400 && !m2400) {
+			} else if (transportedClientNb == 1600 && !m2400) {
 				view.setGift(1);
 				m2400 = true;
 			}
-		} else if (view.getRound() == 6) {
+		} else if (view.getRound() == 8) {
 			// 第三阶段第一回合给资源
 			// setGift的参数 资源 0表示路线 1车厢 2车头 3隧道 4枢纽
 			pauseGame();
@@ -323,20 +297,6 @@ public class Game {
 			view.setGift(0, 1, 7);
 			view.setGift(2, 1, 8);
 			view.setGift(3, 0, 9);
-		} else if (view.getRound() == 7) {
-			// 第三阶段第二回合给资源
-			// setGift的参数 资源 0表示路线 1车厢 2车头 3隧道 4枢纽
-			pauseGame();
-			view.setGift(0, 1, true);
-			view.setGift(3, 1, 1);
-			view.setGift(2, 1, 2);
-			view.setGift(0, 4, 3);
-			view.setGift(4, 1, 4);
-			view.setGift(0, 1, 5);
-			view.setGift(3, 1, 6);
-			view.setGift(0, 1, 7);
-			view.setGift(2, 1, 8);
-			view.setGift(3, 1, 9);
 		}
 	}
 
@@ -432,11 +392,10 @@ public class Game {
 		pause = false;
 		if (GameView.round == 0) {
 			popStation();
-			realTimer();
 		}
 		if (GameView.round == 0) {
 			timeGo();
-		} else if (GameView.round == 6 || GameView.round == 7 || GameView.round == 8 || GameView.round == 9) {
+		} else if (GameView.round == 8) {
 			timeGo();
 		} else {
 			setClockPause(true);
@@ -452,48 +411,53 @@ public class Game {
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		if (round + 1 == 1) {
 			alert.setTitle("第1阶段~");
-			alert.setHeaderText("你需要作为见习生应对城市中不断涌现的站点与乘客，探索学习最高效的线路设计方法，合理规划线路，避免拥堵，追求运营分数最大化。");
-			alert.setContentText("PS：如果你是第一次玩游戏请不要点击跳过该阶段的按钮，那个按钮是为游戏崩溃后重新开始的宝宝准备的，偷偷点了就没被试费啦");
+			alert.setHeaderText("你需要作为见习生探索如何设计高效的铁路网，获得高分");
+			alert.setContentText("tips：系统会依据你的累计运送人数追加新的资源；\n如果站点因拥堵而爆炸会扣除一定的累计运送人数；");
 		} else if (round + 1 == 2) {
 			alert.setTitle("第2阶段第1回合~");
-			alert.setHeaderText("为了检验你的见习成果，在第2阶段你需要完成5个小测试");
-			alert.setContentText("注意：设计提交后不可修改或撤回，请谨慎作答\r\n" + "记事本中会显示当前回合的任务与上一回合的知识点，有疑问时不妨去看一下");
+			alert.setHeaderText("为了检验你的见习成果，在第2阶段你需要完成几个小测验");
 		} else if (round + 1 == 3) {
 			alert.setTitle("第2阶段第2回合~");
-			alert.setHeaderText("使用3条线路3辆机车覆盖所有站点，构建你认为最高效的铁路网");
-			alert.setContentText("注意：每条线路最多穿过5个站点");
+			alert.setHeaderText("请使用3条线路3辆机车覆盖所有站点，构筑你认为最高效的铁路网");
+			alert.setContentText("Tips：每条线路最多拥有6个站点");
 		} else if (round + 1 == 4) {
 			alert.setTitle("第2阶段第3回合~");
 			alert.setHeaderText("使用3条线路3辆机车覆盖所有站点，构建你认为最高效的铁路网");
 			alert.setContentText("注意：每条线路最多穿过6个站点；");
 		} else if (round + 1 == 5) {
-			alert.setTitle("第2阶段第3回合~");
+			alert.setTitle("第2阶段第4回合~");
 			alert.setHeaderText("使用3条线路3辆机车覆盖所有站点，构建你认为最高效的铁路网");
 			alert.setContentText("注意：每条线路最多穿过6个站点\r\n" + "每个站点最多经过2条线路");
 		} else if (round + 1 == 6) {
-			alert.setTitle("第2阶段第4回合~");
-			alert.setHeaderText("使用3条线路5辆机车覆盖所有站点，构建你认为最高效的铁路网");
-			alert.setContentText("注意：每条线路最多穿过7个站点\r\n" + "每个站点最多经过2条线路");
+			alert.setTitle("第2阶段第5回合~");
+			alert.setHeaderText("请使用3条线路3辆机车覆盖所有站点，构筑你认为最高效的铁路网");
+			alert.setContentText("Tips：每条线路最多拥有6个站点");
 		} else if (round + 1 == 7) {
-			alert.setTitle("第3阶段第1回合~");
+			alert.setTitle("第2阶段第6回合~");
 			alert.setHeaderText("正式上岗，现实中的情况比见习复杂很多，你需要自主选择物资后设计线路，物资以二选一的方式提供，共十次选择机会\r\n"
 					+ "设计完成后点击激活乘客按钮可运行铁路网，之后你仅有一次暂停修改线路并提交的机会，该回合得分以最终设计的效率高低为准");
 			alert.setContentText("注意：本地图共43个站点，最多可拥有6条线路，每条线路最多拥有3辆机车、9站点，每个站点最多可穿过3条线路。");
 		} else if (round + 1 == 8) {
-			alert.setTitle("第3阶段第2回合~");
-			alert.setHeaderText("本地图共40个站点，你需要自主选择物资后设计线路，物资以二选一的方式提供，共十次选择机会\r\n"
-					+ "设计完成后点击激活乘客按钮可运行铁路网，之后你仅有一次暂停修改线路并提交的机会，该回合得分以最终设计的效率高低为准");
-			alert.setContentText("注意：本地图最多可拥有7条线路，每条线路最多拥有4辆机车、10站点");
+			alert.setTitle("第2阶段第7回合~");
+			alert.setHeaderText("请使用3条线路5辆机车覆盖所有站点，构筑你认为最高效的铁路网");
+			alert.setContentText("注意：每条线路最多穿过9个站点");
 		} else if (round + 1 == 9) {
-			alert.setTitle("第4阶段第1回合~");
-			alert.setHeaderText("观察两位见习生的铁路设计图，指出该设计中可能爆掉的车站，并使用现有资源重新设计线路给予他们指导。");
-			alert.setContentText("注意！激活乘客后仅有两次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
+			alert.setTitle("第3阶段~");
+			alert.setHeaderText("正式上岗，现实中的情况会比见习复杂很多；\n请自主选择物资后设计线路，物资以2选1的方式提供，共有10次选择机会。");
+			alert.setContentText("设计完成以后点击激活乘客的按钮，运营铁路8分钟，该回合得分以最终运营分数为准。\nTips：本地图共30个站点；最多拥有6条线路；每条线路最多穿过9个站点；\n点击记事本可以查看本回合任务，有疑问时不妨去看一看。");
 		} else if (round + 1 == 10) {
+			alert.setTitle("第4阶段第1回合~");
+			alert.setHeaderText("作为1名有经验的铁路规划师， 请观察某位见习生的铁路设计图，指出该设计中可能爆掉的站点序号");
+		} else if (round + 1 == 11) {
 			alert.setTitle("第4阶段第2回合~");
+			alert.setHeaderText("观察线路图指出该设计中可能爆掉的站点，并使用现有资源重新设计该地图给予新手指导。");
+			alert.setContentText("Tips：\n1）重新设计线路后请点击激活乘客，并运行铁路网4分钟； \n2) 激活乘客的4min中内你将不能进行任何操作，请在此期间认真观察线路运行情况以便4min运行结束后优化你的线路设计");
+		} else if (round + 1 == 12) {
+			alert.setTitle("第5阶段~");
 			alert.setHeaderText("观察两位见习生的铁路设计图，指出该设计中可能爆掉的车站，并使用现有资源重新设计线路给予他们指导。");
 			alert.setContentText("注意！激活乘客后仅有两次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
 		} else {
-			alert.setTitle("进入下一阶段~");
+			alert.setTitle("终终终终终终于没有啦~");
 			alert.setHeaderText("游戏结束");
 		}
 		// alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " +
@@ -516,12 +480,12 @@ public class Game {
 		 * Main.restart();
 		 */
 		if (result.get() == buttonTypeTwo) {
-			// 第三回合第一阶段和第二阶段 直接资源
-			if (round == 6 || round == 7) {
+			// 第三回合第一阶段 直接资源
+			if (round == 8) {
 				// Platform.runLater(() -> setGift());
-			} else if (round != 8 && round != 9) {
+			} else if (round != 9 && round != 10) {
 				resumeGame();
-			} else if (round == 10) {
+			} else if (round == 12) {
 				view.endOfGame();
 			}
 		}
