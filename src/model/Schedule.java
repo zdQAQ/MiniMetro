@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +131,8 @@ public class Schedule {
 
 			btn = new Button("跳过该回合");
 
-			btn.setStyle("-fx-background-color: #4eb5f1;-fx-font-size: 1.6em;-fx-text-fill:#fff;-fx-border-radius: 10;");
+			btn.setStyle(
+					"-fx-background-color: #4eb5f1;-fx-font-size: 1.6em;-fx-text-fill:#fff;-fx-border-radius: 10;");
 
 			btn.setLayoutX(790);
 			btn.setLayoutY(480);
@@ -156,6 +158,9 @@ public class Schedule {
 				game.pauseGame();
 				Game.setClockPause(true);
 				GameView.go3rdPart();
+				DbConnector.update("A101", gameview.getPauseTimes());
+				DbConnector.update("A102", (int) gameview.pauseTimeRange);
+				DbConnector.update("A103", gameview.getClickBook());
 			});
 			group.getChildren().add(timer);
 
@@ -182,6 +187,7 @@ public class Schedule {
 					if (tf.getText().isEmpty() == true) {
 						GameView.alertError("请输入你的答案哦");
 					} else {
+						DbConnector.update("A201", tf.getText());
 						GameView.go3rdPart();
 					}
 				}
@@ -226,6 +232,10 @@ public class Schedule {
 				@Override
 				public void handle(MouseEvent event) {
 					ScreenShots.make(DbConnector.username + "第二阶段第二回合");
+					DbConnector.update("A202", Targets.fourCircles(gameview.getLineLinks()));
+					DbConnector.update("A203", Targets.squareLineNums(gameview.getLineLinks()));
+					DbConnector.update("A204", Targets.triangleLineNums(gameview.getLineLinks()));
+					DbConnector.update("A205", Targets.crossLineNums(gameview.getLineLinks()));
 					GameView.go3rdPart();
 				}
 			});
@@ -259,6 +269,7 @@ public class Schedule {
 					if (tf.getText().isEmpty() == true) {
 						GameView.alertError("请输入你的答案哦");
 					} else {
+						DbConnector.update("A206", tf.getText());
 						GameView.go3rdPart();
 					}
 				}
@@ -299,6 +310,7 @@ public class Schedule {
 					if (tf.getText().isEmpty() == true) {
 						GameView.alertError("请输入你的答案哦");
 					} else {
+						DbConnector.update("A207", tf.getText());
 						GameView.go3rdPart();
 					}
 				}
@@ -343,6 +355,10 @@ public class Schedule {
 				@Override
 				public void handle(MouseEvent event) {
 					ScreenShots.make(DbConnector.username + "第二阶段第五回合");
+					DbConnector.update("A208", Targets.fourCircles(gameview.getLineLinks()));
+					DbConnector.update("A209", Targets.squareLineNums(gameview.getLineLinks()));
+					DbConnector.update("A210", Targets.triangleLineNums(gameview.getLineLinks()));
+					DbConnector.update("A211", Targets.crossLineNums(gameview.getLineLinks()));
 					GameView.go3rdPart();
 				}
 			});
@@ -376,6 +392,7 @@ public class Schedule {
 					if (tf.getText().isEmpty() == true) {
 						GameView.alertError("请输入你的答案哦");
 					} else {
+						DbConnector.update("A212", tf.getText());
 						GameView.go3rdPart();
 					}
 				}
@@ -425,6 +442,8 @@ public class Schedule {
 				@Override
 				public void handle(MouseEvent event) {
 					ScreenShots.make(DbConnector.username + "第二阶段第七回合");
+					DbConnector.update("A213", Targets.inlcudesTriangleSquare(gameview.getLineLinks()));
+					DbConnector.update("A214", Targets.interchangeNums(game.getStationList()));
 					GameView.go3rdPart();
 				}
 			});
@@ -513,6 +532,7 @@ public class Schedule {
 						ScreenShots.make(DbConnector.username + "第三阶段8分钟");
 						Game.setClockPause(true);
 						game.pauseGame();
+						DbConnector.update("P301", gameview.getLineLinks().size() >= 6 ? 1 : 0);
 						GameView.go3rdPart();
 					});
 					group.getChildren().add(timer);
@@ -571,6 +591,7 @@ public class Schedule {
 					if (tf.getText().isEmpty() == true) {
 						GameView.alertError("请输入你的答案哦");
 					} else {
+						DbConnector.update("A217", tf.getText());
 						GameView.go3rdPart();
 					}
 				}
@@ -611,6 +632,7 @@ public class Schedule {
 					if (tf.getText().isEmpty() == true) {
 						GameView.alertError("请输入你的答案哦");
 					} else {
+						DbConnector.update("A218", tf.getText());
 						group.getChildren().remove(vBox);
 						gameview.showThings();
 						events.add(new Event(0, ShapeType.SQUARE, new Position(530, 171)));
@@ -672,14 +694,18 @@ public class Schedule {
 								game.timeGo();
 								Game.setClockPause(false);
 								game.resumeGame();
+								btn.setDisable(true);
 
 								timer = new fxTimer(4);
 								timer.setLayoutX(70);
 								timer.setLayoutY(30);
 								Controller.canDrawLine = false;
 								timer.setCallBack(() -> {
+									DbConnector.update("R401", Game.getTransportedClientNb());
+									DbConnector.update("R402", gameview.numBoom);
 									game.pauseGame();
 									group.getChildren().remove(timer);
+									btn.setDisable(false);
 									btn.setText("继续游戏");
 									btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 										@Override
@@ -693,6 +719,8 @@ public class Schedule {
 											timer1.setCallBack(() -> {
 												Game.setClockPause(true);
 												game.pauseGame();
+												DbConnector.update("R403", Game.getTransportedClientNb());
+												DbConnector.update("R404", gameview.numBoom);
 												GameView.go3rdPart();
 											});
 											group.getChildren().remove(btn);
@@ -783,6 +811,8 @@ public class Schedule {
 							|| tf4.getText().isEmpty() == true) {
 						GameView.alertError("请输入每一个题的答案哦");
 					} else {
+						String s = tf0.getText()+","+tf1.getText()+","+tf2.getText()+","+tf3.getText()+","+tf4.getText();
+						DbConnector.update("R501", s);
 						GameView.go3rdPart();
 					}
 				}
@@ -795,6 +825,12 @@ public class Schedule {
 
 		} else {
 			gameview.hideThings();
+			try {
+				DbConnector.shutdown();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Label text = new Label("游戏结束～");
 			text.setLayoutX(450);
 			text.setLayoutY(200);

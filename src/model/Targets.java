@@ -3,13 +3,15 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javafx.scene.shape.Shape;
 
 public class Targets {
-	public static boolean fourCircles(HashMap<model.Line, ArrayList<Shape>> lines) {
+	public static int fourCircles(HashMap<model.Line, ArrayList<Shape>> lines) {
 		Iterator iter = lines.entrySet().iterator();
+		int res = 0;
 		while(iter.hasNext()) { 
 		    Map.Entry entry = (Map.Entry) iter.next(); 
 		    Object key = entry.getKey(); 
@@ -21,10 +23,10 @@ public class Targets {
 		    	}
 		    }
 		    if(nums >2) {
-		    	return true;
+		    	res++;
 		    }
 		}
-		return false;
+		return res;
 	}
 	
 	public static int squareLineNums(HashMap<model.Line, ArrayList<Shape>> lines) {
@@ -78,21 +80,16 @@ public class Targets {
 		return nums;
 	}
 	
-	public static int inlcudesThree(HashMap<model.Line, ArrayList<Shape>> lines) {
+	public static int inlcudesTriangleSquare(HashMap<model.Line, ArrayList<Shape>> lines) {
 		int res = 0;
 		Iterator iter = lines.entrySet().iterator();
 		while(iter.hasNext()) { 
 		    Map.Entry entry = (Map.Entry) iter.next(); 
 		    Object key = entry.getKey(); 
 			model.Line line =(model.Line) key;
-			boolean numCircle = false;
 			boolean numTriangle = false;
 			boolean numSquare = false;
 		    for(Station station:line.getStationList()) {
-		    	if(station.getType().equals(ShapeType.CIRCLE)) {
-		    		numCircle = true;
-		    		continue;
-				}
 				if(station.getType().equals(ShapeType.TRIANGLE)) {
 		    		numTriangle = true;
 		    		continue;
@@ -102,11 +99,28 @@ public class Targets {
 		    		continue;
 		    	}
 			}
-			if(numCircle && numTriangle && numSquare){
+			if(numTriangle && numSquare){
 				res++;
 			}
 		}
 		return res;
+	}
+
+	public static int interchangeNums(List<Station> stations){
+		int nums =0;
+		for(Station station:stations) {
+			if(station.getType().equals(ShapeType.CROSS)) {
+				if(station.getLines().size()>1){
+					nums++;
+				}
+			}
+			if(station.getType().equals(ShapeType.SQUARE)) {
+				if(station.getLines().size()>1){
+					nums++;
+				}
+			}
+		}
+		return nums;
 	}
 
 	public static int diamondToCross(HashMap<model.Line, ArrayList<Shape>> lines){

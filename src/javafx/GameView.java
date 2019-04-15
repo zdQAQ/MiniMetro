@@ -61,10 +61,14 @@ public class GameView {
     public static int round;
     private static int boomTimes = 0;
     private int pauseTimes = 0;
-    private int numBoom = 0;
+    public int numBoom = 0;
     private int clickBook = 0;
     static Stage round9;
     static Stage round10;
+
+    private long startPauseTiming = 0;
+    private long endPauseTiming = 0;
+    public long pauseTimeRange = 0; 
 
     public GameView(Group g, Controller c, int round1) {
         stations = new HashMap<>();
@@ -158,9 +162,13 @@ public class GameView {
                     if (image.getImage() == imagePlay) {
                         image.setImage(imagePause);
                         Controller.game.resumeGame();
+                        endPauseTiming = new Date().getTime();
+                        pauseTimeRange = pauseTimeRange + endPauseTiming - startPauseTiming;
                     } else {
                         image.setImage(imagePlay);
                         Controller.game.pauseGame();
+                        setPauseTimes(getPauseTimes()+1);
+                        startPauseTiming = new Date().getTime();
                     }
                 }
             }
@@ -592,19 +600,15 @@ public class GameView {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
-                        // if (leftTimes == 9) {
-                        // if(round == 6) {
-                        // DbConnector.updateZ("z9", Integer.toString(1));
-                        // } else if (round == 7) {
-                        // DbConnector.updateZ("z10", Integer.toString(1));
-                        // }
-                        // } else if (leftTimes == 6 && round == 6) {
-                        // if(round == 6) {
-                        // DbConnector.updateZ("z12", Integer.toString(1));
-                        // } else if (round == 7) {
-                        // DbConnector.updateZ("z15", Integer.toString(1));
-                        // }
-                        // }
+                        if (leftTimes == 7) {
+                            if(round == 8){
+                                DbConnector.update("P302",1);
+                            }
+                        } else if (leftTimes == 6){
+                            if(round == 5){
+                                DbConnector.update("P304",1);
+                            }
+                        }
                         Game.getInventory().addLineNb();
                         // Controller.game.addGiftColor();
                         updateLineNb(Game.getInventory().getLineNb());
@@ -621,20 +625,15 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeFour) {
-                        // if (leftTimes == 8 && round == 6) {
-                        // DbConnector.updateZ("z11", Integer.toString(1));
-                        // } else if (leftTimes == 3) {
-                        // if (round == 6) {
-                        // DbConnector.updateZ("z13", Integer.toString(1));
-                        // } else if (round == 7) {
-                        // DbConnector.updateZ("z14", Integer.toString(1));
-                        // }
-                        // }
-                        // else if (leftTimes == 3) {
-                        // if (round == 7) {
-                        // DbConnector.updateZ("z16", Integer.toString(1));
-                        // }
-                        // }
+                        if (leftTimes == 9) {
+                            if(round == 8){
+                                DbConnector.update("P303",1);
+                            }
+                        } else if (leftTimes == 6){
+                            if(round == 8){
+                                DbConnector.update("P304",1);
+                            }
+                        }
                         Game.getInventory().addTunnelNb(2);
                         updateTunnelNb(Game.getInventory().getTunnelNb());
                         Game.getInventory().addTrain();
@@ -719,7 +718,6 @@ public class GameView {
                         updateTrainNb(Game.getInventory().getTrainNb());
                         if (isLast) {
                             // Controller.game.resumeGame();
-                            DbConnector.updateZ("z17", Integer.toString(1));
                         }
                     } else if (result.get() == buttonTypeFive) {
                         Game.getInventory().addTrain();

@@ -14,7 +14,10 @@ public class DbConnector {
     private static String driver = "com.mysql.jdbc.Driver";
     private static String url = "jdbc:mysql://rm-2zeo26w82637usg12qo.mysql.rds.aliyuncs.com:3306/minimetro?autoReconnect=true&useSSL=false";
     private static String user = "zhangdai";
-    private static String password = "zhangdai1!";
+	private static String password = "zhangdai1!";
+	// private static String url = "jdbc:mysql://localhost:3306/minimetro?autoReconnect=true&useSSL=false";
+    // private static String user = "root";
+    // private static String password = "root";
     private static Connection connection;
 	public static String username;
 	public static Long id;
@@ -23,21 +26,9 @@ public class DbConnector {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, password);
         username = name;
-        System.out.println("Connected to database");
+		System.out.println("Connected to database");
+		setName(name);
     }
-    
-//    public static Connection getConnection() throws SQLException {
-//    	Connection conn = null;
-//    	conn = DriverManager.getConnection(url, user, password);
-//    	return conn;
-//    }
-//    
-//    public static void execute(String sql) throws SQLException {
-//    	Connection conn = getConnection();
-//    	java.sql.Statement stmt = conn.createStatement();
-//        
-//        stmt.executeUpdate(sql);
-//    }
     
     public static void setName(String name) {
     	java.sql.Statement stmt = null;
@@ -47,14 +38,10 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        String sql = "INSERT INTO z (name) values ('"+name+"')";
-        String sql1 = "INSERT INTO j (name) values ('"+name+"')";
-		String sql2 = "INSERT INTO g (name) values ('"+name+"')";
+        String sql = "INSERT INTO data (name) values ('"+name+"')";
 		 
         try {
-			stmt.executeUpdate(sql);
-			stmt.executeUpdate(sql1);
-			stmt.executeUpdate(sql2,Statement.RETURN_GENERATED_KEYS);
+			stmt.executeUpdate(sql,Statement.RETURN_GENERATED_KEYS);
 			
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {  
@@ -68,7 +55,7 @@ public class DbConnector {
 		}
     }
     
-    public static void updateZ(String key,String value) {
+    public static void update(String key,String value) {
     	java.sql.Statement stmt = null;
 		try {
 			stmt = connection.createStatement();
@@ -76,7 +63,7 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        String sql = "update z set "+key+" = '"+value+"' where id = "+id+"";
+        String sql = "update data set "+key+" = '"+value+"' where id = "+id+"";
         System.out.println(sql);
         try {
 			stmt.executeUpdate(sql);
@@ -84,9 +71,9 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
-    
-    public static void updateJ(String key,String value) {
+	}
+	
+	public static void update(String key,Integer value) {
     	java.sql.Statement stmt = null;
 		try {
 			stmt = connection.createStatement();
@@ -94,25 +81,7 @@ public class DbConnector {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String sql = "update j set "+key+" = '"+value+"' where id = "+id+"";
-        System.out.println(sql);
-        try {
-			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-    
-    public static void updateG(String key,String value) {
-    	java.sql.Statement stmt = null;
-		try {
-			stmt = connection.createStatement();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		String sql = "update g set "+key+" = '"+value+"' where id = "+id+"";
+        String sql = "update data set "+key+" = "+value+" where id = "+id+"";
         System.out.println(sql);
         try {
 			stmt.executeUpdate(sql);
@@ -122,7 +91,7 @@ public class DbConnector {
 		}
     }
 
-    public void shutdown() throws SQLException {
+    public static void shutdown() throws SQLException {
         if (connection != null) {
             connection.close();
         }

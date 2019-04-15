@@ -19,7 +19,7 @@ public class fxTimer extends Group {
 
     public fxTimer(int minutes) {
         super();
-        seconds = 10;
+        seconds = minutes * 60;
         label = new Label("倒计时 " + minutes + ":00");
         label.setFont(Font.font(20));
 

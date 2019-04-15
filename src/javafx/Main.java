@@ -103,30 +103,39 @@ public class Main extends Application {
             Label nameInputText = new Label("请输入你的昵称（姓名首字母）：");
             nameInputText.setFont(new Font(21));
             TextField nameField = new TextField();
-            
+
             Label l0 = new Label("本测试共包含5个阶段，全程大约50分钟");
             l0.setFont(new Font(21));
             l0.setAlignment(Pos.BASELINE_CENTER);
-            l0.setPadding(new Insets(0,0,10,0));
-            
+            l0.setPadding(new Insets(0, 0, 10, 0));
+
             Label l1 = new Label("你需要作为地铁规划师通过合理的线路规划，尽快将乘客送往目的地");
             l1.setFont(new Font(21));
             l1.setAlignment(Pos.BASELINE_CENTER);
-            l1.setPadding(new Insets(0,0,10,0));
-            
+            l1.setPadding(new Insets(0, 0, 10, 0));
+
             Label l2 = new Label("Tips：识别地图中蕴藏的规则可以帮助你赢得高分");
             l2.setFont(new Font(21));
             l2.setAlignment(Pos.BASELINE_CENTER);
-            l2.setPadding(new Insets(0,0,10,0));
-            
+            l2.setPadding(new Insets(0, 0, 10, 0));
+
             Button b = new Button("提交");
             b.setStyle("-fx-background-color: #4eb5f1;-fx-font-size: 1.6em;-fx-text-fill:#fff;-fx-border-radius: 10;");
             b.setAlignment(Pos.BASELINE_CENTER);
-            
+
             b.setOnMouseClicked(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					if(nameField.getText().isEmpty() == false) {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (nameField.getText().isEmpty() == false) {
+                        try {
+                            dbConnector = new DbConnector(nameField.getText());
+                        } catch (ClassNotFoundException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        } catch (SQLException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
 						loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
 						Group page = null;
 						try {
@@ -173,7 +182,7 @@ public class Main extends Application {
         round1 = round;
         stage = primaryStage;
         username = name;
-        dbConnector = new DbConnector(name);
+        // dbConnector = new DbConnector(name);
         Group page = new Group();
         try {
             loader = new FXMLLoader(Main.class.getResource("mainPage.fxml"));
