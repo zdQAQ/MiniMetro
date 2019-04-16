@@ -95,7 +95,7 @@ public class Schedule {
 			events.add(new Event(25000, ShapeType.CIRCLE, new Position(720, 105)));
 			events.add(new Event(25000, ShapeType.SQUARE, new Position(850, 90)));
 			events.add(new Event(25000, ShapeType.SQUARE, new Position(140, 140)));
-			events.add(new Event(25000, ShapeType.CIRCLE, new Position(200, 20)));
+			events.add(new Event(25000, ShapeType.CIRCLE, new Position(200, 25)));
 			events.add(new Event(25000, ShapeType.TRIANGLE, new Position(810, 245)));
 			events.add(new Event(25000, ShapeType.CIRCLE, new Position(450, 20)));
 			events.add(new Event(30000, ShapeType.CIRCLE, new Position(690, 285)));
@@ -211,7 +211,7 @@ public class Schedule {
 			events.add(new Event(0, ShapeType.SQUARE, new Position(620, 152)));
 			events.add(new Event(0, ShapeType.TRIANGLE, new Position(420, 90)));
 			events.add(new Event(0, ShapeType.TRIANGLE, new Position(650, 225)));
-			// events.add(new Event(0, ShapeType.CIRCLE, new Position(90, 230)));
+			events.add(new Event(0, ShapeType.CIRCLE, new Position(90, 230)));
 			// events.add(new Event(0, ShapeType.CIRCLE, new Position(150, 150)));
 			events.add(new Event(0, ShapeType.CIRCLE, new Position(200, 320)));
 			events.add(new Event(0, ShapeType.TRIANGLE, new Position(480, 360)));
@@ -334,7 +334,7 @@ public class Schedule {
 			events.add(new Event(0, ShapeType.SQUARE, new Position(620, 152)));
 			events.add(new Event(0, ShapeType.TRIANGLE, new Position(420, 90)));
 			events.add(new Event(0, ShapeType.TRIANGLE, new Position(650, 225)));
-			// events.add(new Event(0, ShapeType.CIRCLE, new Position(90, 230)));
+			events.add(new Event(0, ShapeType.CIRCLE, new Position(90, 230)));
 			// events.add(new Event(0, ShapeType.CIRCLE, new Position(150, 150)));
 			events.add(new Event(0, ShapeType.CIRCLE, new Position(200, 320)));
 			events.add(new Event(0, ShapeType.TRIANGLE, new Position(480, 360)));
@@ -381,8 +381,23 @@ public class Schedule {
 			vBox.prefWidthProperty().bind(Main.stage.widthProperty());
 
 			TextField tf = new TextField();
-			tf.setMaxWidth(120);
-			tf.setMinHeight(36);
+			tf.setMaxWidth(100);
+
+			TextField tf1 = new TextField();
+			tf1.setMaxWidth(100);
+
+			TextField tf2 = new TextField();
+			tf2.setMaxWidth(100);
+
+			TextField tf3 = new TextField();
+			tf3.setMaxWidth(100);
+
+			TextField tf4 = new TextField();
+			tf4.setMaxWidth(100);
+
+			TextField tf5 = new TextField();
+			tf5.setMaxWidth(100);
+
 			Button b = new Button("提交");
 			b.setStyle("-fx-background-color: #4eb5f1;-fx-font-size: 1.6em;-fx-text-fill:#fff");
 
@@ -398,12 +413,20 @@ public class Schedule {
 				}
 			});
 
-			HBox hb = new HBox();
-			hb.getChildren().addAll(tf, b);
-			hb.setAlignment(Pos.CENTER);
-			hb.setPadding(new Insets(10, 0, 0, 0));
+			b.setAlignment(Pos.CENTER);
 
-			vBox.getChildren().addAll(imageView, hb);
+			HBox hb = new HBox();
+			hb.getChildren().addAll(tf, tf1 ,tf2,tf3,tf4,tf5);
+			hb.setSpacing(10);
+			hb.setAlignment(Pos.CENTER);
+
+			VBox vb = new VBox();
+			vb.getChildren().addAll(hb,b);
+			vb.setSpacing(10);
+			vb.setAlignment(Pos.CENTER);
+			vb.setPadding(new Insets(20, 0, 0, 0));
+
+			vBox.getChildren().addAll(imageView, vb);
 
 			group.getChildren().add(vBox);
 
@@ -525,11 +548,11 @@ public class Schedule {
 			btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					timer = new fxTimer(8);
+					timer = new fxTimer(5);
 					timer.setLayoutX(70);
 					timer.setLayoutY(30);
 					timer.setCallBack(() -> {
-						ScreenShots.make(DbConnector.username + "第三阶段8分钟");
+						ScreenShots.make(DbConnector.username + "第三阶段结束");
 						Game.setClockPause(true);
 						game.pauseGame();
 						DbConnector.update("P301", gameview.getLineLinks().size() >= 6 ? 1 : 0);
@@ -635,26 +658,36 @@ public class Schedule {
 						DbConnector.update("A218", tf.getText());
 						group.getChildren().remove(vBox);
 						gameview.showThings();
-						events.add(new Event(0, ShapeType.SQUARE, new Position(530, 171)));
-						events.add(new Event(0, ShapeType.SQUARE, new Position(750, 401)));
-						events.add(new Event(0, ShapeType.TRIANGLE, new Position(230, 170)));
-						events.add(new Event(0, ShapeType.TRIANGLE, new Position(480, 110)));
+						events.add(new Event(0, ShapeType.SQUARE, new Position(270, 270)));
+						events.add(new Event(0, ShapeType.SQUARE, new Position(460, 250)));
+						events.add(new Event(0, ShapeType.SQUARE, new Position(530, 200)));
+						events.add(new Event(0, ShapeType.SQUARE, new Position(600, 130)));
+						events.add(new Event(0, ShapeType.TRIANGLE, new Position(100, 150)));
+						events.add(new Event(0, ShapeType.TRIANGLE, new Position(180, 250)));
+						events.add(new Event(0, ShapeType.TRIANGLE, new Position(370, 430)));
+						events.add(new Event(0, ShapeType.TRIANGLE, new Position(460, 170)));
 						events.add(new Event(0, ShapeType.TRIANGLE, new Position(510, 360)));
-						events.add(new Event(0, ShapeType.TRIANGLE, new Position(650, 201)));
-						events.add(new Event(0, ShapeType.TRIANGLE, new Position(680, 402)));
+						events.add(new Event(0, ShapeType.TRIANGLE, new Position(690, 250)));
 						events.add(new Event(0, ShapeType.TRIANGLE, new Position(810, 200)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(340, 130)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(350, 350)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(410, 210)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(550, 230)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(620, 101)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(690, 250)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(750, 50)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(750, 150)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(810, 270)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(460, 400)));
-						events.add(new Event(0, ShapeType.DIAMOND, new Position(180, 280)));
-						events.add(new Event(0, ShapeType.CROSS, new Position(810, 100)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(210, 350)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(250, 430)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(300, 200)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(370, 350)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(390, 230)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(450, 430)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(450, 360)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(480, 70)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(550, 430)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(560, 250)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(640, 200)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(690, 430)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(720, 200)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(750, 310)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(850, 250)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(800, 430)));
+						events.add(new Event(0, ShapeType.DIAMOND, new Position(180, 150)));
+						events.add(new Event(0, ShapeType.CROSS, new Position(250, 160)));
+						events.add(new Event(0, ShapeType.STAR, new Position(580, 340)));
 
 						// map
 						// River :
@@ -696,17 +729,19 @@ public class Schedule {
 								game.resumeGame();
 								btn.setDisable(true);
 
-								timer = new fxTimer(4);
+								timer = new fxTimer(3);
 								timer.setLayoutX(70);
 								timer.setLayoutY(30);
 								Controller.canDrawLine = false;
 								timer.setCallBack(() -> {
+									GameView.alertError("请修改线路后点击继续游戏");
 									DbConnector.update("R401", Game.getTransportedClientNb());
 									DbConnector.update("R402", gameview.numBoom);
 									game.pauseGame();
 									group.getChildren().remove(timer);
 									btn.setDisable(false);
 									btn.setText("继续游戏");
+									ScreenShots.make(DbConnector.username + "第四阶段第二回合第一个三分钟结束时");
 									btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 										@Override
 										public void handle(MouseEvent event) {
@@ -714,13 +749,14 @@ public class Schedule {
 											timer1.setLayoutX(70);
 											timer1.setLayoutY(30);
 											group.getChildren().add(timer1);
-											Controller.canDrawLine = false;
+											// Controller.canDrawLine = false;
 											game.resumeGame();
 											timer1.setCallBack(() -> {
 												Game.setClockPause(true);
 												game.pauseGame();
 												DbConnector.update("R403", Game.getTransportedClientNb());
 												DbConnector.update("R404", gameview.numBoom);
+												ScreenShots.make(DbConnector.username + "第四阶段第二回合结束时");
 												GameView.go3rdPart();
 											});
 											group.getChildren().remove(btn);
@@ -728,13 +764,13 @@ public class Schedule {
 									});
 								});
 								group.getChildren().add(timer);
-								ScreenShots.make(DbConnector.username + "第四阶段第一回合激活时");
+								ScreenShots.make(DbConnector.username + "第四阶段第二回合激活时");
 								ClientSchedule.showClient = true;
 							}
 						});
 
 						group.getChildren().add(btn);
-						popStaticStations(type);
+						Platform.runLater(() -> popStaticStations(type));
 					}
 				}
 			});
@@ -811,7 +847,8 @@ public class Schedule {
 							|| tf4.getText().isEmpty() == true) {
 						GameView.alertError("请输入每一个题的答案哦");
 					} else {
-						String s = tf0.getText()+","+tf1.getText()+","+tf2.getText()+","+tf3.getText()+","+tf4.getText();
+						String s = tf0.getText() + "," + tf1.getText() + "," + tf2.getText() + "," + tf3.getText() + ","
+								+ tf4.getText();
 						DbConnector.update("R501", s);
 						GameView.go3rdPart();
 					}

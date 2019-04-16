@@ -144,7 +144,8 @@ public class Main extends Application {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-			            Controller controller = loader.getController();
+                        Controller controller = loader.getController();
+                        // 可在此处修改入口回合
 			            controller.setRound(0);
 			            Color colorScene = new Color((double) 240 / 255, (double) 240 / 255, (double) 240 / 255, 0.5);
 			            Scene scene = new Scene(page, 960, 540, colorScene);

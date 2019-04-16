@@ -164,9 +164,9 @@ public class Controller implements Initializable {
 		} else if (round == 6) {
 			setInfo(1, 0, 2, 0, 0);
 		} else if (round == 7) {
-			setInfo(5, 0, 3, 0, 0);
+			setInfo(3, 0, 3, 0, 0);
 		} else if (round == 8) {
-			setInfo(1, 0, 2, 0, 0);
+			setInfo(1, 0, 1, 0, 0);
 		} else if (round == 9) {
 			setInfo(6, 0, 5, 4, 0);
 		} else if (round == 10) {
@@ -182,13 +182,13 @@ public class Controller implements Initializable {
 		} else if (round == 4) {
 			game = new Game(gameView, 3, 0, 3, 0, 0);
 		} else if (round == 5) {
-			game = new Game(gameView, 5, 0, 3, 0, 0);
+			game = new Game(gameView, 3, 0, 3, 0, 0);
 		} else if (round == 6) {
 			game = new Game(gameView, 1, 0, 2, 0, 0);
 		} else if (round == 7) {
-			game = new Game(gameView, 2, 0, 2, 0, 0);
+			game = new Game(gameView, 3, 0, 3, 0, 0);
 		} else if (round == 8) {
-			game = new Game(gameView, 1, 0, 2, 0, 0);
+			game = new Game(gameView, 1, 0, 1, 0, 0);
 		} else if (round == 9) {
 			game = new Game(gameView, 6, 0, 5, 4, 0);
 		} else if (round == 10) {
@@ -664,10 +664,22 @@ public class Controller implements Initializable {
 									if (Game.getInventory().getLineNb() == 0) {
 										gameView.alertError("没有可用线路了哦");
 										group.getChildren().remove(drawing);
+										stationPressed = false;
+										TPressed = false;
+										currentStation = null;
+										currentT = null;
+										currentLine = null;
+										currentLink = null;
 										return;
 									} else if (mapType == 8 && gameView.getLineLinks().size() >= 6) {
 										gameView.alertError("最多拥有6条线路哦");
 										group.getChildren().remove(drawing);
+										stationPressed = false;
+										TPressed = false;
+										currentStation = null;
+										currentT = null;
+										currentLine = null;
+										currentLink = null;
 										return;
 									}
 

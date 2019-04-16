@@ -600,12 +600,12 @@ public class GameView {
 
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == buttonTypeOne) {
-                        if (leftTimes == 7) {
+                        if (leftTimes == 5) {
                             if(round == 8){
                                 DbConnector.update("P302",1);
                             }
                         } else if (leftTimes == 6){
-                            if(round == 5){
+                            if(round == 3){
                                 DbConnector.update("P304",1);
                             }
                         }
@@ -625,11 +625,11 @@ public class GameView {
                         Game.getInventory().addTrain();
                         updateTrainNb(Game.getInventory().getTrainNb());
                     } else if (result.get() == buttonTypeFour) {
-                        if (leftTimes == 9) {
+                        if (leftTimes == 7) {
                             if(round == 8){
                                 DbConnector.update("P303",1);
                             }
-                        } else if (leftTimes == 6){
+                        } else if (leftTimes == 4){
                             if(round == 8){
                                 DbConnector.update("P304",1);
                             }

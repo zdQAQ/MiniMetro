@@ -287,16 +287,14 @@ public class Game {
 			// 第三阶段第一回合给资源
 			// setGift的参数 资源 0表示路线 1车厢 2车头 3隧道 4枢纽
 			pauseGame();
-			view.setGift(0, 1, true);
-			view.setGift(3, 1, 1);
-			view.setGift(2, 3, 2);
-			view.setGift(0, 4, 3);
-			view.setGift(2, 1, 4);
+			view.setGift(0, 3, true);
+			view.setGift(0, 4, 1);
+			view.setGift(2, 1, 2);
+			view.setGift(0, 1, 3);
+			view.setGift(3, 1, 4);
 			view.setGift(0, 1, 5);
-			view.setGift(3, 1, 6);
-			view.setGift(0, 1, 7);
-			view.setGift(2, 1, 8);
-			view.setGift(3, 0, 9);
+			view.setGift(2, 1, 6);
+			view.setGift(3, 0, 7);
 		}
 	}
 
@@ -443,7 +441,7 @@ public class Game {
 			alert.setContentText("注意：每条线路最多穿过9个站点");
 		} else if (round + 1 == 9) {
 			alert.setTitle("第3阶段~");
-			alert.setHeaderText("正式上岗，现实中的情况会比见习复杂很多；\n请自主选择物资后设计线路，物资以2选1的方式提供，共有10次选择机会。");
+			alert.setHeaderText("正式上岗，现实中的情况会比见习复杂很多；\n请自主选择物资后设计线路，物资以2选1的方式提供，共有8次选择机会。");
 			alert.setContentText("设计完成以后点击激活乘客的按钮，运营铁路8分钟，该回合得分以最终运营分数为准。\nTips：本地图共30个站点；最多拥有6条线路；每条线路最多穿过9个站点；\n点击记事本可以查看本回合任务，有疑问时不妨去看一看。");
 		} else if (round + 1 == 10) {
 			alert.setTitle("第4阶段第1回合~");
