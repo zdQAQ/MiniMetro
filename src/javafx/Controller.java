@@ -300,7 +300,7 @@ public class Controller implements Initializable {
 				if (canDrawLine) {
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("当前状态不可修改线路哦");
+					gameView.alertError("请认真观察线路运行情况并在倒计时结束后完善线路");
 				}
 			}
 		});
@@ -399,7 +399,7 @@ public class Controller implements Initializable {
 				if (canDrawLine) {
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("当前状态不可修改线路哦");
+					gameView.alertError("请认真观察线路运行情况并在倒计时结束后完善线路");
 				}
 			}
 		});
@@ -442,7 +442,7 @@ public class Controller implements Initializable {
 					System.out.println("station setOnDragDetected");
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("当前状态不可修改线路哦");
+					gameView.alertError("请认真观察线路运行情况并在倒计时结束后完善线路");
 				}
 			}
 

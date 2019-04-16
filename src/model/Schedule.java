@@ -734,13 +734,14 @@ public class Schedule {
 								timer.setLayoutY(30);
 								Controller.canDrawLine = false;
 								timer.setCallBack(() -> {
+									Controller.canDrawLine = true;
 									GameView.alertError("请修改线路后点击继续游戏");
 									DbConnector.update("R401", Game.getTransportedClientNb());
 									DbConnector.update("R402", gameview.numBoom);
 									game.pauseGame();
 									group.getChildren().remove(timer);
 									btn.setDisable(false);
-									btn.setText("继续游戏");
+									btn.setText("继续观察");
 									ScreenShots.make(DbConnector.username + "第四阶段第二回合第一个三分钟结束时");
 									btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 										@Override
@@ -749,7 +750,7 @@ public class Schedule {
 											timer1.setLayoutX(70);
 											timer1.setLayoutY(30);
 											group.getChildren().add(timer1);
-											// Controller.canDrawLine = false;
+											Controller.canDrawLine = false;
 											game.resumeGame();
 											timer1.setCallBack(() -> {
 												Game.setClockPause(true);

@@ -12,12 +12,12 @@ import java.text.SimpleDateFormat;
 public class DbConnector {
     // in real life, use a connection pool....
     private static String driver = "com.mysql.jdbc.Driver";
-//    private static String url = "jdbc:mysql://rm-2zeo26w82637usg12qo.mysql.rds.aliyuncs.com:3306/minimetro?autoReconnect=true&useSSL=false";
-//    private static String user = "zhangdai";
-//	private static String password = "zhangdai1!";
-	 private static String url = "jdbc:mysql://localhost:3306/minimetro?autoReconnect=true&useSSL=false";
-     private static String user = "root";
-     private static String password = "root";
+    private static String url = "jdbc:mysql://rm-2zeo26w82637usg12qo.mysql.rds.aliyuncs.com:3306/minimetro?autoReconnect=true&useSSL=false";
+    private static String user = "zhangdai";
+	private static String password = "zhangdai1!";
+//	 private static String url = "jdbc:mysql://localhost:3306/minimetro?autoReconnect=true&useSSL=false";
+//     private static String user = "root";
+//     private static String password = "root";
     private static Connection connection;
 	public static String username;
 	public static Long id;
