@@ -2,6 +2,8 @@ package model;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import utils.ScreenShots;
 import javafx.application.Platform;
@@ -407,6 +409,7 @@ public class Game {
 		pauseGame();
 
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/tip.png").toString())));
 		if (round + 1 == 1) {
 			alert.setTitle("第1阶段~");
 			alert.setHeaderText("你需要作为见习生探索如何设计高效的铁路网，获得高分");
@@ -455,8 +458,8 @@ public class Game {
 			alert.setHeaderText("观察两位见习生的铁路设计图，指出该设计中可能爆掉的车站，并使用现有资源重新设计线路给予他们指导。");
 			alert.setContentText("注意！激活乘客后仅有两次暂停修改设计的机会，该回合的得分等于最终设计的效率分。");
 		} else {
-			alert.setTitle("终终终终终终于没有啦~");
-			alert.setHeaderText("游戏结束");
+			alert.setTitle("没有啦~");
+			alert.setHeaderText("游戏结束喽！哦耶！");
 		}
 		// alert.setContentText(Game.getTransportedClientNb() + " 名乘客在你建造的地铁里一共度过 " +
 		// clock.getNbDay() +" 天");

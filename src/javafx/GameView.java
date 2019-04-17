@@ -475,8 +475,10 @@ public class GameView {
                 try {
 
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("提醒");
+                    alert.setTitle("提示");
                     alert.setHeaderText(text);
+                    alert.setGraphic(
+                            new ImageView(new Image(this.getClass().getResource("/img/error.png").toString())));
 
                     // ButtonType buttonTypeOne = new ButtonType("Recommencer");
                     ButtonType buttonTypeTwo = new ButtonType("确定");

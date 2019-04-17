@@ -58,10 +58,14 @@ public class Controller implements Initializable {
 
 	public static boolean canDrawLine = true;
 
+	private static String errorText;
+
 	static Group group2;
 
 	@Override // This method is called by the FXMLLoader when initialization is complete
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
+		errorText = "当前状态下不可修改哦";
+
 		group2 = group;
 		group.getChildren().add(drawing);
 		group.getChildren().add(drawingTrain);
@@ -136,6 +140,10 @@ public class Controller implements Initializable {
 
 		// game.start();
 
+	}
+
+	public static void setErrorText(String s){
+		errorText = s;
 	}
 
 	public void setRound(int round) {
@@ -300,7 +308,7 @@ public class Controller implements Initializable {
 				if (canDrawLine) {
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("请认真观察线路运行情况并在倒计时结束后完善线路");
+					GameView.alertError(errorText);
 				}
 			}
 		});
@@ -399,7 +407,7 @@ public class Controller implements Initializable {
 				if (canDrawLine) {
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("请认真观察线路运行情况并在倒计时结束后完善线路");
+					GameView.alertError(errorText);
 				}
 			}
 		});
@@ -442,7 +450,7 @@ public class Controller implements Initializable {
 					System.out.println("station setOnDragDetected");
 					shape.startFullDrag();
 				} else {
-					gameView.alertError("请认真观察线路运行情况并在倒计时结束后完善线路");
+					GameView.alertError(errorText);
 				}
 			}
 

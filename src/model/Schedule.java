@@ -733,9 +733,10 @@ public class Schedule {
 								timer.setLayoutX(70);
 								timer.setLayoutY(30);
 								Controller.canDrawLine = false;
+								Controller.setErrorText("请认真观察线路运行情况并在倒计时结束后完善线路");
 								timer.setCallBack(() -> {
 									Controller.canDrawLine = true;
-									GameView.alertError("请修改线路后点击继续游戏");
+									GameView.alertError("请修改线路后再点击继续观察（继续游戏）");
 									DbConnector.update("R401", Game.getTransportedClientNb());
 									DbConnector.update("R402", gameview.numBoom);
 									game.pauseGame();
@@ -751,6 +752,7 @@ public class Schedule {
 											timer1.setLayoutY(30);
 											group.getChildren().add(timer1);
 											Controller.canDrawLine = false;
+											Controller.setErrorText("只能观察，不能修改了哦");
 											game.resumeGame();
 											timer1.setCallBack(() -> {
 												Game.setClockPause(true);
@@ -869,10 +871,19 @@ public class Schedule {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Label text = new Label("游戏结束～");
-			text.setLayoutX(450);
-			text.setLayoutY(200);
-			group.getChildren().add(text);
+			Label text = new Label("恭喜！游戏结束～");
+			text.setFont(new Font(26));
+			text.setPadding(new Insets(0, 0, 20, 0));
+			Label text1 = new Label("Designed by Chenoa");
+			text1.setFont(new Font(16));
+			Label text2 = new Label("Assembled by Zd");
+			text2.setFont(new Font(16));
+			VBox vb = new VBox();
+			vb.getChildren().addAll(text,text1,text2);
+			vb.prefWidthProperty().bind(Main.stage.widthProperty());
+			vb.prefHeightProperty().bind(Main.stage.heightProperty());
+			vb.setAlignment(Pos.CENTER);
+			group.getChildren().add(vb);
 		}
 
 		if (type != 3 && type != 4 && type != 6 && type != 11) {

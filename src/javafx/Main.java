@@ -99,6 +99,7 @@ public class Main extends Application {
         try {
             stage = primaryStage;
             primaryStage.setTitle("地铁小游戏哦");
+            primaryStage.getIcons().add(new Image(this.getClass().getResource("/img/iconGame.jpg").toString()));
 
             Label nameInputText = new Label("请输入你的昵称（姓名首字母）：");
             nameInputText.setFont(new Font(21));
