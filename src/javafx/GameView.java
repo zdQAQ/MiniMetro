@@ -170,6 +170,8 @@ public class GameView {
                         setPauseTimes(getPauseTimes()+1);
                         startPauseTiming = new Date().getTime();
                     }
+                } else {
+                    alertError("当前状态下无法暂停哦");
                 }
             }
         });

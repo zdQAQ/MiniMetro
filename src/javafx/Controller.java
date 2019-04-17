@@ -69,6 +69,7 @@ public class Controller implements Initializable {
 		group2 = group;
 		group.getChildren().add(drawing);
 		group.getChildren().add(drawingTrain);
+		group.getChildren().add(drawingWagon);
 		group.getChildren().add(drawingHinge);
 
 		group.setOnMouseDragged(new EventHandler<MouseEvent>() {
@@ -110,6 +111,7 @@ public class Controller implements Initializable {
 				stationPressed = false;
 				TPressed = false;
 				trainPressed = false;
+				wagonPressed = false;
 				hingePressed = false;
 				group.getChildren().remove(drawing);
 				group.getChildren().remove(drawingTrain);
@@ -251,45 +253,66 @@ public class Controller implements Initializable {
 		info.getImageTrain().setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				info.getImageTrain().startFullDrag();
+				if(canDrawLine = true){
+					info.getImageTrain().startFullDrag();
+				}
 			}
 		});
 
 		info.getImageTrain().setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (Game.getInventory().getTrainNb() != 0)
-					trainPressed = true;
+				if(canDrawLine = true){
+					if (Game.getInventory().getTrainNb() != 0){
+						trainPressed = true;
+					}
+				} else {
+					GameView.alertError("当前状态下不可以添加车头哦");
+				}
 			}
 		});
 
 		info.getImageWagon().setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				info.getImageTrain().startFullDrag();
+				if(canDrawLine = true){
+					info.getImageWagon().startFullDrag();
+				}
 			}
 		});
 
 		info.getImageWagon().setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (Game.getInventory().getWagonNb() != 0)
-					wagonPressed = true;
+				if(canDrawLine = true){
+					if (Game.getInventory().getWagonNb() != 0){
+						wagonPressed = true;
+					}
+				} else {
+					GameView.alertError("当前状态下不可以添加车厢哦");
+				}
 			}
 		});
 
 		info.getImageStation().setOnDragDetected(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				info.getImageStation().startFullDrag();
+				if(canDrawLine = true){
+					info.getImageStation().startFullDrag();
+				}
 			}
 		});
 
 		info.getImageStation().setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				if (Game.getInventory().getStationNb() != 0)
-					hingePressed = true;
+				if(canDrawLine = true){
+					if (Game.getInventory().getStationNb() != 0){
+						hingePressed = true;
+					}
+				} else {
+					GameView.alertError("当前状态下不可以添加枢纽哦");
+				}
 			}
 		});
 	}
@@ -595,8 +618,15 @@ public class Controller implements Initializable {
 									currentT.setStroke(currentLine.getColor());
 								}
 								return;
-							} else if ((mapType == 7 || mapType == 8) && (currentLine.getStationList().size() >= 9)) {
+							} else if ((mapType == 7) && (currentLine.getStationList().size() >= 9)) {
 								gameView.alertError("该回合下每条线路只能有九个站点哦");
+								group.getChildren().remove(drawing);
+								if (currentT != null) {
+									currentT.setStroke(currentLine.getColor());
+								}
+								return;
+							} else if ((mapType == 8) && (currentLine.getStationList().size() >= 11)){
+								gameView.alertError("该回合下每条线路只能有十一个站点哦");
 								group.getChildren().remove(drawing);
 								if (currentT != null) {
 									currentT.setStroke(currentLine.getColor());
@@ -814,9 +844,14 @@ public class Controller implements Initializable {
 								return;
 							}
 
-						} else if (mapType == 7 || mapType == 8) {
+						} else if (mapType == 7) {
 							if (currentLine.getStationList().size() >= 9) {
 								gameView.alertError("该回合下每条线路只能有九个站点哦");
+								return;
+							}
+						} else if (mapType == 8){
+							if (currentLine.getStationList().size() >= 11) {
+								gameView.alertError("该回合下每条线路只能有十一个站点哦");
 								return;
 							}
 						}
@@ -1000,14 +1035,14 @@ public class Controller implements Initializable {
 	}
 
 	public void displayHingeDrawing() {
-		group.getChildren().remove(drawingWagon);
+		group.getChildren().remove(drawingHinge);
 		drawingHinge.setStroke(Color.LIGHTGREY);
 		drawingHinge.setFill(Color.LIGHTGREY);
 
 		drawingHinge.setCenterX(x2);
 		drawingHinge.setCenterY(y2);
 		drawingHinge.setRadius(30);
-		group.getChildren().add(1, drawingWagon);
+		group.getChildren().add(1, drawingHinge);
 	}
 
 	// drawing lines

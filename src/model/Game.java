@@ -102,6 +102,7 @@ public class Game {
 		clock = new Clock();
 		times = 0;
 		startFullTimerTimes = 0;
+		transportedClientNb = 0;
 	}
 
 	public List<Station> getStationList() {
@@ -413,7 +414,7 @@ public class Game {
 		if (round + 1 == 1) {
 			alert.setTitle("第1阶段~");
 			alert.setHeaderText("你需要作为见习生探索如何设计高效的铁路网，获得高分");
-			alert.setContentText("tips：系统会依据你的累计运送人数追加新的资源；\n如果站点因拥堵而爆炸会扣除一定的累计运送人数；");
+			alert.setContentText("Tips：系统会依据你的累计运送人数追加新的资源；\n如果站点因拥堵而爆炸会扣除一定的累计运送人数；");
 		} else if (round + 1 == 2) {
 			alert.setTitle("第2阶段第1回合~");
 			alert.setHeaderText("为了检验你的见习成果，在第2阶段你需要完成几个小测验");
@@ -445,14 +446,14 @@ public class Game {
 		} else if (round + 1 == 9) {
 			alert.setTitle("第3阶段~");
 			alert.setHeaderText("正式上岗，现实中的情况会比见习复杂很多；\n请自主选择物资后设计线路，物资以2选1的方式提供，共有8次选择机会。");
-			alert.setContentText("设计完成以后点击激活乘客的按钮，运营铁路8分钟，该回合得分以最终运营分数为准。\nTips：本地图共30个站点；最多拥有6条线路；每条线路最多穿过9个站点；\n点击记事本可以查看本回合任务，有疑问时不妨去看一看。");
+			alert.setContentText("设计完成以后点击激活乘客的按钮，运营铁路8分钟，该回合得分以最终运营分数为准。\nTips：本地图共30个站点；最多拥有6条线路；每条线路最多穿过11个站点；\n点击记事本可以查看本回合任务，有疑问时不妨去看一看。");
 		} else if (round + 1 == 10) {
 			alert.setTitle("第4阶段第1回合~");
 			alert.setHeaderText("作为1名有经验的铁路规划师， 请观察某位见习生的铁路设计图，指出该设计中可能爆掉的站点序号");
 		} else if (round + 1 == 11) {
 			alert.setTitle("第4阶段第2回合~");
 			alert.setHeaderText("观察线路图指出该设计中可能爆掉的站点，并使用现有资源重新设计该地图给予新手指导。");
-			alert.setContentText("Tips：\n1）重新设计线路后请点击激活乘客，并运行铁路网4分钟； \n2) 激活乘客的4min中内你将不能进行任何操作，请在此期间认真观察线路运行情况以便4min运行结束后优化你的线路设计");
+			alert.setContentText("Tips：\n1）重新设计线路后请点击激活乘客，并运行铁路网4分钟； \n2）激活乘客的4min中内你将不能进行任何操作，请在此期间认真观察线路运行情况以便4min运行结束后优化你的线路设计");
 		} else if (round + 1 == 12) {
 			alert.setTitle("第5阶段~");
 			alert.setHeaderText("观察两位见习生的铁路设计图，指出该设计中可能爆掉的车站，并使用现有资源重新设计线路给予他们指导。");
