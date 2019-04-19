@@ -46,6 +46,7 @@ public class fxTimer extends Group {
         S = "倒计时 " + seconds / 60 + ":" + seconds % 60;
         label.setText(S);
         if(seconds == 0){
+            animation.stop();
             Platform.runLater(cb);
         }
     }
