@@ -37,17 +37,8 @@ public class fxTimer extends Group {
         });
     }
 
-    public void setMinutes(int minutes) {
-        seconds = minutes * 60;
-    }
-
     public void setCallBack(Runnable callBack) {
         cb = callBack;
-    }
-
-    public void removeCallBack() {
-        cb = () -> {
-        };
     }
 
     public void timelabel() {
