@@ -143,7 +143,6 @@ public class Schedule {
 					ScreenShots.make(DbConnector.username + "第一阶段点跳过");
 					game.pauseGame();
 					Game.setClockPause(true);
-					timer.removeCallBack();
 					GameView.go3rdPart();
 				}
 			});
