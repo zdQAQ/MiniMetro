@@ -3,6 +3,8 @@ package javafx;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
@@ -25,30 +27,33 @@ public class fxTimer extends Group {
 
         getChildren().add(label);
         animation = new Timeline(new KeyFrame(Duration.millis(1000), e -> timelabel()));
-        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.setCycleCount(seconds);
         animation.play();
+        animation.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent arg0) {
+                Platform.runLater(cb);
+            }
+        });
     }
 
-    public void setMinutes(int minutes){
+    public void setMinutes(int minutes) {
         seconds = minutes * 60;
     }
 
-    public void setCallBack(Runnable callBack){
+    public void setCallBack(Runnable callBack) {
         cb = callBack;
     }
 
-    public void removeCallBack(){
-        cb =()->{};
+    public void removeCallBack() {
+        cb = () -> {
+        };
     }
 
     public void timelabel() {
         seconds--;
         S = "倒计时 " + seconds / 60 + ":" + seconds % 60;
         label.setText(S);
-        if(seconds == 0){
-            animation.stop();
-            Platform.runLater(cb);
-        }
     }
 
 }
