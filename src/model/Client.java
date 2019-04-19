@@ -35,7 +35,9 @@ public class Client {
          * get closer to his type
          */
         if (train.getLine().containsShape(destinationType)
-                || train.nextStation().getMinDistance(destinationType) < station.getMinDistance(destinationType)) {
+                || train.nextStation().getMinDistance(destinationType) < train.currentStation()
+                        .getMinDistance(destinationType)
+                || (train.getLine().isLoop() && train.getLine().canGoToDestination(destinationType) && !train.currentStation().shouldTransferLine(destinationType,train.getLine()))) {
             station.removeClient(this);
             train.addClient(this);
             // If the station is actually not full and was full before
@@ -54,8 +56,11 @@ public class Client {
          * line doesn't bring him closer to a station of his type
          */
         if (train.currentStation().getType() == destinationType
-                || (!train.getLine().containsShape(destinationType) && train.nextStation()
-                        .getMinDistance(destinationType) >= train.currentStation().getMinDistance(destinationType))) {
+                || ((!train.getLine().containsShape(destinationType) && train.nextStation()
+                        .getMinDistance(destinationType) >= train.currentStation().getMinDistance(destinationType)))
+                || (!train.getLine().containsShape(destinationType)
+                        && train.currentStation().shouldTransferLine(destinationType,train.getLine()) && train.getLine().isLoop())) {
+                            System.out.println(this);
             train.removeClient(this);
             station = train.currentStation();
             Controller.gameView.removeClientFromTrain(train, this);
@@ -63,7 +68,7 @@ public class Client {
                 // 真实到站
                 addTransportedClient();
                 Controller.gameView.updateNbClient();
-                if (Controller.mapType == 0){
+                if (Controller.mapType == 0) {
                     Controller.game.setGift();
                 }
                 // System.err.println("Transported client ");

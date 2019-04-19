@@ -30,6 +30,19 @@ public class Station {
 
     }
 
+    public boolean shouldTransferLine(ShapeType shape, Line currentLine) {
+        for (Line l : getLines()) {
+            if (!l.equals(currentLine)) {
+                for (Station s : l.getStationList()) {
+                    if (s.getType().equals(shape) && this.getLines().contains(l)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public ShapeType getType() {
         return type;
     }
@@ -70,7 +83,7 @@ public class Station {
         lines.remove(line);
     }
 
-    public List<Line> getLines(){
+    public List<Line> getLines() {
         return lines;
     }
 
@@ -104,10 +117,10 @@ public class Station {
 
     public String toString() {
         String s = "Station " + type + " at " + pos + " ";
-        // for(ShapeType stype : ShapeType.values()) {
-        // if(distances[stype.ordinal()]!=-1)
-        // s+=stype+" : "+distances[stype.ordinal()]+" ";
-        // }
+        for (ShapeType stype : ShapeType.values()) {
+            if (distances[stype.ordinal()] != -1)
+                s += stype + " : " + distances[stype.ordinal()] + " ";
+        }
         return s;
     }
 
@@ -160,11 +173,11 @@ public class Station {
             s.checked = false;
     }
 
-	public List<Station> getLinks() {
-		return links;
-	}
+    public List<Station> getLinks() {
+        return links;
+    }
 
-	public void setLinks(List<Station> links) {
-		this.links = links;
-	}
+    public void setLinks(List<Station> links) {
+        this.links = links;
+    }
 }

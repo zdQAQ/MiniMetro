@@ -33,6 +33,19 @@ public class Line {
         return stationList;
     }
 
+    public boolean canGoToDestination(ShapeType shape){
+        for(Station s:getStationList()){
+            for(Line line:s.getLines()){
+                for(Station station:line.getStationList()){
+                    if(station.getType().equals(shape)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public List<Position> getPath() {
         return path;
     }

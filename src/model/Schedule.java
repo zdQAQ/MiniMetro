@@ -548,7 +548,7 @@ public class Schedule {
 			btn.setOnMouseClicked(new EventHandler<MouseEvent>() {
 				@Override
 				public void handle(MouseEvent event) {
-					timer = new fxTimer(5);
+					timer = new fxTimer(3);
 					timer.setLayoutX(70);
 					timer.setLayoutY(30);
 					timer.setCallBack(() -> {
@@ -679,9 +679,9 @@ public class Schedule {
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(480, 70)));
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(550, 431)));
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(560, 250)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(640, 200)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(640, 202)));
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(690, 438)));
-						events.add(new Event(0, ShapeType.CIRCLE, new Position(720, 202)));
+						events.add(new Event(0, ShapeType.CIRCLE, new Position(720, 203)));
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(750, 310)));
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(850, 260)));
 						events.add(new Event(0, ShapeType.CIRCLE, new Position(800, 440)));
@@ -736,7 +736,7 @@ public class Schedule {
 								Controller.setErrorText("请认真观察线路运行情况并在倒计时结束后完善线路");
 								timer.setCallBack(() -> {
 									Controller.canDrawLine = true;
-									GameView.alertError("请修改线路后再点击继续观察（继续游戏）");
+									GameView.alertError("请修改线路后再点击继续观察");
 									DbConnector.update("R401", Game.getTransportedClientNb());
 									DbConnector.update("R402", gameview.numBoom);
 									game.pauseGame();

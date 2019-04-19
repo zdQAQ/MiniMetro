@@ -772,6 +772,7 @@ public class Controller implements Initializable {
 										currentLine.addStation(0, modelSt, middleX, middleY);
 									} else {
 										currentLine.addStation(modelSt, middleX, middleY);
+										System.out.println("currentLine: "+currentLine);
 									}
 
 									/* line becomes a loop */

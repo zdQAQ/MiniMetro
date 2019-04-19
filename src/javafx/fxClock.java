@@ -47,6 +47,7 @@ public class fxClock extends Group {
         getChildren().add(clockNeedle);
         getChildren().add(dayName);
         nbDay = 0;
+        day = false;
     }
 
     public Point2D calcEndPoint(Point2D origin, double radius, double angle) {
