@@ -77,15 +77,6 @@ public class Train {
         line = l;
     }
 
-    // public java.util.List<Wagon> getWagonList() {
-    //     return wagonList;
-    // }
-
-    // public void addWagon(Wagon added) {
-    //     wagonList.add(added);
-
-    // }
-
     public void changeLine(Position newPosition, Line newLine) {
         line.removeTrain(this);
         newLine.addTrain(this);
@@ -101,28 +92,12 @@ public class Train {
         // Add client to train
         if (clientList.size() < this.capacity)
             clientList.add(client);
-//        else {
-//            for (Wagon current : wagonList) {
-//                if (!current.isFull()) {
-//                    current.addClient(client);
-//                    return;
-//                }
-//            }
-//        }
     }
 
     public void removeClient(Client client) {
 
         if (clientList.contains(client))
             clientList.remove(client);
-//        else {
-//            for (Wagon current : wagonList) {
-//                if (current.getClientList().contains(client)) {
-//                    current.removeClient(client);
-//                    return;
-//                }
-//            }
-//        }
     }
 
     public void stopAtStation() {
