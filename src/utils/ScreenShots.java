@@ -19,9 +19,10 @@ public class ScreenShots{
 			robot = new Robot();
             BufferedImage image=robot.createScreenCapture(new Rectangle(width,height));
             System.out.println(System.getProperty("os.name"));
+            System.out.println(System.getProperty("user.home"));
 			switch (System.getProperty("os.name")) {
             case "Mac OS X": 
-            	new File("/Users/zd/Desktop/metroScreenShots").mkdir();
+            	new File(System.getProperty("user.home")+"/Desktop/metroScreenShots").mkdir();
             	ImageIO.write(image, "png", new File("/Users/zd/Desktop/metroScreenShots/"+name+".png"));
                      break;
             case "Windows":  
