@@ -413,7 +413,7 @@ public class Game {
 		alert.setGraphic(new ImageView(new Image(this.getClass().getResource("/img/tip.png").toString())));
 		if (round + 1 == 1) {
 			alert.setTitle("第1阶段~");
-			alert.setHeaderText("你需要作为见习生探索如何设计高效的铁路网，获得高分");
+			alert.setHeaderText("你需要作为见习生在20分钟的游戏时间里认真观察乘客出行喜好，掌握地图中蕴藏的规律，学习如何设计高效的铁路网。");
 			alert.setContentText("Tips：系统会依据你的累计运送人数追加新的资源；\n如果站点因拥堵而爆炸会扣除一定的累计运送人数；");
 		} else if (round + 1 == 2) {
 			alert.setTitle("第2阶段第1回合~");
@@ -446,7 +446,7 @@ public class Game {
 		} else if (round + 1 == 9) {
 			alert.setTitle("第3阶段~");
 			alert.setHeaderText("正式上岗，现实中的情况会比见习复杂很多；\n请自主选择物资后设计线路，物资以2选1的方式提供，共有8次选择机会。");
-			alert.setContentText("设计完成以后点击激活乘客的按钮，运营铁路8分钟，该回合得分以最终运营分数为准。\nTips：本地图共30个站点；最多拥有6条线路；每条线路最多穿过11个站点；\n点击记事本可以查看本回合任务，有疑问时不妨去看一看。");
+			alert.setContentText("设计完成以后点击激活乘客的按钮，运营铁路8分钟，该回合得分以最终运营分数为准。\nTips：本地图共30个站点；最多拥有6条线路；每条线路最多穿过11个站点；\n点击记事本可以查看上阶段答案与本回合任务，有疑问时不妨去看一下");
 		} else if (round + 1 == 10) {
 			alert.setTitle("第4阶段第1回合~");
 			alert.setHeaderText("作为1名有经验的铁路规划师， 请观察某位见习生的铁路设计图，指出该设计中可能爆掉的站点序号");
